@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>Ⓓ</text></svg>">
+    <title>Decomp-NeRF</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <base href="/"> -->
+
+        <!--FACEBOOK-->
+    <meta property="og:image" content="https://jonbarron.info/mipnerf/img/rays_square.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="682">
+    <meta property="og:image:height" content="682">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content=""/>
+    <meta property="og:title" content="MCNet" />
+    <meta property="og:description" content="Project page for Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis." />
+
+        <!--TWITTER-->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MCNet" />
+    <meta name="twitter:description" content="Project page for Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis." />
+    <!-- <meta name="twitter:image" content="https://jonbarron.info/mipnerf/img/rays_square.png" /> -->
+
+
+<!--     <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
+  <!-- <link rel="icon" type="image/png" href="img/seal_icon.png"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <!-- <b>GBi-Net</b>: A Multiscale Representation <br> for Anti-Aliasing Neural Radiance Fields</br>  -->
+                
+                Learning Unified Decompositional and Compositional NeRF for <br> Editable Novel View Synthesis</br>
+                <small>
+                    ICCV 2023
+                </small>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://w-ted.github.io/">
+                          Yuxin Wang
+                        </a>
+                        </br>HKUST
+                    </li>
+                    <li>
+                        <a href="https://wywu.github.io/">
+                          Wayne Wu
+                        </a>
+                        </br>Shanghai AI Lab
+                    </li>
+                    <li>
+                        <a href="https://www.danxurgb.net/">
+                          Dan Xu
+                        </a>
+                        </br>HKUST
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="link">
+                            <a href="" target="_blank" class="imageLink"><img
+                                src="https://www.filepicker.io/api/file/XQvDkgbsRiiPh8VSZ8wu" , width="50%"></a>
+                            <a href="" target="_blank"><h4><strong>Paper</strong></h4></a>
+                            </a>
+                        </li>
+    
+                        <li>
+                            <a href="" target="_blank" class="imageLink"><img
+                                src="./imgs/icon_github.png" , width="50%"></a>
+                            <a href="" target="_blank"><h4><strong>Code</strong></h4></a>
+                            <!-- <a href="https://github.com/harlanhong/CVPR2022-DaGAN/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/harlanhong/CVPR2022-DaGAN"></a> -->
+                          
+                        </li>
+                    </ul>
+                </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Framework
+                </h3>
+                <image src="./imgs/pipeline.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
+                    An overview of the proposed unified decompositional and compositional NeRF framework for joint novel view synthesis and scene editing. It has two stages. In the first stage (the coarse stage), it learns a guidance radiance field for guiding point sampling. In the second stage (the fine stage), we learn scene decomposition via learnable object codes and two novel decomposition schemes: <b>(i)</b> the 3D one-shot object radiance activation regularization and <b>(ii)</b> color inpaiting handling ambiguous generation in occluded background areas. The scene composition is achieved by using one-hot activation weights for different object-level radiance fields learned in the decomposition stage. The decomposition allows scene editing and the composition enables novel view synthesis in the unified framework. 
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Samples - Videos
+                </h3>
+
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <video id="v11" width="48.5%" autoplay loop muted controls>
+                        <source src="imgs/toy.mp4" type="video/mp4" />
+                    </video>
+                </td>
+                <td width="75%" valign="middle">
+                    <video id="v12" width="48.5%" autoplay loop muted controls>
+                        <source src="imgs/scan.mp4" type="video/mp4" />
+                    </video>
+                </td><br><br>
+
+                
+
+                <div class="section">
+                  <center>
+                  <p>Comparisons with the state-of-the-art method ObjectNeRF. 
+                  </p>
+                  </center>
+                </div>
+                <!-- <p class="text-justify">
+                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
+                </p> -->
+            </div><br>
+
+
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Samples - Novel View Synthesis
+                </h3>
+                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
+                    <!-- <source src="editing.mp4" type="video/mp4" /> -->
+                <!-- </video><br> -->
+
+                <image src="./imgs/nvs_01.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
+                <image src="./imgs/nvs_02.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
+
+                <div class="section">
+                  <center>
+                  <p>Comparisons with state-of-the-art methods: ObjectNeRF and ObjectSDF. 
+                  </p>
+                  </center>
+                </div>
+                <!-- <p class="text-justify">
+                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
+                </p> -->
+            </div><br>
+
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Samples - Background/Object Decomposition
+                </h3>
+                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
+                    <!-- <source src="./editing.mp4" type="video/mp4" /> -->
+                <!-- </video> -->
+                <!-- <div style="display: flex;">
+                    <figure>
+                      <img src="./decomp_toydesk_v1.0.png" style="width: 100%;" />
+                      <figcaption>图例1</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="./decomposition_scannet_v1.0.png" style="width: 100%;" />
+                      <figcaption>图例2</figcaption>
+                    </figure>
+                  </div> -->
+
+                <div style="display: flex;">
+                    <img src="./imgs/decomp_toy.png" style="width: 45%; margin-right: 30px;" />
+                    <img src="./imgs/decomp_scan.png" style="width: 45%; margin-left: 30px;" />
+                </div><br>
+                <!-- <table><tr>
+                    <td><img src="./decomp_toydesk_v1.0.png",width="10%"></td>
+                    <td><img src="./decomposition_scannet_v1.0.png",width="10%"></td>
+                </tr></table> -->
+                <!-- <image src="./decomp_toydesk_v1.0.png" class="img-responsive" alt="overview"><br> -->
+                <!-- <image src="./decomposition_scannet_v1.0.png" class="img-responsive" alt="overview"><br> -->
+
+                <div class="section">
+                  <center>
+                  <p>Comparisons with ObjectNeRF and ground truth on ToyDesk-scene2 and ScanNet-0113. 
+                  </p>
+                  </center>
+                </div>
+                
+                <!-- <p class="text-justify">
+                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
+                </p> -->
+            </div><br>
+
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Samples - Editing
+                </h3>
+                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
+                    <!-- <source src="./editing.mp4" type="video/mp4" /> -->
+                <!-- </video> -->
+                <image src="./imgs/supp_edit.png" class="img-responsive" alt="overview" style="width: 96%;">
+                <!-- <image src="./nvs_02.png" class="img-responsive" alt="overview"><br> -->
+
+                <div class="section">
+                  <center>
+                  <p>Editing results on both ToyDesk and ScanNet datasets. 
+                  </p>
+                  </center>
+                </div>
+                
+                <!-- <p class="text-justify">
+                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
+                </p> -->
+            </div><br>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <!-- <image src="img/gbinet_pipeline.png" class="img-responsive" alt="overview"><br> -->
+                <p class="text-justify"> Implicit neural representations have shown powerful capacity in modeling real-world 3D scenes, offering superior performance in novel view synthesis. 
+                    In this paper, we target a more challenging scenario, i.e., joint scene novel view synthesis and editing based on implicit neural scene representations. 
+                    State-of-the-art methods in this direction typically consider building separate networks for these two tasks (i.e., view synthesis and editing). Thus, the modeling of interactions and correlations between these two tasks is very limited, which, however, is critical for learning high-quality scene representations. 
+                    To tackle this problem, in this paper, we propose a unified Neural Radiance Field (NeRF) framework to effectively perform joint scene decomposition and composition for modeling real-world scenes. The decomposition aims at learning disentangled 3D representations of different objects and the background, allowing for scene editing, while scene composition models an entire scene representation for novel view synthesis.
+                    Specifically, with a two-stage NeRF framework, we learn a coarse stage for predicting a global radiance field as guidance for point sampling, and in the second fine-grained stage, we perform scene decomposition by a novel one-hot object radiance field regularization module and a pseudo supervision via inpainting to handle ambiguous background regions occluded by objects. The decomposed object-level radiance fields are further composed by using activations from the decomposition module. 
+                    Extensive quantitative and qualitative results show the effectiveness of our method for scene decomposition and composition, outperforming state-of-the-art methods for both novel-view synthesis and editing tasks.    
+                    <!-- <a href="https://github.com/harlanhong/MCNet">MCNet</a>. -->
+                </p>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Rendering quality
+                </h3>
+                <image src="img/image_compare2.png" class="img-responsive" alt="overview"><br>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Expert specialization
+                </h3>
+                <image src="img/point_comapre4.png" class="img-responsive" alt="overview"><br>
+
+            </div>
+        </div>
+      
+             -->
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <textarea id="bibtex" class="form-control" readonly>
+              @inproceedings{mi2023switchnerf,
+                  title={MCNet: Learning Scene Decomposition with Mixture of Experts for Large-scale Neural Radiance Fields},
+                  author={Zhenxing Mi and Dan Xu},
+                  booktitle={International Conference on Learning Representations (ICLR)},
+                  year={2023},
+                  url={https://openreview.net/forum?id=PQ2zoIZqvm}
+              }
+                    </textarea>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    <!-- Our code follows several awesome repositories such as 
+                    <a href="https://github.com/harlanhong/CVPR2022-DaGAN">DaGAN</a>,
+                    <a href="https://github.com/AliaksandrSiarohin/first-order-model">FOMM</a>,
+                    We appreciate them for making their codes available to public.
+                    <br>
+                    This research is supported in part by HKUST-SAIL joint research funding, 
+                    the Early Career Scheme of the Research Grants Council (RGC) of 
+                    the Hong Kong SAR under grant No. 26202321 and HKUST Startup Fund No. R9253. -->
+                    <!-- <br> -->
+                    The website template was borrowed from <a href="https://jonbarron.info/">Jon Barron</a> <a href="https://jonbarron.info/mipnerf/">Mip-NeRF</a>.
+                    <br>
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
