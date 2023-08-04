@@ -15,7 +15,7 @@
     <!-- <base href="/"> -->
 
         <!--FACEBOOK-->
-    <!-- <meta property="og:image" content="https://jonbarron.info/mipnerf/img/rays_square.png"> -->
+    <meta property="og:image" content="./images/udcnerf_teaser.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="682">
     <meta property="og:image:height" content="682">
@@ -114,7 +114,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
-                    Framework
+                    UDC-NeRF Framework
                 </h3>
                 <image src="./imgs/pipeline.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
                     An overview of the proposed unified decompositional and compositional NeRF framework for joint novel view synthesis and scene editing. It has two stages. In the first stage (the coarse stage), it learns a guidance radiance field for guiding point sampling. In the second stage (the fine stage), we learn scene decomposition via learnable object codes and two novel decomposition schemes: <b>(i)</b> the 3D one-shot object radiance activation regularization and <b>(ii)</b> color inpaiting handling ambiguous generation in occluded background areas. The scene composition is achieved by using one-hot activation weights for different object-level radiance fields learned in the decomposition stage. The decomposition allows scene editing and the composition enables novel view synthesis in the unified framework. 
@@ -310,11 +310,11 @@
                     <br>
                 </p> -->
                 <pre>@inproceedings{wang2023udcnerf,
-            title={Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis},
-            author={Wang, Yuxin and Wu, Wayne and Xu, Dan},
-            booktitle={ICCV},
-            year={2023}
-            }
+title={Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis},
+author={Wang, Yuxin and Wu, Wayne and Xu, Dan},
+booktitle={ICCV},
+year={2023}
+}
                 </pre>
             </div>
         </div>
