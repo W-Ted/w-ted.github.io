@@ -1,348 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!DOCTYPE html>
-<html>
-
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
-    <title>UDC-NeRF</title>
-
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- <base href="/"> -->
-
-        <!--FACEBOOK-->
-    <meta property="og:image" content="./images/udcnerf_teaser.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="682">
-    <meta property="og:image:height" content="682">
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content=""/>
-    <meta property="og:title" content="UDC-NeRF" />
-    <meta property="og:description" content="Project page for Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis." />
-
-        <!--TWITTER-->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="UDC-NeRF" />
-    <meta name="twitter:description" content="Project page for Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis." />
-    <!-- <meta name="twitter:image" content="https://jonbarron.info/mipnerf/img/rays_square.png" /> -->
-
-
-<!--     <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
-  <!-- <link rel="icon" type="image/png" href="img/seal_icon.png"> -->
-    <!-- Place favicon.ico in the root directory -->
-
+  <title>Yuxin Wang</title>
+  
+  <meta name="author" content="Jon Barron">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>Ⓦ</text></svg>">
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
-    <link rel="stylesheet" href="css/app.css">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
-    
-    <script src="js/app.js"></script>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+    </script>
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 
 <body>
-    <div class="container" id="main">
-        <div class="row">
-            <h2 class="col-md-12 text-center">
-                <!-- <b>GBi-Net</b>: A Multiscale Representation <br> for Anti-Aliasing Neural Radiance Fields</br>  -->
-                
-                Learning <font color="#5364cc">U</font>nified <font color="#5364cc">D</font>ecompositional and <font color="#5364cc">C</font>ompositional <font color="#5364cc">NeRF</font> for <br> Editable Novel View Synthesis</br>
-                <small>
-                    ICCV 2023
-                </small>
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <ul class="list-inline">
-                    <li>
-                        <a href="https://w-ted.github.io/">
-                          Yuxin Wang
-                        </a>
-                        </br>HKUST
-                    </li>
-                    <li>
-                        <a href="https://wywu.github.io/">
-                          Wayne Wu
-                        </a>
-                        </br>Shanghai AI Lab
-                    </li>
-                    <li>
-                        <a href="https://www.danxurgb.net/">
-                          Dan Xu
-                        </a>
-                        </br>HKUST
-                    </li>
-                </ul>
-            </div>
-        </div>
 
 
-        <div class="row">
-                <div class="col-md-4 col-md-offset-4 text-center">
-                    <ul class="nav nav-pills nav-justified">
-                        <li>
-                            <a href="link">
-                            <a href="https://arxiv.org/abs/2308.02840" target="_blank" class="imageLink"><img
-                                src="https://www.filepicker.io/api/file/XQvDkgbsRiiPh8VSZ8wu" , width="50%"></a>
-                            <a href="https://arxiv.org/abs/2308.02840" target="_blank"><h4><strong>Paper</strong></h4></a>
-                            </a>
-                        </li>
-    
-                        <li>
-                            <a href="https://github.com/W-Ted/UDC-NeRF" target="_blank" class="imageLink"><img
-                                src="./imgs/icon_github.png" , width="50%"></a>
-                            <a href="https://github.com/W-Ted/UDC-NeRF" target="_blank"><h4><strong>Code</strong></h4></a>
-                            <!-- <a href="https://github.com/harlanhong/CVPR2022-DaGAN/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/harlanhong/CVPR2022-DaGAN"></a> -->
-                          
-                        </li>
-                    </ul>
+
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+          <td style="padding:20px;width:100%;vertical-align:middle">
+            <nav class="navbar navbar-default navbar-fixed-top">
+              <div class="container">
+                <div class="navbar-header page-scroll">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class='navbar-brand page-scroll' href='/'>
+                    <span style='font-family:"Open Sans"; font-weight:300'>Yuxin Wang</span>
+                  </a>
                 </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <!-- <h3>
-                    Framework
-                </h3> -->
-                <image src="./imgs/pipeline.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
-                    An overview of the proposed unified decompositional and compositional NeRF (<strong><font color="#5364cc">UDC-NeRF</font></strong>) framework for joint novel view synthesis and scene editing. It has two stages. In the first stage (the coarse stage), it learns a guidance radiance field for guiding point sampling. In the second stage (the fine stage), we learn scene decomposition via learnable object codes and two novel decomposition schemes: <b>(i)</b> the 3D one-shot object radiance activation regularization and <b>(ii)</b> color inpaiting handling ambiguous generation in occluded background areas. The scene composition is achieved by using one-hot activation weights for different object-level radiance fields learned in the decomposition stage. The decomposition allows scene editing and the composition enables novel view synthesis in the unified framework. 
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Object Manipulation Videos
-                </h3>
-
-                <td style="padding:20px;width:25%;vertical-align:middle">
-                    <video id="v11" width="48.5%" autoplay loop muted controls>
-                        <source src="imgs/toy.mp4" type="video/mp4" />
-                        <!-- <source src="https://www.youtube.com/watch?v=nirEcYPKU_Q" type="video/mp4" /> -->
-                    </video>
-                </td>
-                <td width="75%" valign="middle">
-                    <video id="v12" width="48.5%" autoplay loop muted controls>
-                        <source src="imgs/scan.mp4" type="video/mp4" />
-                    </video>
-                </td><br><br>
-
-                
-
-                <div class="section">
-                  <center>
-                  <p>Comparisons with the state-of-the-art method ObjectNeRF. 
-                  </p>
-                  </center>
+            
+                <div id="navbar" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-right">
+                      <li style="font-size:20px"><a class='name' href="">Home</a></li>
+                      
+                      <li style="font-size:20px"><a class='name' href="#news">News</a></li>
+                      <li style="font-size:20px"><a class='name' href="#research">Research</a></li>
+                      <li style="font-size:20px"><a class='name' href="#teaching">Teaching</a></li>
+                  </ul>
                 </div>
-                <!-- <p class="text-justify">
-                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
-                </p> -->
-            </div><br>
+              </div>
+            </nav>
 
+            <!-- from https://yangekun.gitee.io/blog/2018/12/14/2018-12-14-Bootstrap%E5%AF%BC%E8%88%AA%E6%A0%8F%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8A%98%E5%8F%A0%E9%9A%90%E8%97%8F/ -->
+            <script>
+                  $(window).scroll(function () {
+                //小屏幕下的导航条折叠
+                if ($(window).width() < 768) {
+                  //点击导航链接之后，把导航选项折叠起来
+                  $("#navbar a").click(function () {
+                    $("#navbar").collapse('hide');
+                  });
+                  //滚动屏幕时，把导航选项折叠起来
+                  $(window).scroll(function () {
+                    $("#navbar").collapse('hide');
+                  });
+                }
+              });	
+            </script>
 
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Novel View Synthesis
-                </h3>
-                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
-                    <!-- <source src="editing.mp4" type="video/mp4" /> -->
-                <!-- </video><br> -->
+          </td>
+          </tr>
+        </tbody></table>
 
-                <image src="./imgs/nvs_01.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
-                <image src="./imgs/nvs_02.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <br>
+          <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+              <p style="text-align:center">
+                <!-- <name>Yuxin Wang  ("王宇欣" in Chinese)</name> -->
+                <name>Yuxin Wang</name>
+              </p>
+              <p>Yuxin Wang is currently a Ph.D. student under the supervision of <a href="https://www.danxurgb.net/">Prof. Dan Xu</a>, at Hong Kong University of Science and Technology (<a href="https://www.ust.hk/home">HKUST</a>). 
+                Yuxin received his Bachelor's Degree from University of Science and Technology of China (<a href="https://www.ustc.edu.cn/">USTC</a>) in 2019. 
+                He worked as an intern and researcher at SenseTime from 2019 to 2021, working closely with <a href="https://wywu.github.io/">Dr. Wayne Wu</a>, <a href="https://daibo.info/">Dr. Bo Dai</a> and <a href="https://wuqianyi.top/">Mr. Qianyi Wu</a>.
+              </p>
+              <!-- <p>
+                I received my Bachelor's Degree from <a href="https://www.ustc.edu.cn/">USTC</a> in China.
+              </p> -->
+              <p>
+                I am interested in recovering 3D structures from videos 
+                and multiple images by deep learning methods. 
+                I am currently working on object-compositioanl NeRFs. 
+              </p>
+              <p style="text-align:center">
+                <a href="mailto:ywangom@connect.ust.hk">Email</a> &nbsp/&nbsp
+                <!-- <a href="assets/mi_cv_en.pdf">CV</a> &nbsp/&nbsp -->
+                <a href="https://scholar.google.com/citations?hl=en&user=4OuUHYQAAAAJ">Google Scholar</a> 
+                <!-- <a href="https://github.com/MiZhenxing">Github</a> -->
+              </p>
+            </td>
+            <!-- <td style="padding:2.5%;width:40%;max-width:40%"> -->
+            <td style="padding:2.5%;width:30%;max-width:30%">
+              <a href="https://www.youtube.com/watch?v=CAmFsOCyY4w&list=PLzsj_AlNLtzU3ndYe93rKYCvg4O3ADFlz"><img style="width:100%;max-width:100%" alt="profile photo" src="images/photo.jpg" class="hoverZoomLink"></a>
+            </td>
+          </tr>
+        </tbody></table>
 
-                <div class="section">
-                  <center>
-                  <p>Comparisons with state-of-the-art methods: ObjectNeRF and ObjectSDF. 
-                  </p>
-                  </center>
+        <a id="news"></a>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+          <td style="padding:20px;width:100%;vertical-align:middle">
+            <heading>News</heading>
+          </td>
+          </tr>
+        </tbody></table>
+
+        <table class="wsite-multicol-table" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+          <tbody class="wsite-multicol-tbody">
+            <tr class="wsite-multicol-tr">
+              <td class="wsite-multicol-col" style="width:100%; padding:0 0px;">
+                <div class="paragraph" style="text-align:justify;max-height: 622px; overflow:auto; max-width: 9999999999px">
+                  <ul class="navlist">	
+                    <li><strong>Sep. 22, 2023:</strong> One paper is accepted by NeurIPS2023. </li>
+                  </ul>
+                  <ul class="navlist">	
+                    <li><strong>July. 14, 2023:</strong> One paper is accepted by ICCV2023. Thanks to <a href="https://www.danxurgb.net/">Prof. Dan Xu</a> for his great help.</li>
+                  </ul>
+                  <!-- <ul class="navlist">	
+                    <li><strong>Aug. 13, 2022:</strong> Extension of <a class='name' href="#ssrnet_still">SSRNet</a> in CVPR2020 is accepted by TVCG.</li>
+                  </ul> -->
+                  <ul class="navlist">	
+                    <li><strong>Feb. 28, 2023:</strong> One paper is accepted by CVPR2023.</li>
+                  </ul>
+                  <!-- <ul class="navlist">	
+                    <li><strong>Mar. 3, 2022:</strong> New website launches.</li>
+                  </ul> -->
                 </div>
-                <!-- <p class="text-justify">
-                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
-                </p> -->
-            </div><br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Background/Object Decomposition
-                </h3>
-                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
-                    <!-- <source src="./editing.mp4" type="video/mp4" /> -->
-                <!-- </video> -->
-                <!-- <div style="display: flex;">
-                    <figure>
-                      <img src="./decomp_toydesk_v1.0.png" style="width: 100%;" />
-                      <figcaption>图例1</figcaption>
-                    </figure>
-                    <figure>
-                      <img src="./decomposition_scannet_v1.0.png" style="width: 100%;" />
-                      <figcaption>图例2</figcaption>
-                    </figure>
-                  </div> -->
-
-                <div style="display: flex;">
-                    <img src="./imgs/decomp_toy.png" style="width: 45%; margin-right: 30px;" />
-                    <img src="./imgs/decomp_scan.png" style="width: 45%; margin-left: 30px;" />
-                </div><br>
-                <!-- <table><tr>
-                    <td><img src="./decomp_toydesk_v1.0.png",width="10%"></td>
-                    <td><img src="./decomposition_scannet_v1.0.png",width="10%"></td>
-                </tr></table> -->
-                <!-- <image src="./decomp_toydesk_v1.0.png" class="img-responsive" alt="overview"><br> -->
-                <!-- <image src="./decomposition_scannet_v1.0.png" class="img-responsive" alt="overview"><br> -->
-
-                <div class="section">
-                  <center>
-                  <p>Comparisons with ObjectNeRF and ground truth on ToyDesk-scene2 and ScanNet-0113. 
-                  </p>
-                  </center>
-                </div>
-                
-                <!-- <p class="text-justify">
-                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
-                </p> -->
-            </div><br>
-
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Editing
-                </h3>
-                <!-- <video id="v11" width="100%" autoplay loop muted controls> -->
-                    <!-- <source src="./editing.mp4" type="video/mp4" /> -->
-                <!-- </video> -->
-                <image src="./imgs/supp_edit.png" class="img-responsive" alt="overview" style="width: 96%;">
-                <!-- <image src="./nvs_02.png" class="img-responsive" alt="overview"><br> -->
-
-                <div class="section">
-                  <center>
-                  <p>Editing results on both ToyDesk and ScanNet datasets. 
-                  </p>
-                  </center>
-                </div>
-                
-                <!-- <p class="text-justify">
-                    Typical positional encoding (as used in Transformer networks and Neural Radiance Fields) maps a single point in space to a feature vector, where each element is generated by a sinusoid with an exponentially increasing frequency:
-                </p> -->
-            </div><br>
-
-        </div>
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Abstract
-                </h3>
-                <!-- <image src="img/gbinet_pipeline.png" class="img-responsive" alt="overview"><br> -->
-                <p class="text-justify"> Implicit neural representations have shown powerful capacity in modeling real-world 3D scenes, offering superior performance in novel view synthesis. 
-                    In this paper, we target a more challenging scenario, i.e., joint scene novel view synthesis and editing based on implicit neural scene representations. 
-                    State-of-the-art methods in this direction typically consider building separate networks for these two tasks (i.e., view synthesis and editing). Thus, the modeling of interactions and correlations between these two tasks is very limited, which, however, is critical for learning high-quality scene representations. 
-                    To tackle this problem, in this paper, we propose a unified Neural Radiance Field (NeRF) framework to effectively perform joint scene decomposition and composition for modeling real-world scenes. The decomposition aims at learning disentangled 3D representations of different objects and the background, allowing for scene editing, while scene composition models an entire scene representation for novel view synthesis.
-                    Specifically, with a two-stage NeRF framework, we learn a coarse stage for predicting a global radiance field as guidance for point sampling, and in the second fine-grained stage, we perform scene decomposition by a novel one-hot object radiance field regularization module and a pseudo supervision via inpainting to handle ambiguous background regions occluded by objects. The decomposed object-level radiance fields are further composed by using activations from the decomposition module. 
-                    Extensive quantitative and qualitative results show the effectiveness of our method for scene decomposition and composition, outperforming state-of-the-art methods for both novel-view synthesis and editing tasks.    
-                    <!-- <a href="https://github.com/harlanhong/MCNet">MCNet</a>. -->
-                </p>
-            </div>
-        </div>
-
-        <!-- <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Rendering quality
-                </h3>
-                <image src="img/image_compare2.png" class="img-responsive" alt="overview"><br>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Expert specialization
-                </h3>
-                <image src="img/point_comapre4.png" class="img-responsive" alt="overview"><br>
-
-            </div>
-        </div>
-      
-             -->
-        <!-- <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Citation
-                </h3>
-                <div class="form-group col-md-10 col-md-offset-1">
-                    <textarea id="bibtex" class="form-control" readonly>
-              @inproceedings{mi2023switchnerf,
-                  title={MCNet: Learning Scene Decomposition with Mixture of Experts for Large-scale Neural Radiance Fields},
-                  author={Zhenxing Mi and Dan Xu},
-                  booktitle={International Conference on Learning Representations (ICLR)},
-                  year={2023},
-                  url={https://openreview.net/forum?id=PQ2zoIZqvm}
-              }
-                    </textarea>
-                </div>
-            </div>
-        </div> -->
+        <a id="research"></a>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <heading>Research</heading>
+            </td>
+          </tr>
+        </tbody></table>
 
 
-          <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Citation
-                </h3>
-                <!-- <p class="text-justify">
-                    The website template was borrowed from <a href="https://jonbarron.info/">Jon Barron</a> <a href="https://jonbarron.info/mipnerf/">Mip-NeRF</a>.
-                    <br>
-                    <br>
-                </p> -->
-                <pre>@inproceedings{wang2023udcnerf,
-     title={Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis},
-     author={Wang, Yuxin and Wu, Wayne and Xu, Dan},
-     booktitle={ICCV},
-     year={2023}
-     }
-                </pre>
-            </div>
-        </div>
-        
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>					
+
+          <tr onmouseout="renderme_stop()" onmouseover="renderme_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <!-- <div id='ssrnet_anim' class='hidden'>
+                <a href=""><img src="images/ECCV2012_small.gif"></a>
+              </div> -->
+              <div id='renderme_still'><img src="images/renderme_teaser.png" width="200"></div>
+              <script type="text/javascript">
+                function renderme_start() {
+                  document.getElementById('eccv12_anim').style.display = 'inline';
+                  document.getElementById('eccv12_still').style.display = 'none';
+                }
+
+                function renderme_stop() {
+                  document.getElementById('eccv12_anim').style.display = 'none';
+                  document.getElementById('eccv12_still').style.display = 'inline';
+                }
+                renderme_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://renderme-360.github.io">
+                <papertitle>RenderMe-360: A Large Digital Asset Library and Benchmarks Towards High-fidelity Head Avatars</papertitle>
+              </a>
+              <br>
+              <a href="">Dongwei Pan</a>, 
+              <a href="https://scholar.google.com/citations?user=_DVnyb8AAAAJ&hl=zh-CN">Long Zhuo</a>, 
+              <a href="https://scholar.google.com/citations?user=4jvU6FIAAAAJ&hl=zh-CN">Jingtan Piao</a>, 
+              <a href="">Huiwen Luo</a>, 
+              <a href="https://scholar.google.com/citations?user=OC8eBkYAAAAJ&hl=zh-CN&oi=sra">Wei Cheng</a>, 
+              <strong>Yuxin Wang</strong>, 
+              <a href="https://siming.fun/English/">Siming Fan</a>, 
+              <a href="">Shengqi Liu</a>, 
+              <a href="https://scholar.google.com.hk/citations?user=jZH2IPYAAAAJ&amp;hl=en">Lei Yang</a>, 
+              <a href="http://daibo.info/">Bo Dai</a>, 
+              <a href="https://liuziwei7.github.io/">Ziwei Liu</a>, 
+              <a href="https://www.mmlab-ntu.com/person/ccloy/">Chen Change Loy</a>, 
+              <a href="https://scholar.google.com/citations?user=AerkT0YAAAAJ&amp;hl=zh-CN">Chen Qian</a>, 
+              <a href="https://wywu.github.io/">Wayne Wu</a>, 
+              <a href="http://dahua.me/">Dahua Lin</a>, 
+              <a href="https://kwanyeelin.github.io/">Kwan-Yee Lin</a>
+              <br>
+              <em>NeurIPS</em>, 2023
+              <br>
+              <a href="https://renderme-360.github.io">project page</a> /
+              <a href="https://arxiv.org/abs/2305.13353">arxiv</a> /
+              <a href="https://openxdlab.org.cn/details/RenderMe-360">data</a> /
+              <a href="https://github.com/RenderMe-360/RenderMe-360">code</a>
+              <!-- <a href="data/BarronMalikECCV2012.bib">bibtex</a> / -->
+              <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
+              <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
+              <!-- <p>This paper is subsumed by <a href="#SIRFS">SIRFS</a>.</p> -->
+            </td>
+          </tr>
+          
+          <tr onmouseout="udcnerf_stop()" onmouseover="udcnerf_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <!-- <div id='ssrnet_anim' class='hidden'>
+                <a href=""><img src="images/ECCV2012_small.gif"></a>
+              </div> -->
+              <div id='udcnerf_still'><img src="images/udcnerf_teaser.png" width="200"></div>
+              <script type="text/javascript">
+                function udcnerf_start() {
+                  document.getElementById('eccv12_anim').style.display = 'inline';
+                  document.getElementById('eccv12_still').style.display = 'none';
+                }
+
+                function udcnerf_stop() {
+                  document.getElementById('eccv12_anim').style.display = 'none';
+                  document.getElementById('eccv12_still').style.display = 'inline';
+                }
+                udcnerf_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://w-ted.github.io/publications/udc-nerf">
+                <papertitle>Learning Unified Decompositional and Compositional NeRF for Editable Novel View Synthesis</papertitle>
+              </a>
+              <br>
+              <strong>Yuxin Wang</strong>, <a href="https://wywu.github.io/">Wayne Wu</a>, <a href="https://www.danxurgb.net/">Dan Xu</a>
+              <br>
+              <em>ICCV</em>, 2023
+              <br>
+              <a href="https://w-ted.github.io/publications/udc-nerf">project page</a> /
+              <a href="https://arxiv.org/abs/2308.02840">arxiv</a> /
+              <a href="https://github.com/W-Ted/UDC-NeRF">code</a>
+              <!-- <a href="data/BarronMalikECCV2012.bib">bibtex</a> / -->
+              <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
+              <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
+              <!-- <p>This paper is subsumed by <a href="#SIRFS">SIRFS</a>.</p> -->
+            </td>
+          </tr>
+
+          <tr onmouseout="omniobject3d_stop()" onmouseover="omniobject3d_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <!-- <div id='ssrnet_anim' class='hidden'>
+                <a href=""><img src="images/ECCV2012_small.gif"></a>
+              </div> -->
+              <div id='omniobject3d_still'><img src="images/omniobject3d_teaser.png" width="200"></div>
+              <script type="text/javascript">
+                function omniobject3d_start() {
+                  document.getElementById('eccv12_anim').style.display = 'inline';
+                  document.getElementById('eccv12_still').style.display = 'none';
+                }
+
+                function omniobject3d_stop() {
+                  document.getElementById('eccv12_anim').style.display = 'none';
+                  document.getElementById('eccv12_still').style.display = 'inline';
+                }
+                omniobject3d_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://omniobject3d.github.io/">
+                <papertitle>OmniObject3D: Large-Vocabulary 3D Object Dataset for Realistic Perception, Reconstruction and Generation</papertitle>
+              </a>
+              <br>
+              <a href="https://wutong16.github.io/">Tong Wu</a>, <a href="https://scholar.google.com.hk/citations?user=wLh9KtQAAAAJ&hl=zh-CN&oi=ao/">Jiarui Zhang</a>, <a href="https://fuxiao0719.github.io/">Xiao Fu</a>, <strong>Yuxin Wang</strong>, <a href="https://jiawei-ren.github.io/">Jiawei Ren</a>, <a href="https://scholar.google.com/citations?user=lSDISOcAAAAJ&amp;hl=zh-CN">Liang Pan</a>, <a href="https://wywu.github.io/">Wayne Wu</a>, <a href="https://scholar.google.com.hk/citations?user=jZH2IPYAAAAJ&amp;hl=en">Lei Yang</a>, <a href="https://myownskyw7.github.io/">Jiaqi Wang</a>, <a href="https://scholar.google.com/citations?user=AerkT0YAAAAJ&amp;hl=zh-CN">Chen Qian</a>, <a href="http://dahua.me/">Dahua Lin</a>, <a href="https://liuziwei7.github.io/">Ziwei Liu</a></em>
+              <br>
+              <em>CVPR</em>, 2023
+              <br>
+              <a href="https://omniobject3d.github.io/">project page</a> /
+              <a href="https://arxiv.org/abs/2301.07525">arxiv</a> /
+              <a href="https://opendatalab.com/OpenXD-OmniObject3D-New/download">data</a> /
+              <a href="https://github.com/omniobject3d/OmniObject3D">code</a>
+              <!-- <a href="data/BarronMalikECCV2012.bib">bibtex</a> / -->
+              <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
+              <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
+              <!-- <p>This paper is subsumed by <a href="#SIRFS">SIRFS</a>.</p> -->
+            </td>
+          </tr>
+        </tbody></table>
+
+        <a id="teaching"></a>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+          <td style="padding:20px;width:100%;vertical-align:middle">
+            <heading>Teaching</heading>
+          </td>
+        </tr>
+      </tbody></table>
+
+        <table width="100%" align="center" border="0" cellpadding="20">
+          <tbody>
+            <tr>
+              <!-- <td style="padding:20px;width:25%;vertical-align:middle"> -->
+                <!-- <img src="main_page/images/teaching.png" width="160"> -->
+              <!-- </td> -->
+              <!-- <td width="100%" valign="center" style="line-height: 15px;"> -->
+              <td width="100%" style="width:100%; padding:0 0px;">
+                <ul class="navlist">	
+                  <li>Teaching Assistant, <strong>Deep Perception, Localization, and Planning for Autonomous Vehicles</strong>, Spring 2023 </li>
+                </ul>   
+                <!-- <ul class="navlist">	
+                  <li>Teaching Assistant, Parallel Programming - Spring 2021/22</li>
+                </ul>                
+                <ul class="navlist">	
+                  <li>Teaching Assistant, Discrete Mathematical Tools for Computer Science - Fall 2021/22</li>
+                </ul> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+              <div><div id="973426107240231346" align="center">
+                <a href='https://clustrmaps.com/site/1bn4l'  title='Visit tracker'><img src='//clustrmaps.com/map_v2.png?cl=ffffff&w=300&t=tt&d=NLKW-iIrZCVUROMhdhzyEoRIQb66QjiOKeKjaB5DotM&co=2d78ad&ct=ffffff'/></a>
+              </div>
+            </td>
+          </tr>
+        </tbody></table> -->
+
+        <table width="35%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+                <!-- <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=Ut0xwCeVKzSBxO2-5arlWOGdDTx1f9L2U8zbLWibfTQ"></script> -->
+                <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Ut0xwCeVKzSBxO2-5arlWOGdDTx1f9L2U8zbLWibfTQ&cl=ffffff&w=a"></script>
+            </td>
+          </tr>
+        </tbody></table>
 
 
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Acknowledgements
-                </h3>
-                <p class="text-justify">
-                    <!-- Our code follows several awesome repositories such as 
-                    <a href="https://github.com/harlanhong/CVPR2022-DaGAN">DaGAN</a>,
-                    <a href="https://github.com/AliaksandrSiarohin/first-order-model">FOMM</a>,
-                    We appreciate them for making their codes available to public.
-                    <br>
-                    This research is supported in part by HKUST-SAIL joint research funding, 
-                    the Early Career Scheme of the Research Grants Council (RGC) of 
-                    the Hong Kong SAR under grant No. 26202321 and HKUST Startup Fund No. R9253. -->
-                    <!-- <br> -->
-                    The website template was borrowed from <a href="https://jonbarron.info/">Jon Barron</a> <a href="https://jonbarron.info/mipnerf/">Mip-NeRF</a>.
-                    <br>
-                    <br>
-                </p>
-            </div>
-        </div>
-    </div>
+        </tbody></table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+            <td style="padding:0px">
+              <br>
+              <p style="text-align:right;font-size:small;">
+                Source code from <a href="https://jonbarron.info/">Jon Barron</a>, 
+                <a href="https://aljazbozic.github.io/">Aljaž Božič</a>, 
+                <a href="https://xinntao.github.io/">XINTAO</a>,
+                <a href="https://yangekun.gitee.io/resume/">Ekun</a>, and
+                <a href="https://mizhenxing.github.io/">Zhenxing</a>.
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+         				
+      </td>
+    </tr>
+  </table>
+
+  
 </body>
-</html>
 
+</html>
