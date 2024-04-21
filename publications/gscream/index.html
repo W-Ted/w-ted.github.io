@@ -230,16 +230,7 @@
                   <!-- </center> -->
                 </div>
 
-                <!-- <td style="padding:20px;width:25%;vertical-align:middle">
-                    <video id="v11" width="48.5%" autoplay loop muted controls>
-                        <source src="imgs/toy.mp4" type="video/mp4" />
-                    </video>
-                </td>
-                <td width="75%" valign="middle">
-                    <video id="v12" width="48.5%" autoplay loop muted controls>
-                        <source src="imgs/scan.mp4" type="video/mp4" />
-                    </video>
-                </td> -->
+
                 <td style="padding:20px;width:25%;vertical-align:middle">
                     <video id="v11" width="100%" autoplay loop muted controls style="border: 1px solid gainsboro;">
                         <source src="imgs/preface_v3_arxiv_modi.mp4" type="video/mp4" />
@@ -247,66 +238,8 @@
                 </td>
                 <br><br>
 
-                <!-- <div class="section">
-                  <center>
-                  <p>Comparisons with the state-of-the-art method ObjectNeRF. 
-                  </p>
-                  </center>
-                </div> -->
             </div><br>
 
-<!-- 
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Novel View Synthesis
-                </h3>
-
-                <image src="./imgs/nvs_01.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
-                <image src="./imgs/nvs_02.png" class="img-responsive" alt="overview" style="width: 98%;"><br>
-
-                <div class="section">
-                  <center>
-                  <p>Comparisons with state-of-the-art methods: ObjectNeRF and ObjectSDF. 
-                  </p>
-                  </center>
-                </div>
-            </div><br>
-
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Background/Object Decomposition
-                </h3>
-
-                <div style="display: flex;">
-                    <img src="./imgs/decomp_toy.png" style="width: 45%; margin-right: 30px;" />
-                    <img src="./imgs/decomp_scan.png" style="width: 45%; margin-left: 30px;" />
-                </div><br>
-
-                <div class="section">
-                  <center>
-                  <p>Comparisons with ObjectNeRF and ground truth on ToyDesk-scene2 and ScanNet-0113. 
-                  </p>
-                  </center>
-                </div>
-                
-            </div><br>
-
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Samples - Editing
-                </h3>
-                <image src="./imgs/supp_edit.png" class="img-responsive" alt="overview" style="width: 96%;">
-
-                <div class="section">
-                  <center>
-                  <p>Editing results on both ToyDesk and ScanNet datasets. 
-                  </p>
-                  </center>
-                </div>
-                
-            </div><br>
-
-        </div> -->
 
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -315,6 +248,16 @@
                 </h3>
                 <p class="text-justify"> This paper tackles the intricate challenge of object removal to update the radiance field using the 3D Gaussian Splatting. The main challenges of this task lie in the preservation of geometric consistency and the maintenance of texture coherence in the presence of the substantial discrete nature of Gaussian primitives. We introduce a robust framework specifically designed to overcome these obstacles. The key insight of our approach is the enhancement of information exchange among visible and invisible areas, facilitating content restoration in terms of both geometry and texture. Our methodology begins with optimizing the positioning of Gaussian primitives to improve geometric consistency across both removed and visible areas, guided by an online registration process informed by monocular depth estimation. Following this, we employ a novel feature propagation mechanism to bolster texture coherence, leveraging a cross-attention design that bridges sampling Gaussians from both uncertain and certain areas. This innovative approach significantly refines the texture coherence within the final radiance field. Extensive experiments validate that our method not only elevates the quality of novel view synthesis for scenes undergoing object removal but also showcases notable efficiency gains in training and rendering speeds.
                 </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Pipeline
+                </h3>
+                <img width="99%" src="imgs/pipeline.png" alt="img">
             </div>
         </div>
 
