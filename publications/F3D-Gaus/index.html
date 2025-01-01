@@ -52,14 +52,14 @@
           align-items: center; /* 垂直方向居中对齐 */
           justify-items: center; /* 水平方向居中对齐 */
           width: 100%; /* 设置容器宽度 */
-          max-width: 1200px; /* 限制容器最大宽度 */
+          /* max-width: 1200px; 限制容器最大宽度 */
           margin: 0 auto; /* 容器水平居中 */
           gap: 10px; /* 设置列之间的间距 */
         }
     
         /* 左边图片（obj1） */
         .obj1 img {
-          max-width: 100%; /* 图片宽度自适应 */
+          max-width: 10%; /* 图片宽度自适应 */
           height: auto; /* 保持图片宽高比例 */
           max-width: 250px; /* 限制最大宽度 */
         }
@@ -72,14 +72,25 @@
 
         /* 右边模型（obj3） */
         .obj3 model-viewer {
-          width: 100%; /* 占满父容器宽度 */
+          width: 10%; /* 占满父容器宽度 */
           height: auto; /* 高度按比例调整 */
-          max-width: 320px; /* 设置最大宽度 */
-          max-height: 320px; /* 设置最大宽度 */
+          /* max-width: 300px; /* 设置最大宽度 */
+          /* max-height: 300px; 设置最大宽度 */ 
           border: 1px dotted #000; /* 添加黑色边框，宽度为 2px */
           border-radius: 3px; /* 给边框圆角 */
           padding: 0; /* 内边距，增加空间感 */
           box-shadow: none; /* 给模型添加阴影效果 */
+        }
+        
+        .container {
+          overflow-x: auto;
+          word-wrap: break-word; /* 避免文字换行问题 */
+        }
+
+        table, pre, code {
+          max-width: 100%;
+          width: auto;
+          height: auto;
         }
 
     </style>
