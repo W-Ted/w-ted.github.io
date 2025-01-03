@@ -221,7 +221,8 @@
   <div class="container is-max-desktop">
     <div class="hero-body">
 
-      <div class="columns is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="columns has-text-centered">
           <div class="column" style="float: left; width: 300px;">
             <video autoplay loop muted controls>
                 <source src="./videos/output_video_001_000.mp4" type="video/mp4"/>
@@ -251,9 +252,11 @@
                 <source src="./videos/output_video_005_001.mp4" type="video/mp4"/>
             </video>
           </div>
+        </div>
       </div>
 
-      <div class="columns is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="columns has-text-centered">
           <div class="column" style="float: left; width: 300px;">
             <video autoplay loop muted controls>
                 <source src="./videos/output_video_005_007.mp4" type="video/mp4"/>
@@ -283,7 +286,7 @@
                 <source src="./videos/output_video_003_004.mp4" type="video/mp4"/>
             </video>
           </div>
-
+        </div>
       </div>
 
       <!-- <div class="columns is-centered has-text-centered"> -->
@@ -349,7 +352,7 @@
           </div>
           
           <p>
-            <strong>Pipeline of <i>F3D-Gaus</i>.</strong>       Given a single RGB image $I_0$ and depth map 
+            <strong>Pipeline of <i>F3D-Gaus</i>.</strong> Given a single RGB image $I_0$ and depth map 
             $D_0$, our model directly feeds them forward to output the pixel-aligned Gaussian Splatting 
             representation $GS_0$, which can be used for novel view synthesis. After obtaining the 3DGS 
             representation, we render the image $\tilde{I_1}$ and depth maps $\tilde{D_1}$ for the novel view, 
