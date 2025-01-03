@@ -48,7 +48,8 @@
         /* 父容器使用 Grid 布局 */
         .grid-container {
           display: grid;
-          grid-template-columns: repeat(3, 1fr); /* 将容器分为 3 等分 */
+          /* grid-template-columns: repeat(3, 1fr); 将容器分为 3 等分 */
+          grid-template-columns: 1.2fr 1fr 1.2fr; /* 第一列占4份，第二列占2份，第三列占4份 */
           gap: 10px; /* 设置子元素之间的间距 */
           max-width: 100%; /* 容器宽度不超过 100% */
           margin: 0 auto; /* 居中容器 */
@@ -64,7 +65,7 @@
         }
 
         .obj2 img {
-          width: 50%; /* 图片宽度填满父容器 */
+          width: 60%; /* 图片宽度填满父容器 */
           height: auto; /* 保持宽高比例 */
           /* border: 1px dotted #000;  */
           /* border-radius: 3px; */
@@ -367,7 +368,7 @@
 
     <!-- single-subject 392 -->
     <div class="columns is-centered">
-        <div class="column" style="float: left; width: 350px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="05" loop playsinline autoPlay muted controls src="./videos/bb001_ss003_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="05Merge"></canvas> 
@@ -376,7 +377,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 350px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="06" loop playsinline autoPlay muted controls src="./videos/bb004_ss002_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="06Merge"></canvas> 
@@ -385,7 +386,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 350px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="07" loop playsinline autoPlay muted controls src="./videos/bb002_ss000_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="07Merge"></canvas> 
@@ -394,7 +395,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 350px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="08" loop playsinline autoPlay muted controls src="./videos/bb003_ss001_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="08Merge"></canvas> 
