@@ -340,11 +340,14 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full-width">
+
         <h2 class="title is-3">Pipeline</h2>
+
         <div class="content has-text-justified">
           <div class="columns is-centered has-text-centered">
             <img src="static/images/pipeline.png" width="100%">
           </div>
+          
           <p>
             <strong>Pipeline of <i>F3D-Gaus</i>.</strong>       Given a single RGB image $I_0$ and depth map 
             $D_0$, our model directly feeds them forward to output the pixel-aligned Gaussian Splatting 
@@ -356,6 +359,7 @@
             to reinforce each other, thereby collaboratively enhancing the overall 3D representation capability. 
           </p>
         </div>
+
       </div>
     </div>
   </div>
@@ -493,7 +497,8 @@
         </div>
       </div>
       <!-- sub-title -->
-
+    
+    <!-- row 1 -->
     <div class="grid-container">
         <div class="obj1">
           <img src="./mesh/scenes/arcade.jpg" height="256" >
@@ -515,6 +520,7 @@
         </div>
     </div>
 
+    <!-- row 2 -->
     <div class="grid-container">
         <div class="obj1">
           <img src="./mesh/scenes/steampunk.jpg" height="256" >
@@ -536,7 +542,6 @@
             </model-viewer> 
         </div>
     </div>
-
 
     <p>Our 3DGS representation is based on GOF<sup>[4]</sup>. 
         Thus, after we get the predicted 3DGS from a single image via F3D-Gaus, we could extract meshes using GOF's tetrahedral grid generation combined with binary search. 
