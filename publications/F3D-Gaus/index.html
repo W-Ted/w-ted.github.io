@@ -319,6 +319,7 @@
 <!-- Pipeline -->
 
 
+<!-- Comparison -->
 <section class="section">
   <!-- <div class="container is-max-desktop" style="overflow-x: auto; word-wrap: break-word;"> -->
   <div class="container is-max-desktop" style="word-wrap: break-word;">
@@ -409,6 +410,78 @@
 </section>
 
 
+
+<!-- OOD -->
+<section class="section">
+  <div class="container is-max-desktop">
+    
+    <!-- sub-title -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered is-full-width">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <h2 class="title is-3">Novel View Synthesis for out-of-domain samples </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- sub-title -->
+    
+    <div class="columns is-centered">
+      <div class="columns has-text-centered">
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/face-1.mp4" type="video/mp4"/>
+          </video>
+        </div>
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/face-2.mp4" type="video/mp4"/>
+          </video>
+        </div>
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/face-3.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="columns has-text-centered">
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/scene-1.mp4" type="video/mp4"/>
+          </video>
+        </div>
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/scene-2.mp4" type="video/mp4"/>
+          </video>
+        </div>
+
+        <div class="column" style="float: left;">
+          <video autoplay loop muted controls>
+              <source src="./videos/scene-3.mp4" type="video/mp4"/>
+          </video>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- OOD -->
+
+
+
 <!-- Mesh -->
 <section class="section">
     <div class="container is-max-desktop">
@@ -441,6 +514,28 @@
       </div>
     
       <br>
+
+    <!-- row 0 -->
+        <div class="grid-container">
+          <div class="obj1">
+            <img src="./mesh/scenes/scene0.jpg" height="95%" >
+          </div>
+  
+          <div class="obj2">
+              <img src="./mesh/scenes/arrow.jpg" height="95%">
+          </div>
+      
+          <div class="obj3">
+              <model-viewer 
+                  style="height: 95%; width: 95%;"
+                  orientation="-90deg -90deg 90deg"
+                  alt="scene"
+                  src="./mesh/scenes/scene0.glb"
+                  camera-controls 
+                  exposure=".5">
+              </model-viewer> 
+          </div>
+    </div>
 
     <!-- row 1 -->
     <div class="grid-container">

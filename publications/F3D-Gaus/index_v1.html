@@ -45,53 +45,58 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
     <style>
-        /* 主容器样式 */
+        /* 父容器使用 Grid 布局 */
         .grid-container {
-          display: grid; /* 使用 Grid 布局 */
-          grid-template-columns: 1fr 0.5fr 1fr; /* 定义三列布局，中间列宽度由内容决定 */
-          align-items: center; /* 垂直方向居中对齐 */
-          justify-items: center; /* 水平方向居中对齐 */
-          width: 100%; /* 设置容器宽度 */
-          /* max-width: 1200px; 限制容器最大宽度 */
-          margin: 0 auto; /* 容器水平居中 */
-          gap: 10px; /* 设置列之间的间距 */
+          display: grid;
+          /* grid-template-columns: repeat(3, 1fr); 将容器分为 3 等分 */
+          grid-template-columns: 1.2fr 1fr 1.2fr; /* 第一列占4份，第二列占2份，第三列占4份 */
+          gap: 10px; /* 设置子元素之间的间距 */
+          max-width: 100%; /* 容器宽度不超过 100% */
+          margin: 0 auto; /* 居中容器 */
+          box-sizing: border-box;
         }
-    
-        /* 左边图片（obj1） */
+
+        /* 图片样式 (obj1 和 obj2) */
         .obj1 img {
-          max-width: 50%; /* 图片宽度自适应 */
-          height: auto; /* 保持图片宽高比例 */
-          max-width: 250px;
+          width: 100%; /* 图片宽度填满父容器 */
+          height: auto; /* 保持宽高比例 */
+          /* border: 1px dotted #000;  */
+          /* border-radius: 3px; */
         }
-        
-        /* 中间图片（obj2） */
+
         .obj2 img {
-          max-width: 100%; /* 缩小中间图片 */
-          height: auto; /* 保持图片宽高比例 */
+          width: 60%; /* 图片宽度填满父容器 */
+          height: auto; /* 保持宽高比例 */
+          /* border: 1px dotted #000;  */
+          /* border-radius: 3px; */
         }
 
-        /* 右边模型（obj3） */
-        .obj3 model-viewer {
-          width: 50%; /* 占满父容器宽度 */
-          height: auto; /* 高度按比例调整 */
-          /* max-width: 300px; 
-          max-height: 300px;  */
-          border: 1px dotted #000; /* 添加黑色边框，宽度为 2px */
-          border-radius: 3px; /* 给边框圆角 */
-          padding: 0; /* 内边距，增加空间感 */
-          box-shadow: none; /* 给模型添加阴影效果 */
+        /* 中间图片 (obj2) */
+        .obj2 {
+          display: flex; /* 启用 Flexbox */
+          justify-content: center; /* 水平居中内容 */
+          align-items: center; /* 垂直居中内容 */
         }
         
-        .container {
-          /* overflow-x: auto; */
-          word-wrap: break-word; 
-        }
 
-        table, pre, code {
+        /* 模型样式 (obj3) */
+        .obj3 model-viewer {
+          width: 100%; /* 宽度填满父容器 */
+          height: auto; /* 高度自适应 */
+          border: 1px dotted #000; /* 添加黑色边框 */
+          border-radius: 3px; /* 添加圆角 */
+          padding: 0; /* 去除内边距 */
+        }
+        
+        /* .container {
+          word-wrap: break-word; 
+        } */
+
+        /* table, pre, code {
           max-width: 100%;
           width: auto;
           height: auto;
-        }
+        } */
 
     </style>
 </head>
@@ -134,7 +139,7 @@
   </div>
 </nav>
 
-
+<!-- Head -->
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop">
@@ -208,33 +213,110 @@
                   </ul>
                 </div>
               </div>
-
-
         </div>
       </div>
     </div>
   </div>
 </section>
+<!-- Head -->
 
 
-<section class="section" style="padding-top: 0rem; padding-bottom: 0rem;">
+<!-- Novel view synthesis -->
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <!-- Abstract. -->
+    <div class="hero-body">
+
+      <div class="columns is-centered">
+        <div class="columns has-text-centered">
+
+          <div class="column" style="float: left;">
+            <video autoplay loop muted controls>
+                <source src="./videos/output_grid.mp4" type="video/mp4"/>
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <div class="columns is-centered has-text-centered"> -->
+      <h2 class="subtitle has-text-centered">
+        <strong><font color="#5364cc">F3D-Gaus</font></strong> tackles the problem of generalizable 3D-aware generation from monocular datasets, e.g., ImageNet<sup>[1]</sup>. 
+        Given <strong>a single image</strong> as input, <strong><font color="#5364cc">F3D-Gaus</font></strong> generates a high-fidelity 3D Gaussian representation, 
+        achieving high-quality, multi-view consistent 3D-aware generation, with ~60fps. 
+      </h2>
+      <!-- </div> -->
+    
+    </div>
+  </div>
+</section>
+<!-- Novel view synthesis -->
+
+
+<!-- Abstract. -->
+<section class="section">
+  <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
-        <!-- <img width="99%" src="./static/images/moconerf_abs_teaser.jpg" alt="img"> -->
         <div class="content has-text-justified">
           <p>
-            This paper tackles the problem of generalizable 3D-aware generation from monocular datasets, e.g., ImageNet<sup>[1]</sup>. The key challenge of this task is learning a robust 3D-aware representation without multi-view or dynamic data, while ensuring consistent texture and geometry across different viewpoints. Although some baseline methods are capable of 3D-aware generation, the quality of the generated images still lags behind state-of-the-art 2D generation approaches, which excel in producing high-quality, detailed images.  To address this severe limitation, we propose a novel feed-forward pipeline based on pixel-aligned Gaussian Splatting, coined as <strong><font color="#5364cc">F3D-Gaus</font></strong>, which can produce more realistic and reliable 3D renderings from monocular inputs. In addition, we introduce a self-supervised cycle-consistent constraint to enforce cross-view consistency in the learned 3D representation. This training strategy naturally allows aggregation of multiple aligned Gaussian primitives and significantly alleviates the interpolation limitations inherent in single-view pixel-aligned Gaussian Splatting. Furthermore, we incorporate video model priors to perform geometry-aware refinement, enhancing the generation of fine details in wide-viewpoint scenarios and improving the model’s capability to capture intricate 3D textures. Extensive experiments demonstrate that our approach not only achieves high-quality, multi-view consistent 3D-aware generation from monocular datasets, but also significantly improves training and inference efficiency. 
+            This paper tackles the problem of generalizable 3D-aware generation from monocular datasets, e.g., ImageNet<sup>[1]</sup>. 
+            The key challenge of this task is learning a robust 3D-aware representation without multi-view or dynamic data, 
+            while ensuring consistent texture and geometry across different viewpoints. 
+            Although some baseline methods are capable of 3D-aware generation, 
+            the quality of the generated images still lags behind state-of-the-art 2D generation approaches, 
+            which excel in producing high-quality, detailed images.  
+            To address this severe limitation, 
+            we propose a novel feed-forward pipeline based on pixel-aligned Gaussian Splatting, 
+            coined as <strong><font color="#5364cc">F3D-Gaus</font></strong>, 
+            which can produce more realistic and reliable 3D renderings from monocular inputs. 
+            In addition, we introduce a self-supervised cycle-consistent constraint to enforce cross-view consistency in the learned 3D representation. 
+            This training strategy naturally allows aggregation of multiple aligned Gaussian primitives 
+            and significantly alleviates the interpolation limitations inherent in single-view pixel-aligned Gaussian Splatting. 
+            Furthermore, we incorporate video model priors to perform geometry-aware refinement, 
+            enhancing the generation of fine details in wide-viewpoint scenarios and improving the model’s capability to capture intricate 3D textures. 
+            Extensive experiments demonstrate that our approach not only achieves high-quality, 
+            multi-view consistent 3D-aware generation from monocular datasets, 
+            but also significantly improves training and inference efficiency. 
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+<!--/ Abstract. -->
 
 
+<!-- Pipeline -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+
+        <h2 class="title is-3">Pipeline</h2>
+
+        <div class="content has-text-justified">
+          <div class="columns is-centered has-text-centered">
+            <img src="static/images/pipeline.png" width="100%">
+          </div>
+          
+          <p>
+            <strong>Pipeline of <i>F3D-Gaus</i>.</strong> Given a single RGB image $I_0$ and depth map 
+            $D_0$, our model directly feeds them forward to output the pixel-aligned Gaussian Splatting 
+            representation $GS_0$, which can be used for novel view synthesis. After obtaining the 3DGS 
+            representation, we render the image $\tilde{I_1}$ and depth maps $\tilde{D_1}$ for the novel view, 
+            and then output its corresponding 3DGS $GS_1$. These two 3DGS representations are subsequently 
+            aggregated to produce the images for supervision. This novel self-supervised training strategy enforces 
+            cycle-consistent 3D representation learning across different views, allowing the generalized 3DGS representations 
+            to reinforce each other, thereby collaboratively enhancing the overall 3D representation capability. 
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Pipeline -->
 
 
 <section class="section">
@@ -247,7 +329,7 @@
     </div>
     <!-- single-subject 392 -->
     <div class="columns is-centered">
-      <div class="column" style="float: left; width: 200px;">
+      <div class="column" style="float: left; width: 50%;">
         <div class="content has-text-justified">
           <video class="video" id="01" loop playsinline autoPlay muted controls src="./videos/bb005_ss000_video.mp4" onplay="resizeAndPlay(this)"></video>
           <canvas height=0 class="videoMerge" id="01Merge"></canvas> 
@@ -256,7 +338,7 @@
         </div>
       </div>
 
-      <div class="column" style="float: left; width: 200px;">
+      <div class="column" style="float: left; width: 50%;">
         <div class="content has-text-justified">
           <video class="video" id="02" loop playsinline autoPlay muted controls src="./videos/bb002_ss006_video.mp4" onplay="resizeAndPlay(this)"></video>
           <canvas height=0 class="videoMerge" id="02Merge"></canvas> 
@@ -265,7 +347,7 @@
         </div>
       </div>
 
-      <div class="column" style="float: left; width: 200px;">
+      <div class="column" style="float: left; width: 50%;">
         <div class="content has-text-justified">
           <video class="video" id="03" loop playsinline autoPlay muted controls src="./videos/bb003_ss006_video.mp4" onplay="resizeAndPlay(this)"></video>
           <canvas height=0 class="videoMerge" id="03Merge"></canvas> 
@@ -274,7 +356,7 @@
         </div>
       </div>
 
-      <div class="column" style="float: left; width: 200px;">
+      <div class="column" style="float: left; width: 50%;">
         <div class="content has-text-justified">
           <video class="video" id="04" loop playsinline autoPlay muted controls src="./videos/bb005_ss005_video.mp4" onplay="resizeAndPlay(this)"></video>
           <canvas height=0 class="videoMerge" id="04Merge"></canvas> 
@@ -286,7 +368,7 @@
 
     <!-- single-subject 392 -->
     <div class="columns is-centered">
-        <div class="column" style="float: left; width: 200px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="05" loop playsinline autoPlay muted controls src="./videos/bb001_ss003_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="05Merge"></canvas> 
@@ -295,7 +377,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 200px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="06" loop playsinline autoPlay muted controls src="./videos/bb004_ss002_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="06Merge"></canvas> 
@@ -304,7 +386,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 200px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="07" loop playsinline autoPlay muted controls src="./videos/bb002_ss000_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="07Merge"></canvas> 
@@ -313,7 +395,7 @@
           </div>
         </div>
   
-        <div class="column" style="float: left; width: 200px;">
+        <div class="column" style="float: left; width: 50%;">
           <div class="content has-text-justified">
             <video class="video" id="08" loop playsinline autoPlay muted controls src="./videos/bb003_ss001_video.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="08Merge"></canvas> 
@@ -321,113 +403,58 @@
             <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
           </div>
         </div>
-    </div>
+      </div>
 
   </div>
 </section>
 
 
-
-
+<!-- Mesh -->
 <section class="section">
-  <!-- <div class="container is-max-desktop" style="overflow-x: auto; word-wrap: break-word;"> -->
-  <div class="container is-max-desktop" style="word-wrap: break-word;">
-    <div class="columns is-centered">
-      <div class="column has-text-centered">
-        <h2 class="title is-3">More Results of Novel View Synthesis</h2>
-      </div>
-    </div>
-    <!-- single-subject 377 -->
-    <div class="columns is-centered">
-      <div class="column" style="float: left; width: 300px;">
-        <video autoplay loop muted controls>
-            <source src="./videos/output_video_001_000.mp4" type="video/mp4"/>
-        </video>
-      </div>
-
-        <div class="column" style="float: left; width: 300px;">
-          <video autoplay loop muted controls>
-              <source src="./videos/output_video_001_002.mp4" type="video/mp4"/>
-          </video>
-        </div>
-
-        <div class="column" style="float: left; width: 300px;">
-          <video autoplay loop muted controls>
-              <source src="./videos/output_video_005_004.mp4" type="video/mp4"/>
-          </video>
-        </div>
-
-        <div class="column" style="float: left; width: 300px;">
-          <video autoplay loop muted controls>
-              <source src="./videos/output_video_002_001.mp4" type="video/mp4"/>
-          </video>
-        </div>
-
-        <div class="column" style="float: left; width: 300px;">
-          <video autoplay loop muted controls>
-              <source src="./videos/output_video_005_001.mp4" type="video/mp4"/>
-          </video>
-        </div>
-    </div>
-
-    <!-- single-subject 386 -->
-    <div class="columns is-centered">
-        <div class="column" style="float: left; width: 300px;">
-          <video autoplay loop muted controls>
-              <source src="./videos/output_video_005_007.mp4" type="video/mp4"/>
-          </video>
-        </div>
-  
-          <div class="column" style="float: left; width: 300px;">
-            <video autoplay loop muted controls>
-                <source src="./videos/output_video_001_006.mp4" type="video/mp4"/>
-            </video>
-          </div>
-  
-          <div class="column" style="float: left; width: 300px;">
-            <video autoplay loop muted controls>
-                <source src="./videos/output_video_004_007.mp4" type="video/mp4"/>
-            </video>
-          </div>
-  
-          <div class="column" style="float: left; width: 300px;">
-            <video autoplay loop muted controls>
-                <source src="./videos/output_video_004_004.mp4" type="video/mp4"/>
-            </video>
-          </div>
-  
-          <div class="column" style="float: left; width: 300px;">
-            <video autoplay loop muted controls>
-                <source src="./videos/output_video_003_004.mp4" type="video/mp4"/>
-            </video>
-          </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-    <!-- <div class="container is-max-desktop" style="overflow-x: auto; word-wrap: break-word;"> -->
-    <!-- <div class="container is-max-desktop" style="overflow-x: auto; word-wrap: break-word;"> -->
-    <div class="container is-max-desktop" style="word-wrap: break-word;">
+    <div class="container is-max-desktop">
+      
+      <!-- sub-title -->
       <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h3 class="title is-3">Surface extraxtion from single image via F3D-Gaus + GOF<sup>[4]</sup> </h3>
+        <div class="column has-text-centered is-full-width">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <h2 class="title is-3">Surface extraction from single image via F3D-Gaus + GOF<sup>[4]</sup> </h2>
+            </div>
+          </div>
         </div>
       </div>
-    <div class="grid-container">
+      <!-- sub-title -->
+    
+      <!-- description -->
+      <div class="grid-container">
         <div class="obj1">
-          <img src="./mesh/scenes/arcade.jpg" height="256" >
+          <h2 class="title is-5 has-text-centered">Input image</h2>
         </div>
 
         <div class="obj2">
-            <img src="./mesh/scenes/arrow.jpg" height="256">
+          <h2 class="title is-5 has-text-centered">3DGS representation</h2>
         </div>
     
-        <!-- <div class="column" style="float: left; width: 300px;"></div> -->
+        <div class="obj3">
+          <h2 class="title is-5 has-text-centered">Extracted mesh</h2>
+        </div>
+      </div>
+    
+      <br>
+
+    <!-- row 1 -->
+    <div class="grid-container">
+        <div class="obj1">
+          <img src="./mesh/scenes/arcade.jpg" height="95%" >
+        </div>
+
+        <div class="obj2">
+            <img src="./mesh/scenes/arrow.jpg" height="95%">
+        </div>
+    
         <div class="obj3">
             <model-viewer 
-                style="height: 300px; width: 300px;"
+                style="height: 95%; width: 95%;"
                 orientation="-90deg -90deg 90deg"
                 alt="scene"
                 src="./mesh/scenes/scene1.glb"
@@ -437,19 +464,20 @@
         </div>
     </div>
 
+    <!-- row 2 -->
     <div class="grid-container">
         <div class="obj1">
-          <img src="./mesh/scenes/steampunk.jpg" height="256" >
+          <img src="./mesh/scenes/steampunk.jpg" height="95%" >
         </div>
 
         <div class="obj2">
-            <img src="./mesh/scenes/arrow.jpg" height="256">
+            <img src="./mesh/scenes/arrow.jpg" height="95%">
         </div>
     
         <!-- <div class="column" style="float: left; width: 300px;"></div> -->
         <div class="obj3">
             <model-viewer 
-                style="height: 300px; width: 300px;"
+                style="height: 95%; width: 95%;"
                 orientation="-90deg -90deg 90deg"
                 alt="scene"
                 src="./mesh/scenes/scene2.glb"
@@ -459,42 +487,17 @@
         </div>
     </div>
 
-
-    <p>Our 3DGS representation is based on GOF<sup>[4]</sup>. 
+    <p>Our F3D-Gaus is based on GOF<sup>[4]</sup>, a variant of 3DGS representation. 
         Thus, after we get the predicted 3DGS from a single image via F3D-Gaus, we could extract meshes using GOF's tetrahedral grid generation combined with binary search. 
         The mesh is directly derived from the 3DGS representation and does not rely on image-based optimization methods. 
     </p>
 
     </div>
 </section>
-
-<!-- <br>
-<br> -->
-
-<section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">        
-        <h2 class="title is-3">Pipeline</h2>
-      </div>
-      <br>
-      <img width="99%" src="./static/images/pipeline.png" alt="img">
-      <br>
-      <p>
-        <!-- <b>Illustration of our overall framework.</b>  -->
-        Given a single RGB image $I_0$ and depth map 
-        $D_0$, our model directly feeds them forward to output the pixel-aligned Gaussian Splatting 
-        representation $GS_0$, which can be used for novel view synthesis. After obtaining the 3DGS 
-        representation, we render the image $\tilde{I_1}$ and depth maps $\tilde{D_1}$ for the novel view, 
-        and then output its corresponding 3DGS $GS_1$. These two 3DGS representations are subsequently 
-        aggregated to produce the images for supervision. This novel self-supervised training strategy enforces 
-        cycle-consistent 3D representation learning across different views, allowing the generalized 3DGS representations 
-        to reinforce each other, thereby collaboratively enhancing the overall 3D representation capability.
-      </p>
-    </div>
-  </section>
+<!-- Mesh -->
 
 
-
+<!-- Bitex -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <b class="title" style="font-size:20px">References</b>
