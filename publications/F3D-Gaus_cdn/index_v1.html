@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="F3D-Gaus">
+  <meta name="keywords" content="F3D-Gaus">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+  <title>F3D-Gaus</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/app.css">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/video_comparison.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script type="text/x-mathjax-config">
+
+    MathJax.Hub.Config({
+    
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    
+    });
+    
+    </script>
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+    <style>
+        /* 父容器使用 Grid 布局 */
+        .grid-container {
+          display: grid;
+          /* grid-template-columns: repeat(3, 1fr); 将容器分为 3 等分 */
+          grid-template-columns: 1.2fr 1fr 1.2fr; /* 第一列占4份，第二列占2份，第三列占4份 */
+          gap: 10px; /* 设置子元素之间的间距 */
+          max-width: 100%; /* 容器宽度不超过 100% */
+          margin: 0 auto; /* 居中容器 */
+          box-sizing: border-box;
+        }
+
+        /* 图片样式 (obj1 和 obj2) */
+        .obj1 img {
+          width: 100%; /* 图片宽度填满父容器 */
+          height: auto; /* 保持宽高比例 */
+          /* border: 1px dotted #000;  */
+          /* border-radius: 3px; */
+        }
+
+        .obj2 img {
+          width: 60%; /* 图片宽度填满父容器 */
+          height: auto; /* 保持宽高比例 */
+          /* border: 1px dotted #000;  */
+          /* border-radius: 3px; */
+        }
+
+        /* 中间图片 (obj2) */
+        .obj2 {
+          display: flex; /* 启用 Flexbox */
+          justify-content: center; /* 水平居中内容 */
+          align-items: center; /* 垂直居中内容 */
+        }
+        
+
+        /* 模型样式 (obj3) */
+        .obj3 model-viewer {
+          width: 100%; /* 宽度填满父容器 */
+          height: auto; /* 高度自适应 */
+          border: 1px dotted #000; /* 添加黑色边框 */
+          border-radius: 3px; /* 添加圆角 */
+          padding: 0; /* 去除内边距 */
+        }
+        
+        /* .container {
+          word-wrap: break-word; 
+        } */
+
+        /* table, pre, code {
+          max-width: 100%;
+          width: auto;
+          height: auto;
+        } */
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://stevejaehyeok.github.io/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="">
+            F3D-Gaus
+          </a>
+          <a class="navbar-item" target="_blank" href="https://w-ted.github.io/publications/gscream/">
+            GScream
+          </a>
+          <a class="navbar-item" target="_blank" href="https://w-ted.github.io/publications/udc-nerf/">
+            UDC-NeRF
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Head -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <h1 class="title is-3 publication-title">
+            <font color="#5364cc">F3D-Gaus</font>: <font color="#5364cc">F</font>eed-forward <font color="#5364cc">3D</font>-aware Generation on ImageNet<br> with Cycle-Consistent <font color="#5364cc">Gaus</font>sian Splatting
+          </h1>
+          <!-- <h2 class="title is-4 publication-title">
+            <font color="#444444">arXiv 2025</font>
+          </h2> -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+                <a href="https://w-ted.github.io">Yuxin Wang</a><sup>1</sup></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+                <a href="https://qianyiwu.github.io">Qianyi Wu</a><sup>2</sup></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- </span> -->
+            <span class="author-block">
+                <a href="https://www.danxurgb.net/">Dan Xu</a><sup>1</sup><sup><img src="../../images/mail.png" width="15" height="15" alt="Superscript Image"></sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Hong Kong University of Science and Technology</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>2</sup>Monash University</span>&nbsp;&nbsp;
+          </div>
+
+          <!-- <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2404.13679" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/W-Ted/F3D-Gaus" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Inference available!)</span>
+                </a>
+              </span>
+            </div>
+          </div> -->
+
+          <br>
+
+          <!-- <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center"> -->
+              <div class="column has-text-centered">
+                <!-- <div class="publication-links"> -->
+                <div class="is-size-5 publication-authors">
+                  <ul class="nav nav-pills nav-justified" style="display: flex; justify-content: center; list-style: none; padding: 0;">
+                    <li style="display: inline-block; margin: 0 10px; text-align: center;">
+                      <a href="" target="_blank" class="imageLink"><img
+                          src="https://www.filepicker.io/api/file/XQvDkgbsRiiPh8VSZ8wu" width="70%"></a>
+                      <a href="" target="_blank"><h4><strong>Paper</strong></h4></a>
+                    </li>
+              
+                    <li style="display: inline-block; margin: 0 10px; text-align: center;">
+                      <a href="https://github.com/W-Ted/F3D-Gaus" target="_blank" class="imageLink"><img
+                          src="../gscream/imgs/icon_github.png" width="55.4%"></a>
+                      <a href="https://github.com/W-Ted/F3D-Gaus" target="_blank"><h4><strong>Code</strong></h4></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Head -->
+
+
+<!-- Novel view synthesis -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+
+      <div class="columns is-centered">
+        <div class="columns has-text-centered">
+
+          <div class="column" style="float: left;">
+            <video autoplay loop muted controls>
+                <source src="./videos/output_grid.mp4" type="video/mp4"/>
+            </video>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <div class="columns is-centered has-text-centered"> -->
+      <h2 class="subtitle has-text-centered">
+        <strong><font color="#5364cc">F3D-Gaus</font></strong> tackles the problem of generalizable 3D-aware generation from monocular datasets, e.g., ImageNet<sup>[1]</sup>. 
+        Given <strong>a single image</strong> as input, <strong><font color="#5364cc">F3D-Gaus</font></strong> generates a high-fidelity 3D Gaussian representation, 
+        achieving high-quality, multi-view consistent 3D-aware generation, with ~60fps. 
+      </h2>
+      <!-- </div> -->
+    
+    </div>
+  </div>
+</section>
+<!-- Novel view synthesis -->
+
+
+<!-- Abstract. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            This paper tackles the problem of generalizable 3D-aware generation from monocular datasets, e.g., ImageNet<sup>[1]</sup>. 
+            The key challenge of this task is learning a robust 3D-aware representation without multi-view or dynamic data, 
+            while ensuring consistent texture and geometry across different viewpoints. 
+            Although some baseline methods are capable of 3D-aware generation, 
+            the quality of the generated images still lags behind state-of-the-art 2D generation approaches, 
+            which excel in producing high-quality, detailed images.  
+            To address this severe limitation, 
+            we propose a novel feed-forward pipeline based on pixel-aligned Gaussian Splatting, 
+            coined as <strong><font color="#5364cc">F3D-Gaus</font></strong>, 
+            which can produce more realistic and reliable 3D renderings from monocular inputs. 
+            In addition, we introduce a self-supervised cycle-consistent constraint to enforce cross-view consistency in the learned 3D representation. 
+            This training strategy naturally allows aggregation of multiple aligned Gaussian primitives 
+            and significantly alleviates the interpolation limitations inherent in single-view pixel-aligned Gaussian Splatting. 
+            Furthermore, we incorporate video model priors to perform geometry-aware refinement, 
+            enhancing the generation of fine details in wide-viewpoint scenarios and improving the model’s capability to capture intricate 3D textures. 
+            Extensive experiments demonstrate that our approach not only achieves high-quality, 
+            multi-view consistent 3D-aware generation from monocular datasets, 
+            but also significantly improves training and inference efficiency. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Abstract. -->
+
+
+<!-- Pipeline -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+
+        <h2 class="title is-3">Pipeline</h2>
+
+        <div class="content has-text-justified">
+          <div class="columns is-centered has-text-centered">
+            <img src="static/images/pipeline.png" width="100%">
+          </div>
+          
+          <p>
+            <strong>Pipeline of <i>F3D-Gaus</i>.</strong> Given a single RGB image $I_0$ and depth map 
+            $D_0$, our model directly feeds them forward to output the pixel-aligned Gaussian Splatting 
+            representation $GS_0$, which can be used for novel view synthesis. After obtaining the 3DGS 
+            representation, we render the image $\tilde{I_1}$ and depth maps $\tilde{D_1}$ for the novel view, 
+            and then output its corresponding 3DGS $GS_1$. These two 3DGS representations are subsequently 
+            aggregated to produce the images for supervision. This novel self-supervised training strategy enforces 
+            cycle-consistent 3D representation learning across different views, allowing the generalized 3DGS representations 
+            to reinforce each other, thereby collaboratively enhancing the overall 3D representation capability. 
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Pipeline -->
+
+
+<section class="section">
+  <!-- <div class="container is-max-desktop" style="overflow-x: auto; word-wrap: break-word;"> -->
+  <div class="container is-max-desktop" style="word-wrap: break-word;">
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Comparison with the State-of-the-art Method</h2>
+      </div>
+    </div>
+    <!-- single-subject 392 -->
+    <div class="columns is-centered">
+      <div class="column" style="float: left; width: 50%;">
+        <div class="content has-text-justified">
+          <video class="video" id="01" loop playsinline autoPlay muted controls src="./videos/bb005_ss000_video.mp4" onplay="resizeAndPlay(this)"></video>
+          <canvas height=0 class="videoMerge" id="01Merge"></canvas> 
+          <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+          <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+        </div>
+      </div>
+
+      <div class="column" style="float: left; width: 50%;">
+        <div class="content has-text-justified">
+          <video class="video" id="02" loop playsinline autoPlay muted controls src="./videos/bb002_ss006_video.mp4" onplay="resizeAndPlay(this)"></video>
+          <canvas height=0 class="videoMerge" id="02Merge"></canvas> 
+          <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+          <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+        </div>
+      </div>
+
+      <div class="column" style="float: left; width: 50%;">
+        <div class="content has-text-justified">
+          <video class="video" id="03" loop playsinline autoPlay muted controls src="./videos/bb003_ss006_video.mp4" onplay="resizeAndPlay(this)"></video>
+          <canvas height=0 class="videoMerge" id="03Merge"></canvas> 
+          <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+          <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+        </div>
+      </div>
+
+      <div class="column" style="float: left; width: 50%;">
+        <div class="content has-text-justified">
+          <video class="video" id="04" loop playsinline autoPlay muted controls src="./videos/bb005_ss005_video.mp4" onplay="resizeAndPlay(this)"></video>
+          <canvas height=0 class="videoMerge" id="04Merge"></canvas> 
+          <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+          <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- single-subject 392 -->
+    <div class="columns is-centered">
+        <div class="column" style="float: left; width: 50%;">
+          <div class="content has-text-justified">
+            <video class="video" id="05" loop playsinline autoPlay muted controls src="./videos/bb001_ss003_video.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="05Merge"></canvas> 
+            <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+            <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+          </div>
+        </div>
+  
+        <div class="column" style="float: left; width: 50%;">
+          <div class="content has-text-justified">
+            <video class="video" id="06" loop playsinline autoPlay muted controls src="./videos/bb004_ss002_video.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="06Merge"></canvas> 
+            <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+            <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+          </div>
+        </div>
+  
+        <div class="column" style="float: left; width: 50%;">
+          <div class="content has-text-justified">
+            <video class="video" id="07" loop playsinline autoPlay muted controls src="./videos/bb002_ss000_video.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="07Merge"></canvas> 
+            <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+            <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+          </div>
+        </div>
+  
+        <div class="column" style="float: left; width: 50%;">
+          <div class="content has-text-justified">
+            <video class="video" id="08" loop playsinline autoPlay muted controls src="./videos/bb003_ss001_video.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="08Merge"></canvas> 
+            <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
+            <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</section>
+
+
+<!-- Mesh -->
+<section class="section">
+    <div class="container is-max-desktop">
+      
+      <!-- sub-title -->
+      <div class="columns is-centered">
+        <div class="column has-text-centered is-full-width">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <h2 class="title is-3">Surface extraction from single image via F3D-Gaus + GOF<sup>[4]</sup> </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- sub-title -->
+    
+      <!-- description -->
+      <div class="grid-container">
+        <div class="obj1">
+          <h2 class="title is-5 has-text-centered">Input image</h2>
+        </div>
+
+        <div class="obj2">
+          <h2 class="title is-5 has-text-centered">3DGS representation</h2>
+        </div>
+    
+        <div class="obj3">
+          <h2 class="title is-5 has-text-centered">Extracted mesh</h2>
+        </div>
+      </div>
+    
+      <br>
+
+    <!-- row 1 -->
+    <div class="grid-container">
+        <div class="obj1">
+          <img src="./mesh/scenes/arcade.jpg" height="95%" >
+        </div>
+
+        <div class="obj2">
+            <img src="./mesh/scenes/arrow.jpg" height="95%">
+        </div>
+    
+        <div class="obj3">
+            <model-viewer 
+                style="height: 95%; width: 95%;"
+                orientation="-90deg -90deg 90deg"
+                alt="scene"
+                src="./mesh/scenes/scene1.glb"
+                camera-controls 
+                exposure=".5">
+            </model-viewer> 
+        </div>
+    </div>
+
+    <!-- row 2 -->
+    <div class="grid-container">
+        <div class="obj1">
+          <img src="./mesh/scenes/steampunk.jpg" height="95%" >
+        </div>
+
+        <div class="obj2">
+            <img src="./mesh/scenes/arrow.jpg" height="95%">
+        </div>
+    
+        <!-- <div class="column" style="float: left; width: 300px;"></div> -->
+        <div class="obj3">
+            <model-viewer 
+                style="height: 95%; width: 95%;"
+                orientation="-90deg -90deg 90deg"
+                alt="scene"
+                src="./mesh/scenes/scene2.glb"
+                camera-controls 
+                exposure=".5">
+            </model-viewer> 
+        </div>
+    </div>
+
+    <p>Our F3D-Gaus is based on GOF<sup>[4]</sup>, a variant of 3DGS representation. 
+        Thus, after we get the predicted 3DGS from a single image via F3D-Gaus, we could extract meshes using GOF's tetrahedral grid generation combined with binary search. 
+        The mesh is directly derived from the 3DGS representation and does not rely on image-based optimization methods. 
+    </p>
+
+    </div>
+</section>
+<!-- Mesh -->
+
+
+<!-- Bitex -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <b class="title" style="font-size:20px">References</b>
+    <pre style="background-color: #FFFFFF; ">
+[1] Deng J, Dong W, Socher R, et al. Imagenet: A large-scale hierarchical image database. In: CVPR (2009)
+[2] Reddy P, Elezi I, Deng J. Generative 3D Reconstruction in ImageNet. In: CVPR (2024)
+[3] Wang X, Xie L, Dong C, et al. Training real-world blind super-resolution with pure synthetic data. In: ICCV (2021)
+[4] Yu Z, Sattler T, Geiger A. Gaussian opacity fields: Efficient adaptive surface reconstruction in unbounded scenes. In: TOG (2024)
+<!-- [1] Hu, S., Liu, Z.: GauHuman: Articulated gaussian splatting from monocular human videos. In: CVPR (2024)
+[2] Geng, C., Peng, S., Xu, Z., Bao, H., Zhou, X.: Learning neural volumetric representations of dynamic humans in minutes. In: CVPR (2023)
+[3] Weng, C.Y., Curless, B., Srinivasan, P.P., Barron, J.T., Kemelmacher-Shlizerman, I.: HumanNeRF: Free-viewpoint rendering of moving people from monocular video. In: CVPR (2022) -->
+</pre>
+
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{wang2025f3dgaus,
+    title={F3D-Gaus: Feed-forward 3D-aware Generation on ImageNet with Cycle-Consistent Gaussian Splatting},
+    author={Wang, Yuxin and Wu, Qianyi and Xu, Dan},
+    journal={arXiv preprint arXiv:},
+    year={2025}
+}
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/W-Ted/F3D-Gaus" target="_blank" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p style="text-align: center;">
+            The website template is borrowed from <a href="https://nerfies.github.io/">Nerfies</a>, <a href="https://oppo-us-research.github.io/SpacetimeGaussians-website/">SpacetimeGaussians</a> and <a href="https://xpandora.github.io/PhysGaussian/">PhysGaussian</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
