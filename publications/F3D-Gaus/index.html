@@ -147,7 +147,7 @@
         <div class="column has-text-centered">
 
           <h1 class="title is-3 publication-title">
-            <font color="#5364cc">F3D-Gaus</font>: <font color="#5364cc">F</font>eed-forward <font color="#5364cc">3D</font>-aware Generation on ImageNet<br> with Cycle-Consistent <font color="#5364cc">Gaus</font>sian Splatting
+            <font color="#5364cc">F3D-Gaus</font>: <font color="#5364cc">F</font>eed-forward <font color="#5364cc">3D</font>-aware Generation on ImageNet<br> with Cycle-Aggregative <font color="#5364cc">Gaus</font>sian Splatting
           </h1>
           <!-- <h2 class="title is-4 publication-title">
             <font color="#444444">arXiv 2025</font>
@@ -270,7 +270,7 @@
             we propose a novel feed-forward pipeline based on pixel-aligned Gaussian Splatting, 
             coined as <strong><font color="#5364cc">F3D-Gaus</font></strong>, 
             which can produce more realistic and reliable 3D renderings from monocular inputs. 
-            In addition, we introduce a self-supervised cycle-consistent constraint to enforce cross-view consistency in the learned 3D representation. 
+            In addition, we introduce a self-supervised cycle-aggregative constraint to enforce cross-view consistency in the learned 3D representation. 
             This training strategy naturally allows aggregation of multiple aligned Gaussian primitives 
             and significantly alleviates the interpolation limitations inherent in single-view pixel-aligned Gaussian Splatting. 
             Furthermore, we incorporate video model priors to perform geometry-aware refinement, 
@@ -307,7 +307,7 @@
             representation, we render the image $\tilde{I_1}$ and depth maps $\tilde{D_1}$ for the novel view, 
             and then output its corresponding 3DGS $GS_1$. These two 3DGS representations are subsequently 
             aggregated to produce the images for supervision. This novel self-supervised training strategy enforces 
-            cycle-consistent 3D representation learning across different views, allowing the generalized 3DGS representations 
+            cycle-aggregative 3D representation learning across different views, allowing the generalized 3DGS representations 
             to reinforce each other, thereby collaboratively enhancing the overall 3D representation capability. 
           </p>
         </div>
@@ -342,7 +342,8 @@
 
       <div class="column" style="float: left; width: 50%;">
         <div class="content has-text-justified">
-          <video class="video" id="02" loop playsinline autoPlay muted controls src="./videos/bb002_ss006_video.mp4" onplay="resizeAndPlay(this)"></video>
+          <!-- <video class="video" id="02" loop playsinline autoPlay muted controls src="./videos/bb002_ss006_video.mp4" onplay="resizeAndPlay(this)"></video> -->
+          <video class="video" id="02" loop playsinline autoPlay muted controls src="./videos/bb001_ss002_video.mp4" onplay="resizeAndPlay(this)"></video>
           <canvas height=0 class="videoMerge" id="02Merge"></canvas> 
           <span style="display: inline; text-align: left; margin-right: 14px;"><b style="font-size:15px">G3DR<sup>[2]</sup>+Real-ESRGAN<sup>[3]</sup></b></span>
           <span style="display: inline; text-align: right;"><b style="font-size:15px">Ours</b></span>
@@ -619,7 +620,7 @@
 
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{wang2025f3dgaus,
-    title={F3D-Gaus: Feed-forward 3D-aware Generation on ImageNet with Cycle-Consistent Gaussian Splatting},
+    title={F3D-Gaus: Feed-forward 3D-aware Generation on ImageNet with Cycle-Aggregative Gaussian Splatting},
     author={Wang, Yuxin and Wu, Qianyi and Xu, Dan},
     journal={arXiv preprint arXiv:2501.06714},
     year={2025}
