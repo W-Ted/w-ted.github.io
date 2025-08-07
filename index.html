@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <title>Yuxin Wang</title>
   
@@ -23,6 +24,40 @@
     </script>
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
+
+<style>
+  .highlight {
+    all: unset;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+
+    /* ✅ 强制清除背景色及字体样式 */
+    background-color: transparent !important;
+    font-weight: normal !important;
+    color: inherit !important;
+  }
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 16px;
+    border-radius: 2px;
+    opacity: 0.9;
+    pointer-events: none;
+    animation: explode 1s ease-out forwards;
+  }
+
+  @keyframes explode {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--x), var(--y)) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  </style>
 </head>
 
 <body>
@@ -94,7 +129,7 @@
               </p>
               <p>I am currently a Ph.D. student under the supervision of <a href="https://www.danxurgb.net/">Prof. Dan Xu</a>, at Hong Kong University of Science and Technology (<a href="https://www.ust.hk/home">HKUST</a>). 
                 I received my Bachelor's Degree from University of Science and Technology of China (<a href="https://www.ustc.edu.cn/">USTC</a>) in 2019. 
-                I worked as an intern and researcher at SenseTime from 2019 to 2022, working closely with <a href="https://wywu.github.io/">Dr. Wayne Wu</a>, <a href="https://daibo.info/">Dr. Bo Dai</a> and <a href="https://wuqianyi.top/">Mr. Qianyi Wu</a>.
+                I worked as an intern and researcher at SenseTime from 2019 to 2022, working closely with <a href="https://wywu.github.io/">Dr. Wayne Wu</a>, <a href="https://daibo.info/">Dr. Bo Dai</a> and <span class="highlight" id="celebrate"><a href="https://wuqianyi.top/">Dr. Qianyi Wu</a></span>.
               </p>
               <!-- <p>
                 I received my Bachelor's Degree from <a href="https://www.ustc.edu.cn/">USTC</a> in China.
@@ -465,6 +500,41 @@
       </td>
     </tr>
   </table>
+
+  <script>
+  const celebrate = document.getElementById('celebrate');
+
+  celebrate.addEventListener('mouseenter', (e) => {
+    const rect = celebrate.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+
+      const colors = ['#f94144', '#f3722c', '#f9c74f', '#90be6d', '#43aa8b', '#577590', '#9b5de5'];
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+      confetti.style.left = centerX + 'px';
+      confetti.style.top = centerY + 'px';
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 100 + Math.random() * 100;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+
+      confetti.style.setProperty('--x', `${x}px`);
+      confetti.style.setProperty('--y', `${y}px`);
+
+      document.body.appendChild(confetti);
+
+      setTimeout(() => {
+        confetti.remove();
+      }, 1000);
+    }
+  });
+  </script>
 
   
 </body>
