@@ -248,6 +248,38 @@
               <a href="https://github.com/W-Ted/F3D-Gaus">code</a> 
             </td>
           </tr>
+
+          <tr onmouseout="one4d_stop()" onmouseover="one4d_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='one4d_still'><img src="images/one4d_teaser.png" width="200"></div>
+              <script type="text/javascript">
+                function one4d_start() {
+                  document.getElementById('eccv12_anim').style.display = 'inline';
+                  document.getElementById('eccv12_still').style.display = 'none';
+                }
+
+                function one4d_stop() {
+                  document.getElementById('eccv12_anim').style.display = 'none';
+                  document.getElementById('eccv12_still').style.display = 'inline';
+                }
+                one4d_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://mizhenxing.github.io/One4D/">
+                <papertitle>	
+                  One4D: Unified 4D Generation and Reconstruction via Decoupled LoRA Control</papertitle>
+              </a>
+              <br>
+              <a href="https://mizhenxing.github.io/">Zhenxing Mi</a>, <strong>Yuxin Wang</strong>, <a href="https://www.danxurgb.net/">Dan Xu</a>
+              <br>
+              <strong><em>Technical report</em>, 2025</strong>
+              <br>
+              <a href="https://mizhenxing.github.io/One4D/">project page & demo</a> /
+              <a href="https://arxiv.org/abs/2511.18922">arxiv</a> /
+              <a href="https://github.com/MiZhenxing/One4D">code</a>
+            </td>
+          </tr>
         </tbody></table>
 
 
@@ -341,6 +373,7 @@
             </td>
           </tr>
 
+          
           <tr onmouseout="omniobject3d_stop()" onmouseover="omniobject3d_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <!-- <div id='ssrnet_anim' class='hidden'>
