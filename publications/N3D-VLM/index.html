@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N3D-VLM: Project Page</title>
+    
+    <!-- 1. 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- 依赖库 -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========================================= */
+        /* GLOBAL / SHARED STYLES                    */
+        /* ========================================= */
+        html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+        :root {
+            --primary-text: #1f2937;
+            --secondary-text: #4b5563;
+            --bg-page: #ffffff;
+            --success-bg: #f0fdf4;
+            --success-border: #86efac;
+            --success-text: #15803d;
+            --fail-bg: #fff1f2;
+            --fail-border: #fecaca;
+            --fail-text: #b91c1c;
+            --warn-bg: #fff1f2;
+            --warn-border: #fecaca;
+            --warn-text: #b91c1c;
+            --accent-blue: #2563eb;
+            
+            /* Grounding Colors */
+            --g-gt-color: #22c55e;   /* Green */
+            --g-ours-color: #ef4444; /* Red */
+            --g-spatial-color: #3b82f6; /* Blue */
+            --g-qwen-color: #111827; /* Black */
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-page); color: var(--primary-text);
+            margin: 0; padding: 0; line-height: 1.4; -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 15px; }
+        .global-section-title {
+            text-align: center; font-size: 1.8rem; font-weight: 800;
+            margin: 50px 0 30px; color: #111827; letter-spacing: -0.02em;
+        }
+    
+        /* NAVBAR & HEADER */
+        #module-navbar { position: sticky; top: 0; z-index: 999; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 8px 0; }
+        #module-navbar .nav-content { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        #module-navbar .logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #111; font-weight: 700; font-size: 1.1rem; }
+        #module-navbar .menu-section { background: #f3f4f6; padding: 3px; border-radius: 99px; display: flex; gap: 2px; }
+        #module-navbar .nav-link { text-decoration: none; color: #6b7280; font-weight: 600; font-size: 0.85rem; padding: 6px 14px; border-radius: 99px; transition: all 0.2s ease; }
+        #module-navbar .nav-link:hover { color: #111; background: rgba(0,0,0,0.03); }
+        #module-navbar .nav-link.active { background: #fff; color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        #module-header { text-align: center; padding: 40px 20px 20px; }
+        #module-header .proj-title { font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 15px; color: #111; letter-spacing: -0.03em; }
+        #module-header .author-list { font-size: 1.1rem; margin-bottom: 10px; color: #374151; }
+        #module-header .author-list a { color: #2563eb; text-decoration: none; font-weight: 500; }
+        #module-header .affiliation { font-size: 0.9rem; color: #6b7280; margin-bottom: 20px; }
+        #module-header .link-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        #module-header .btn-pill { background: #1f2937; color: #fff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        #module-header .btn-pill:hover { background: #000; transform: translateY(-1px); }
+    
+        /* COMMON DEMO STYLES */
+        .task-container { background: #fff; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); padding: 15px; border: 1px solid #e5e7eb; margin-bottom: 40px; }
+        .input-bar { background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 15px; border-radius: 10px; margin-bottom: 15px; color: #1e40af; display: flex; align-items: flex-start; gap: 12px; }
+        .input-icon { font-size: 1.1rem; margin-top: 2px; }
+        .input-content { flex: 1; }
+        .input-label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #60a5fa; margin-bottom: 2px; }
+        .question-text { font-size: 1.05rem; font-weight: 600; line-height: 1.3; }
+        .visual-header-label { font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; text-transform: uppercase; }
+        .visual-block-container { background: #ffffff; border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; position: relative; height: 240px; display: flex; align-items: center; justify-content: center; }
+        .visual-block-container img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .visual-block-container model-viewer { width: 100%; height: 100%; background: #ffffff; --poster-color: #ffffff; }
+        .visual-block-container.focused { border-color: var(--success-border); box-shadow: 0 0 0 3px rgba(134, 239, 172, 0.3); transition: all 0.3s; }
+
+        /* REASONING GRID LAYOUT */
+        .qa-grid { display: grid; grid-template-columns: 42% 56%; gap: 15px 2%; grid-template-areas: "img baselines" "pc ours"; align-items: start; }
+        .area-img { grid-area: img; }
+        .area-pc  { grid-area: pc; }
+        .area-baselines { grid-area: baselines; display: flex; flex-direction: column; gap: 8px; }
+        .area-ours { grid-area: ours; }
+        @media (max-width: 850px) { .qa-grid { grid-template-columns: 1fr; grid-template-areas: "img" "baselines" "ours" "pc"; gap: 20px; } }
+        
+        /* ========================================================= */
+        /* [MODIFIED] GROUNDING GRID LAYOUT                          */
+        /* ========================================================= */
+        .grounding-grid { 
+            display: grid; 
+            /* 左侧图片占30% (更小), 右侧点云占68% (更大), 中间留空隙 */
+            grid-template-columns: 30% 68%; 
+            gap: 20px; 
+            /* 布局区域：第一行左图右点云，第二行底部放方法 */
+            grid-template-areas: 
+                "img pc" 
+                "methods methods"; 
+            /* [修改 1] 改为 stretch，让左右两列高度强制一致 */
+            align-items: stretch; 
+        }
+        
+        .g-area-img { grid-area: img; }
+        
+        /* [修改 2] 右侧点云区域设为 Flexbox，以便内部元素填充 */
+        .g-area-pc { 
+            grid-area: pc; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        /* 针对 Grounding 部分的特殊高度控制 */
+        .g-area-img .visual-block-container { height: 220px; } /* 图片更小 */
+        
+        /* [修改 3] 让右侧 3D 容器自动填满高度，而不是固定 500px */
+        .g-area-pc .visual-block-container { 
+            height: auto; 
+            flex: 1; 
+            min-height: 320px; /* <--- 修改这里，数值越大，高度越高 */
+        }
+
+        /* 方法列表放在底部，改为 2列 Grid 布局，避免垂直堆叠太长 */
+        .g-area-methods { 
+            grid-area: methods; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* 两列并排 */
+            gap: 15px; 
+            height: auto;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 850px) { 
+            .grounding-grid { 
+                grid-template-columns: 1fr; 
+                grid-template-areas: "img" "pc" "methods"; 
+            } 
+            .g-area-methods { grid-template-columns: 1fr; } /* 移动端单列 */
+            .g-area-pc .visual-block-container { height: 350px; }
+        }
+        /* ========================================================= */
+
+        /* MODEL CARDS */
+        .model-card { border-radius: 10px; border: 1px solid transparent; overflow: hidden; transition: transform 0.2s; }
+        .card-header { padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); min-height: 32px; }
+        .model-name { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+        .card-body { padding: 8px 12px; }
+        .modality-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+        .badge-rgb { background: #e5e7eb; color: #4b5563; }
+        .badge-rgbd { background: #e5e7eb; color: #4b5563; }
+    
+        .model-card.baseline { background: var(--fail-bg); border-color: var(--fail-border); }
+        .model-card.baseline .model-name { color: var(--fail-text); }
+        .model-card.baseline-warn { background: var(--warn-bg); border-color: var(--warn-border); }
+        .model-card.baseline-warn .model-name { color: var(--warn-text); }
+        .model-card.ours { background: #ffffff; border: 2px solid var(--success-border); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.05); height: 100%; }
+        .model-card.ours .card-header { background: var(--success-bg); border-bottom: 1px solid var(--success-border); }
+        .model-card.ours .model-name { color: var(--success-text); font-size: 0.95rem; }
+
+        /* GROUNDING METHOD CARDS (NEW) */
+        .g-method-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; border-left-width: 4px; border-left-style: solid; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+        
+        .g-card-gt { border-left-color: var(--g-gt-color); }
+        .g-card-ours { border-left-color: var(--g-ours-color); background: #fffafb; }
+        .g-card-spatial { border-left-color: var(--g-spatial-color); }
+        .g-card-qwen { border-left-color: var(--g-qwen-color); }
+
+        .g-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; }
+        .g-title { display: flex; align-items: center; gap: 6px; }
+        .g-title i { font-size: 0.8rem; }
+        
+        .g-btn-container { display: flex; flex-wrap: wrap; gap: 6px; }
+        .g-btn { 
+            font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; 
+            padding: 4px 8px; border-radius: 4px; cursor: pointer; 
+            border: 1px solid #e5e7eb; background: #fff; color: #374151;
+            display: flex; align-items: center; gap: 5px; transition: all 0.1s;
+        }
+        .g-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+        
+        /* Active States for Grounding Buttons */
+        .g-btn.active-gt { background: #f0fdf4; border-color: var(--g-gt-color); color: var(--g-gt-color); }
+        .g-btn.active-ours { background: #fef2f2; border-color: var(--g-ours-color); color: var(--g-ours-color); }
+        .g-btn.active-spatial { background: #eff6ff; border-color: var(--g-spatial-color); color: var(--g-spatial-color); }
+        .g-btn.active-qwen { background: #f3f4f6; border-color: var(--g-qwen-color); color: var(--g-qwen-color); }
+
+        /* REASONING STYLES */
+        .step-container { margin-bottom: 8px; }
+        .step-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #15803d; margin-bottom: 4px; display: block; opacity: 0.9; }
+        .detect-box { display: flex; flex-wrap: wrap; gap: 6px; }
+        .grounding-btn { background: #fff; border: 1px solid #d1fae5; color: #065f46; padding: 6px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .grounding-btn:hover { border-color: #34d399; background: #ecfdf5; }
+        .grounding-btn.active { background: #059669; color: #fff; border-color: #059669; }
+        .reasoning-box { background: #f0fdf4; border-left: 3px solid #4ade80; padding: 10px 12px; border-radius: 6px; margin-bottom: 8px; }
+        .think-label { display: inline-block; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 0.75rem; color: #16a34a; background: rgba(22, 163, 74, 0.1); padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; margin-right: 6px; user-select: none; }
+        .model-reasoning-content { font-size: 0.95rem; line-height: 1.5; color: #374151; font-style: italic; }
+        .result-footer { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; padding-top: 4px; border-top: 1px dashed rgba(0,0,0,0.1); margin-top: 4px; }
+    
+        /* NAV & ANIMATION */
+        .example-nav { margin-top: 15px; padding-top: 10px; border-top: 1px solid #f3f4f6; display: flex; justify-content: center; gap: 15px; }
+        .nav-item { cursor: pointer; opacity: 0.5; transition: all 0.2s; text-align: center; width: 90px; }
+        .nav-item:hover, .nav-item.active { opacity: 1; transform: translateY(-2px); }
+        .nav-thumb { width: 100%; height: 55px; border-radius: 8px; overflow: hidden; border: 2px solid transparent; margin-bottom: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .nav-item.active .nav-thumb { border-color: var(--accent-blue); }
+        .nav-label { font-size: 0.75rem; font-weight: 600; color: #4b5563; }
+        .animate-text { transition: opacity 0.2s; }
+        .changing { opacity: 0; }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="module-navbar">
+    <div class="nav-content">
+        <div class="logo-section">
+            <a href="#" class="logo-link">
+                <img src="images/ailablogo.png" style="height: 28px; width: auto;" alt="Logo">
+                <span class="logo-text">Tencent AI Lab</span>
+            </a>
+        </div>
+        <div class="menu-section">
+            <!-- 1. Home: 对应顶部 Header -->
+            <a href="#module-header" class="nav-link active">Home</a>
+            
+            <!-- 2. Video: 对应 Teaser Video 区域 -->
+            <a href="#module-video" class="nav-link">Video</a>
+
+            <!-- 3. Abstract: 对应 Abstract & Pipeline -->
+            <a href="#module-abstract" class="nav-link">Abstract</a>
+            
+            <!-- 4. Reasoning: 对应 Spatial Reasoning Demo -->
+            <a href="#module-demo" class="nav-link">Reasoning</a>
+            
+            <!-- 5. Grounding: 对应 Grounding Demo -->
+            <a href="#module-grounding" class="nav-link">Grounding</a>
+
+            <!-- 6. Citation: 对应底部的 Citation -->
+            <a href="#citation" class="nav-link">Citation</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <section id="module-header">
+        <div class="proj-title">
+            N3D-VLM: Native 3D Grounding Enables<br> Accurate Spatial Reasoning
+        </div>
+        
+        <div class="author-list">
+            <a href="https://w-ted.github.io/" target="_blank">Yuxin Wang<sup>1,2</sup></a>,
+            <a href="https://www.kelei.site/" target="_blank">Lei Ke<sup>2</sup></a>,
+            <a href="https://cyrilsterling.github.io/" target="_blank">Boqiang Zhang<sup>2</sup></a>,
+            <a href="https://openreview.net/profile?id=~Tianyuan_Qu2" target="_blank">Tianyuan Qu<sup>2,3</sup></a>,
+            <a href="https://hanxunyu.github.io/" target="_blank">Hanxun Yu<sup>2,4</sup></a>,
+            <a href="https://openreview.net/profile?id=~Zhenpeng_Huang1" target="_blank">Zhenpeng Huang<sup>2,5</sup></a>,
+            <a href="https://raymond-myu.github.io/" target="_blank">Meng Yu<sup>2</sup></a>,
+            <a href="https://www.danxurgb.net/" target="_blank">Dan Xu<sup>1</sup></a>,
+            <a href="https://sites.google.com/view/dongyu888/" target="_blank">Dong Yu<sup>2</sup></a>
+        </div>
+        
+        <div class="affiliation">
+            <span style="margin-right: 15px;"><sup>1</sup>HKUST</span>
+            <span style="margin-right: 15px;"><sup>2</sup>Tencent AI Lab</span>
+            <span style="margin-right: 15px;"><sup>3</sup>CUHK</span>
+            <span style="margin-right: 15px;"><sup>4</sup>ZJU</span>
+            <span><sup>5</sup>NJU</span>
+        </div>
+
+        <div class="link-buttons">
+            <a href="#" class="btn-pill"><i class="fas fa-file-pdf"></i> Paper</a>
+            <a href="#" class="btn-pill"><i class="fab fa-github"></i> Code</a>
+            <a href="#" class="btn-pill"><i class="fas fa-database"></i> Model</a>
+        </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section id="module-video" style="margin-top: 60px; margin-bottom: 60px;">
+        <div style="max-width: 75%; margin: 0 auto;">
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; background: #000;">
+                <video width="100%" autoplay muted loop playsinline controls style="display: block;">
+                    <source src="images/teaser2_s1.25.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div style="margin-top: 15px; color: #4b5563; font-size: 1.05rem; text-align: justify; line-height: 1.6;">
+                <p>
+                    <b>N3D-VLM</b> is a unified vision-language models for native 3D grounding and 3D spatial reasoning. 
+                    By incorporating native 3D grounding, our model enables precise spatial reasoning, 
+                    allowing users to query object relationships, distances, and attributes directly 
+                    within complex 3D environments. 
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ABSTRACT SECTION -->
+    <section id="module-abstract">
+            
+        <!-- 1. Abstract 标题与正文 -->
+        <div class="global-section-title" style="margin-bottom: 15px;">Abstract</div>
+        
+        <div style="max-width: 75%; margin: 0 auto; background:#f9fafb; padding:20px; border-radius:12px; color:#4b5563; text-align:justify;">
+            <p>While current multimodal models can answer questions based on 2D images, they lack intrinsic 3D object perception, limiting their ability to comprehend spatial relationships and depth cues in 3D scenes. In this work, we propose <strong>N3D-VLM</strong>, a novel unified framework that seamlessly integrates native 3D object perception with 3D-aware visual reasoning, enabling both precise 3D grounding and interpretable spatial understanding. Unlike conventional end-to-end models that directly predict answers from RGB/RGB-D inputs, our approach equips the model with native 3D object perception capabilities, enabling it to directly localize objects in 3D space based on textual descriptions. Building upon accurate 3D object localization, the model further performs explicit reasoning in 3D, achieving more interpretable and structured spatial understanding. To support robust training for these capabilities, we develop a scalable data construction pipeline that leverages depth estimation to lift large-scale 2D annotations into 3D space, significantly increasing the diversity and coverage for 3D object grounding data, yielding over six times larger than the largest existing single-image 3D detection dataset. Moreover, the pipeline generates spatial question-answering datasets that target chain-of-thought (CoT) reasoning in 3D, facilitating joint training for both 3D object localization and 3D spatial reasoning. Experimental results demonstrate that our unified framework not only achieves state-of-the-art performance on 3D grounding tasks, but also consistently surpasses existing methods in 3D spatial reasoning in vision-language model.</p>
+        </div>
+
+        <!-- 2. 第一张图区域 (Data Pipeline) -->
+        <div style="max-width: 85%; margin: 40px auto 0 auto;">
+            
+            <!-- 标题：复用了 global-section-title 类，保证与 Abstract 对齐 -->
+            <div class="global-section-title" style="margin-bottom: 15px;">Data Construction Pipeline</div>
+            
+            <div style="margin-bottom: 50px; text-align: center;">
+                <img src="./images/pipeline_data.png" alt="Data Pipeline" style="width: 100%; max-width: 1000px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <p style="margin-top: 10px; color: #4b5563; font-size: 0.95em; text-align: justify;">
+                    <strong>Illustration of our data construction pipeline.</strong> We first lift annotations from existing 2D detection datasets with diverse object
+                    categories into 3D space, resulting in a large-scale and category-rich 3D detection annotation repository. Based on this repository, we
+                    generate data for 3D detection, 3D grounding, and 3D spatial reasoning QA tasks.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- 3. 第二张图区域 (Model Architecture) -->
+        <div style="max-width: 85%; margin: 0 auto;">
+            
+            <!-- 标题：复用了 global-section-title 类 -->
+            <div class="global-section-title" style="margin-bottom: 15px;">Model Architecture</div>
+
+            <div style="text-align: center;">
+                <img src="./images/pipeline_model.png" alt="Model Pipeline" style="width: 100%; max-width: 1000px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <p style="margin-top: 10px; color: #4b5563; font-size: 0.95em; text-align: justify;">
+                    <strong>Illustration of our model design and quantitative comparison.</strong> (a) Overview of our model architecture and the cascaded
+                    spatial reasoning process. (b) Quantitative comparison showing that our model outperforms existing methods. (c) Definition of structured
+                    language representation for 3D bounding boxes.
+                </p>
+            </div>
+
+        </div>
+        
+        <!-- 增加底部间距 -->
+        <div style="margin-bottom: 40px;"></div>
+
+    </section>
+
+
+
+    <!-- DEMO: SPATIAL REASONING -->
+    <section id="module-demo" style="margin-top: 60px; margin-bottom: 60px;">
+        <div class="global-section-title">Qualitative Comparison on 3D Spatial Reasoning</div>
+        
+        <div class="task-container">
+            <div class="input-bar">
+                <div class="input-icon"><i class="fas fa-user"></i></div>
+                <div class="input-content">
+                    <span class="input-label">Question</span>
+                    <div id="qa-text" class="question-text animate-text">...</div>
+                </div>
+            </div>
+
+            <div class="qa-grid">
+                <!-- 1. RGB Image -->
+                <div class="area-img">
+                    <div class="visual-header-label"><i class="fas fa-image"></i> RGB Image</div>
+                    <div class="visual-block-container">
+                        <img id="qa-img-rgb" src="" alt="RGB View">
+                    </div>
+                </div>
+
+                <!-- 2. Baselines -->
+                <div class="area-baselines">
+                    <div class="model-card baseline">
+                        <div class="card-header">
+                            <span class="model-name" id="qa-b1-name"><i class="fas fa-robot"></i> GPT-4o</span>
+                            <span id="qa-b1-badge" class="modality-badge badge-rgb">RGB</span>
+                        </div>
+                        <div class="card-body">
+                            <div id="qa-b1-reasoning" class="model-reasoning-content animate-text">...</div>
+                            <div class="result-footer animate-text" style="color:var(--fail-text)">
+                                <span id="qa-b1-ans">...</span> <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="model-card baseline-warn">
+                        <div class="card-header">
+                            <span class="model-name" id="qa-b2-name"><i class="fas fa-robot"></i> Qwen3-VL-8B</span>
+                            <span class="modality-badge badge-rgbd">RGB</span>
+                        </div>
+                        <div class="card-body">
+                            <div id="qa-b2-reasoning" class="model-reasoning-content animate-text">...</div>
+                            <div class="result-footer animate-text" style="color:var(--warn-text)">
+                                <span id="qa-b2-ans">...</span> <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Point Cloud -->
+                <div class="area-pc">
+                    <div class="visual-header-label"><i class="fas fa-cube"></i> 3D Point Cloud</div>
+                    <div class="visual-block-container" id="visual-3d-container">
+                        <model-viewer 
+                            id="qa-model-3d"
+                            src="" 
+                            orientation="0deg 20deg 225deg" 
+                            camera-orbit="45deg 55deg 30m" 
+                            field-of-view="30deg"
+                            camera-controls 
+                            shadow-intensity="0"
+                            exposure="0.6">
+                        </model-viewer>
+                    </div>
+                    <div style="text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 4px;">
+                        <i class="fas fa-mouse-pointer"></i> Interact with <b>Step 1 Buttons</b> to highlight 3D objects.
+                    </div>
+                </div>
+
+                <!-- 4. Ours -->
+                <div class="model-card ours area-ours">
+                    <div class="card-header">
+                        <span class="model-name"><i class="fas fa-robot"></i> Our N3D-VLM-7B</span>
+                        <span class="modality-badge badge-rgbd">RGBD</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="step-container">
+                            <span class="step-label"><i class="fas fa-cube"></i> Step 1: 3D Grounding</span>
+                            <div id="qa-ours-detect" class="detect-box animate-text"></div>
+                        </div>
+                        <div class="step-container" style="margin-bottom:0;">
+                            <span class="step-label"><i class="fas fa-lightbulb"></i> Step 2: 3D Spatial Reasoning</span>
+                            <div class="reasoning-box">
+                                <div class="model-reasoning-content animate-text" id="qa-ours-reasoning">...</div>
+                            </div>
+                            <div class="result-footer animate-text" style="color:var(--success-text); border-top:none; padding-top:4px;">
+                                <span id="qa-ours-ans">...</span> <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-nav" id="qa-nav"></div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: GROUNDING COMPARISON -->
+    <section id="module-grounding" style="margin-bottom: 60px;">
+        <div class="global-section-title">Qualitative Comparison on 3D Grounding</div>
+        
+        <div class="task-container">
+            <!-- [LAYOUT CHANGE] Prompt Bar Removed from here -->
+
+            <!-- Grounding Grid -->
+            <div class="grounding-grid">
+                
+                <!-- 1. RGB Image -->
+                <div class="g-area-img">
+                    <!-- [LAYOUT CHANGE] Prompt Bar Moved Here (Under Image) -->
+                    <div class="input-bar" style="margin-top: 0; margin-bottom: 15px;">
+                        <div class="input-icon"><i class="fas fa-user"></i></div>
+                        <div class="input-content">
+                            <span class="input-label">Question</span>
+                            <div id="g-text" class="question-text animate-text">...</div>
+                        </div>
+                    </div>
+
+                    <div class="visual-header-label"><i class="fas fa-image"></i> RGB Image</div>
+                    <div class="visual-block-container">
+                        <img id="g-img-rgb" src="" alt="RGB View">
+                    </div>
+
+                    
+
+                </div>
+
+                <!-- 2. Methods Column -->
+                <div class="g-area-methods">
+                    
+                    <!-- GT -->
+                    <div class="g-method-card g-card-gt">
+                        <div class="g-header">
+                            <span class="g-title" style="color:var(--g-gt-color)"><i class="fas fa-check-square"></i> Ground Truth</span>
+                            <span class="modality-badge"></span>
+                        </div>
+                        <div class="g-btn-container" id="g-btns-gt"></div>
+                    </div>
+
+                    <!-- SpatialLM -->
+                    <div class="g-method-card g-card-spatial">
+                        <div class="g-header">
+                            <span class="g-title" style="color:var(--g-spatial-color)"><i class="fas fa-robot"></i> SpatialLM</span>
+                            <span class="modality-badge badge-rgb">RGBD</span>
+                        </div>
+                        <div class="g-btn-container" id="g-btns-spatial"></div>
+                    </div>
+
+                    <!-- Qwen3-VL -->
+                    <div class="g-method-card g-card-qwen">
+                        <div class="g-header">
+                            <span class="g-title" style="color:var(--g-qwen-color)"><i class="fas fa-robot"></i> Qwen3-VL</span>
+                            <span class="modality-badge badge-rgb">RGB</span>
+                        </div>
+                        <div class="g-btn-container" id="g-btns-qwen"></div>
+                    </div>
+
+                    <!-- Ours -->
+                    <div class="g-method-card g-card-ours">
+                        <div class="g-header">
+                            <span class="g-title" style="color:var(--g-ours-color)"><i class="fas fa-robot"></i> Our N3D-VLM</span>
+                            <span class="modality-badge badge-rgbd">RGBD</span>
+                        </div>
+                        <div class="g-btn-container" id="g-btns-ours"></div>
+                    </div>
+
+                </div>
+
+                <!-- 3. Point Cloud -->
+                <div class="g-area-pc">
+                    <div class="visual-header-label"><i class="fas fa-cube"></i> 3D Point Cloud</div>
+                    <div class="visual-block-container" id="g-visual-3d-container">
+                        <model-viewer 
+                            id="g-model-3d"
+                            src="" 
+                            orientation="0deg 20deg 225deg" 
+                            camera-orbit="45deg 55deg 30m" 
+                            field-of-view="30deg"
+                            camera-controls 
+                            shadow-intensity="0"
+                            exposure="0.6">
+                        </model-viewer>
+                    </div>
+                    <div style="text-align: center; font-size: 0.7rem; color: #9ca3af; margin-top: 4px;">
+                        <i class="fas fa-mouse-pointer"></i> Click buttons on the right to toggle bounding boxes.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Nav -->
+            <div class="example-nav" id="g-nav"></div>
+
+        </div>
+    </section>
+
+
+    <!-- CITATION SECTION -->
+    <section id="citation" style="margin-top: 60px; margin-bottom: 60px;">
+    
+        <!-- 标题：与 Abstract 保持一致 -->
+        <div class="global-section-title" style="margin-bottom: 20px;">Citation</div>
+
+        <!-- BibTeX 代码块容器 -->
+        <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+            <div style="background-color: #f6f8fa; border: 1px solid #d1d5db; border-radius: 10px; padding: 20px; overflow-x: auto;">
+                <pre style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #374151; line-height: 1.6;"><code>@article{wang2025n3d,
+    title={N3D-VLM: Native 3D Grounding Enables Accurate Spatial Reasoning},
+    author={Wang, Yuxin and Ke, Lei and Zhang, Boqiang and Qu, Tianyuan and Yu, Hanxun and Huang, Zhenpeng and Yu, Meng and Xu, Dan and Yu, Dong},
+    journal={arXiv preprint arXiv:25xx.xxxxx},
+    year={2024}
+}</code></pre>
+            </div>
+            
+            <!-- 提示文字 -->
+            <p style="text-align: center; color: #9ca3af; font-size: 0.85em; margin-top: 10px;">
+                If you find our work useful in your research, please consider citing us.
+            </p>
+        </div>
+
+    </section>
+
+
+</div>
+
+<script>
+    // ==========================================
+    // DATA: REASONING
+    // ==========================================
+    const qaData = [
+        {
+            id: 0,
+            label: "Relative Position",
+            thumb: "images/QA_1.jpg", 
+            question: "Is person positioned behind orange/tangerine as seen from the side opposite the photographer?",
+            rgb: "images/QA_1.jpg",
+            model_url: "images/QA_1.glb", 
+            b1_res: "Yes, the person is positioned behind the orange/tangerine as seen from the side opposite the photographer.",
+            b1_ans: "Wrong answer",
+            b2_res: "(...) The girl is standing behind the bowl of fruit. (...) The phrase 'as seen from the side opposite the photographer' is a bit ambiguous, but it doesn't change the fundamental spatial relationship. (...) Yes.",
+            b2_ans: "Wrong answer",
+            ours_detect_list: [
+                { id: "1_1", text: "bbox_0=Bbox(person,0.49,0.59,2.69,0.59,0.33,0.38)", fulltext: "bbox_0=Bbox(person,...)", matName: "bbox_object0_person_0" },
+                { id: "1_2", text: "bbox_1=Bbox(orange/tangerine,0.72,0.86,1.37,0.22,0.07,0.12)", fulltext: "bbox_1=Bbox(orange,...)", matName: "bbox_object1_orange/tangerine_1" }
+            ],
+            ours_reasoning: "Step 1: Compare Z coordinates. Z_A= 2.69, Z_B = 1.37. Step 2: Since Z_A > Z_B, and we consider the opposite view, person is in front.",
+            ours_ans: "No, it is not."
+        },
+        {
+            id: 1,
+            label: "Height",
+            thumb: "images/QA_2.jpg",
+            question: "What is the height of the person?",
+            rgb: "images/QA_2.jpg",
+            model_url: "images/QA_2.glb",
+            b1_res: "The height of the person cannot be determined from the image alone.",
+            b1_ans: "Refuse to answer",
+            b2_res: "In wheelchair tennis, players are often tall... Make a reasonable estimate (…) would be around 1.75 meters.",
+            b2_ans: "Wrong answer",
+            ours_detect_list: [
+                { id: "2_1", text: "bbox_0=Bbox(person,0.28,0.49,2.98,0.62,0.90,0.77)", fulltext: "", matName: "bbox_object0_Person_0" },
+            ],
+            ours_reasoning: "The 3D bbox of person is [0.27,0.02, 2.98, 0.62, 0.9, 0.77]. So, the height of person is 0.9 meters.",
+            ours_ans: "Person is 0.9 meters in height."
+        },
+        {
+            id: 2,
+            label: "Depth Sorting",
+            thumb: "images/QA_3.jpg",
+            question: "Could you list bicycle, bowl/basin, and trophy from the closest to the most distant relative to the camera?",
+            rgb: "images/QA_3.jpg",
+            model_url: "images/QA_3.glb",
+            b1_res: "bicycle, bowl/basin, trophy.",
+            b1_ans: "Wrong answer",
+            b2_res: "<think> The 3D location of the bicycle is (0.9, 0.7, 3.1)... </think> Final answer: bicycle, bowl/basin.",
+            b2_ans: "Fail to reason and answer",
+            ours_detect_list: [
+                { id: "2_1", text: "bbox_0=Bbox(bicycle,0.18,0.73,5.34,1.44,1.31,1.21)", fulltext: "", matName: "bbox_object0_bicycle_0" },
+                { id: "2_2", text: "bbox_1=Bbox(bowl/basin,0.63,0.56,3.44,0.19,0.09,0.26)", fulltext: "", matName: "bbox_object1_bowl/basin_1" },
+                { id: "2_3", text: "bbox_2=Bbox(trophy,0.30,0.26,6.00,1.43,0.76,0.92)", fulltext: "", matName: "bbox_object2_trophy_2" },
+            ],
+            ours_reasoning: "The z coordinate of bicycle, bowl/basin and trophy is 5.34, 3.44 and 6.0. Sort the objects by z coordinate (from near to far): bowl/basin, bicycle and trophy. ",
+            ours_ans: "bowl/basin < bicycle < trophy.",
+            b1_name: "SpatialRGPT-8B",  
+            b2_name: "SpatialReasoner-7B",
+        },
+        {
+            id: 3,
+            label: "Relative Distance",
+            thumb: "images/QA_4.jpg",
+            question: "Considering suv as the reference object, is ambulance or truck closer?",
+            rgb: "images/QA_4.jpg",
+            model_url: "images/QA_4.glb",
+            b1_res: "The ambulance is closer to the viewer than the truck.",
+            b1_ans: "Refuse to answer",
+            b2_res: "<think> The 3D location of the ambulance is (4.5, 2.6, 7.9)... </think> Final answer: truck.",
+            b2_ans: "Fail to reason and answer",
+            ours_detect_list: [
+                { id: "3_1", text: "bbox_0=Bbox(suv,0.50,0.68,4.92,4.20,1.70,0.63)", fulltext: "", matName: "bbox_object0_suv_0" },
+                { id: "3_2", text: "bbox_1=Bbox(ambulance,0.08,0.54,7.99,1.02,2.30,2.45)", fulltext: "", matName: "bbox_object1_ambulance_1" },
+                { id: "3_3", text: "bbox_2=Bbox(truck,0.91,0.59,14.32,1.12,0.54,0.67)", fulltext: "", matName: "bbox_object2_truck_2" },
+            ],
+            ours_reasoning: "We can calculate the Euclidean distance between suv and ambulance... Since 5.3486 < 11.9817, ambulance is closer to suv than truck in 3D.",
+            ours_ans: "ambulance is closer to suv.",
+            cameraOrbit: "45deg 55deg 55m",
+            b1_name: "SpatialRGPT-8B",  
+            b2_name: "SpatialReasoner-7B",
+        }
+    ];
+
+    // ==========================================
+    // DATA: GROUNDING
+    // ==========================================
+    // 注意：这里假设 GLB 文件中包含了所有方法的 BBox，且材质名称遵循 Python 脚本生成的规则：
+    // bbox_{SourceTag}_{Label}_{Index}
+    // 例如: bbox_GT_chair_0, bbox_Ours_chair_1, bbox_SpatialLM_chair_2
+    // ==========================================
+    // DATA: GROUNDING
+    // ==========================================
+    const groundingData = [
+        {
+            id: 0,
+            label: "Scene 1",
+            thumb: "images/Ground_1.jpg", 
+            prompt: "Locate the 3D bbox of all the pillow.",
+            rgb: "images/Ground_1.jpg",
+            model_url: "images/Ground_1.glb", 
+            
+            // 针对每个方法单独定义 Items
+            // matName: 对应 GLB 中的材质名。不需要再用 {TAG} 占位符了，直接写全名，最稳妥。
+            
+            gt_items: [
+                { label: "pillow_0", matName: "bbox_GT_object0_Pillow_0" },
+                { label: "pillow_1", matName: "bbox_GT_object1_Pillow_1" },
+                { label: "pillow_2", matName: "bbox_GT_object2_Pillow_2" },
+                { label: "pillow_3", matName: "bbox_GT_object3_Pillow_3" }
+            ],
+            spatial_items: [
+                { label: "pillow_0", matName: "bbox_SpatialLM_object0_pillow_0" },
+                { label: "pillow_1", matName: "bbox_SpatialLM_object1_pillow_1" },
+                { label: "pillow_2", matName: "bbox_SpatialLM_object2_pillow_2" },
+                { label: "pillow_3", matName: "bbox_SpatialLM_object3_pillow_3" },
+            ],
+            qwen_items: [
+                { label: "pillow_0", matName: "bbox_Qwen3VL_object0_pillow_0" },
+                { label: "pillow_1", matName: "bbox_Qwen3VL_object1_pillow_1" },
+                { label: "pillow_2", matName: "bbox_Qwen3VL_object2_pillow_2" },
+                { label: "pillow_3", matName: "bbox_Qwen3VL_object3_pillow_3" },
+            ],
+            ours_items: [
+                { label: "pillow_0", matName: "bbox_Ours_object0_pillow_0" },
+                { label: "pillow_1", matName: "bbox_Ours_object1_pillow_1" },
+                { label: "pillow_2", matName: "bbox_Ours_object2_pillow_2" },
+                { label: "pillow_3", matName: "bbox_Ours_object3_pillow_3" },
+            ],
+            cameraOrbit: "45deg 55deg 0.1m",  // 控制旋转 (水平角度 垂直角度 距离)
+            fieldOfView: "10deg",           // 控制放大 (数值越小，物体看起来越大)
+        },
+        {
+            id: 1,
+            label: "Scene 2",
+            thumb: "images/Ground_2.jpg", 
+            prompt: "Locate the 3D bbox of all the washing/dry machine.",
+            rgb: "images/Ground_2.jpg",
+            model_url: "images/Ground_2.glb",
+            
+            gt_items: [
+                { label: "washing/dry machine_0", matName: "bbox_GT_object0_Washing_Machine-Drying_Machine_0" },
+                { label: "washing/dry machine_1", matName: "bbox_GT_object1_Washing_Machine-Drying_Machine_0" }
+            ],
+            spatial_items: [
+                { label: "washing/dry machine_0", matName: "bbox_SpatialLM_object0_washing_machine_0" },
+                { label: "washing/dry machine_1", matName: "bbox_SpatialLM_object1_washing_machine_1" }
+            ], 
+            qwen_items: [
+                { label: "washing/dry machine_0", matName: "bbox_Qwen3VL_object0_washing_machine-drying_machine_0" },
+                { label: "washing/dry machine_1", matName: "bbox_Qwen3VL_object1_washing_machine-drying_machine_0" }
+            ],
+            ours_items: [
+                { label: "washing/dry machine_0", matName: "bbox_Ours_object0_washing____machine-drying______________________________machine_0" },
+                { label: "washing/dry machine_1", matName: "bbox_Ours_object1_washing____machine-drying______________________________machine_0" }
+            ],
+            cameraOrbit: "50deg 73deg 7.38m", 
+            fieldOfView: "20deg",
+            
+            // [关键!] 手动指定聚焦中心 (X Y Z)
+            // 你可能需要根据实际模型调整这三个数字，试着把中心设在猪的位置
+            // 如果不知道具体坐标，可以先设为 "0m 0m 0m" 或模型的大概中心
+            cameraTarget: "-1.60m -1.01m -1.71m", 
+
+//             Orbit: 50deg 73deg 7.38m
+// Target: -1.60m -1.01m -1.71m
+// FOV: 20deg
+
+        },
+        {
+            id: 2,
+            label: "Scene 3",
+            thumb: "images/Ground_3.jpg", 
+            prompt: "Locate the 3D bbox of all the pig.",
+            rgb: "images/Ground_3.jpg",
+            model_url: "images/Ground_3.glb",
+            // cameraOrbit: "45deg 55deg 0.5m",
+            
+            gt_items: [
+                { label: "pig_0", matName: "bbox_GT_object0_Pig_0" },
+                { label: "pig_1", matName: "bbox_GT_object1_Pig_1" },
+                { label: "pig_2", matName: "bbox_GT_object2_Pig_2" },
+                { label: "pig_3", matName: "bbox_GT_object3_Pig_3" },
+                { label: "pig_4", matName: "bbox_GT_object4_Pig_4" }
+            ],
+            spatial_items: [
+            ],
+            qwen_items: [
+                { label: "pig_0", matName: "bbox_Qwen3VL_object0_pig_0" },
+                { label: "pig_1", matName: "bbox_Qwen3VL_object1_pig_1" },
+                { label: "pig_2", matName: "bbox_Qwen3VL_object2_pig_2" },
+                { label: "pig_3", matName: "bbox_Qwen3VL_object3_pig_3" },
+                { label: "pig_4", matName: "bbox_Qwen3VL_object4_pig_4" },
+            ],
+            ours_items: [
+                { label: "pig_0", matName: "bbox_Ours_object0_pig_0" },
+                { label: "pig_1", matName: "bbox_Ours_object1_pig_1" },
+                { label: "pig_2", matName: "bbox_Ours_object2_pig_2" },
+                { label: "pig_3", matName: "bbox_Ours_object4_pig_3" },
+                { label: "pig_4", matName: "bbox_Ours_object5_pig_4" },
+            ],
+            
+            // [BUG FIX]: 更新了正确的 Camera Target (X Y Z)
+            cameraOrbit: "39deg 64deg 48.17m", 
+            fieldOfView: "6deg",
+            
+            // [关键!] 手动指定聚焦中心 (X Y Z)
+            // 你可能需要根据实际模型调整这三个数字，试着把中心设在猪的位置
+            // 如果不知道具体坐标，可以先设为 "0m 0m 0m" 或模型的大概中心
+            cameraTarget: "-2.91m -1.81m -3.40m", 
+            
+            // [关键!] 允许放大到非常窄的视角
+            // minFov: "2deg", 
+        },
+//         Orbit: 39deg 64deg 48.17m
+// Target: -2.91m -1.81m -3.40m
+// FOV: 6deg
+
+        {
+            id: 3,
+            label: "Scene 4",
+            thumb: "images/Ground_4.jpg", 
+            prompt: "Locate the 3D bbox of all the person.",
+            rgb: "images/Ground_4.jpg",
+            model_url: "images/Ground_4.glb",
+            // cameraOrbit: "45deg 55deg 55m",
+            
+            gt_items: [
+                { label: "person_0",       matName: "bbox_GT_object0_Person_0" },
+                { label: "person_1",       matName: "bbox_GT_object1_Person_1" },
+            ],
+            spatial_items: [
+            ],
+            qwen_items: [
+            { label: "person_0",       matName: "bbox_Qwen3VL_object0_person_0" },
+            { label: "person_1",       matName: "bbox_Qwen3VL_object1_person_1" },
+            ],
+            ours_items: [
+            { label: "person_0",       matName: "bbox_Ours_object0_person_0" },
+            { label: "person_1",       matName: "bbox_Ours_object1_person_1" },
+            ],
+            // [修改] 初始视角
+            cameraOrbit: "57deg 52deg 25.87m", // 距离拉近一点，或者角度放低
+            fieldOfView: "6deg",           // 初始就放大一点
+            
+            // [关键!] 这里的坐标必须是那两个人的 3D 坐标中心
+            // 假设人在模型坐标系的位置是 X=5, Y=2, Z=-3
+            // 你需要试错或者用 3D 查看器打开 glb 查一下坐标
+            cameraTarget: "-3.35m -1.19m -3.33m",  // <--- 请尝试调整这个值来对准人
+            
+            // [关键!] 允许极度放大
+            // minFov: "1deg", 
+//             Orbit: 57deg 52deg 25.87m
+// Target: -3.35m -1.19m -3.33m
+// FOV: 6deg
+
+
+        }
+    ];
+
+
+    // ==========================================
+    // LOGIC: SHARED
+    // ==========================================
+    function animateTextChange(elementId, newText) {
+        const el = document.getElementById(elementId);
+        if(!el) return;
+        el.classList.add('changing');
+        setTimeout(() => {
+            el.innerHTML = newText;
+            el.classList.remove('changing');
+        }, 200);
+    }
+
+    function setMaterialAlpha(modelViewer, matName, alpha) {
+        if (!modelViewer.model) return;
+        // 模糊匹配：因为 Python 生成的名字可能包含空格转下划线等处理
+        // 我们尝试精确匹配，或者前缀匹配
+        const material = modelViewer.model.materials.find(m => m.name === matName || m.name === `mat_${matName}`);
+        
+        if (!material) {
+            // console.warn(`Material ${matName} not found.`);
+            return;
+        }
+        const color = material.pbrMetallicRoughness.baseColorFactor;
+        material.pbrMetallicRoughness.setBaseColorFactor([color[0], color[1], color[2], alpha]);
+    }
+
+    // ==========================================
+    // LOGIC: REASONING SECTION
+    // ==========================================
+    function initReasoning() {
+        const visualContainer = document.getElementById('visual-3d-container');
+        if(visualContainer) {
+            const loader = document.createElement('div');
+            loader.id = 'model-loading';
+            loader.style.cssText = "position:absolute; inset:0; background:rgba(255,255,255,0.8); display:flex; justify-content:center; align-items:center; z-index:10; opacity:0; pointer-events:none; transition: opacity 0.3s;";
+            loader.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:2rem; color:#cbd5e1;"></i>';
+            visualContainer.appendChild(loader);
+        }
+
+        renderReasoningNav(qaData);
+        updateReasoningContent(0, false);
+    }
+
+    function renderReasoningNav(data) {
+        const container = document.getElementById('qa-nav');
+        container.innerHTML = '';
+        data.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = `nav-item ${index === 0 ? 'active' : ''}`;
+            div.onclick = () => {
+                if(div.classList.contains('active')) return;
+                container.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                div.classList.add('active');
+                updateReasoningContent(index, true);
+            };
+            div.innerHTML = `
+                <div class="nav-thumb"><img src="${item.thumb}"></div>
+                <div class="nav-label">${item.label}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function updateReasoningContent(index, animate = true) {
+        const data = qaData[index];
+        const detectBox = document.getElementById('qa-ours-detect');
+        const modelViewer = document.getElementById('qa-model-3d');
+        const visual3dContainer = document.getElementById('visual-3d-container');
+        const loader = document.getElementById('model-loading');
+
+        const updateText = () => {
+            document.getElementById('qa-text').innerHTML = data.question;
+            
+            const b1Name = data.b1_name || 'GPT-4o';
+            const b2Name = data.b2_name || 'Qwen3-VL-8B';
+            document.getElementById('qa-b1-name').innerHTML = `<i class="fas fa-robot"></i> ${b1Name}`;
+            document.getElementById('qa-b2-name').innerHTML = `<i class="fas fa-robot"></i> ${b2Name}`;
+
+            const b1Badge = document.getElementById('qa-b1-badge');
+            if (b1Name.includes('SpatialRGPT')) {
+                b1Badge.innerText = 'RGBD'; b1Badge.className = 'modality-badge badge-rgbd';
+            } else {
+                b1Badge.innerText = 'RGB'; b1Badge.className = 'modality-badge badge-rgb';
+            }
+
+            document.getElementById('qa-b1-reasoning').innerText = data.b1_res;
+            document.getElementById('qa-b1-ans').innerText = data.b1_ans;
+            document.getElementById('qa-b2-reasoning').innerText = data.b2_res;
+            document.getElementById('qa-b2-ans').innerText = data.b2_ans;
+            
+            detectBox.innerHTML = ''; 
+            if (data.ours_detect_list && data.ours_detect_list.length > 0) {
+                data.ours_detect_list.forEach(item => {
+                    const btn = document.createElement('div');
+                    btn.className = 'grounding-btn';
+                    // btn.innerHTML = `<i class="far fa-square"></i> <span>${item.text}</span>`;
+                    btn.innerHTML = `<span>${item.text}</span>`;
+                    btn.onclick = () => {
+                        const isActive = btn.classList.contains('active');
+                        if (isActive) {
+                            btn.classList.remove('active');
+                            // btn.querySelector('i').className = 'far fa-square';
+                            setMaterialAlpha(modelViewer, item.matName, 0.0);
+                        } else {
+                            btn.classList.add('active');
+                            // btn.querySelector('i').className = 'far fa-check-square';
+                            setMaterialAlpha(modelViewer, item.matName, 0.5);
+
+                            visual3dContainer.classList.add('focused');
+                            setTimeout(() => visual3dContainer.classList.remove('focused'), 1000);
+                        }
+                    };
+                    detectBox.appendChild(btn);
+                });
+            } else {
+                detectBox.innerText = "No detection data.";
+            }
+
+            const formattedReasoning = `<div><span class="think-label">&lt;think&gt;</span>${data.ours_reasoning}</div>`;
+            document.getElementById('qa-ours-reasoning').innerHTML = formattedReasoning;
+            document.getElementById('qa-ours-ans').innerText = data.ours_ans;
+        };
+
+        if(animate) {
+            animateTextChange('qa-text', data.question);
+            animateTextChange('qa-b1-reasoning', data.b1_res);
+            animateTextChange('qa-b1-ans', data.b1_ans);
+            animateTextChange('qa-b2-reasoning', data.b2_res);
+            animateTextChange('qa-b2-ans', data.b2_ans);
+            
+            const reasoningEl = document.getElementById('qa-ours-reasoning');
+            reasoningEl.classList.add('changing');
+            setTimeout(() => { updateText(); reasoningEl.classList.remove('changing'); }, 200);
+            animateTextChange('qa-ours-ans', data.ours_ans);
+
+            const imgRgb = document.getElementById('qa-img-rgb');
+            imgRgb.style.opacity = '0';
+            modelViewer.style.opacity = '0';
+            if(loader) loader.style.opacity = '1';
+
+            setTimeout(() => {
+                imgRgb.src = data.rgb;
+                modelViewer.src = '';
+                setTimeout(() => {
+                    modelViewer.src = data.model_url;
+                    modelViewer.setAttribute('camera-orbit', data.cameraOrbit || "45deg 55deg 30m");
+                    imgRgb.onload = () => { imgRgb.style.opacity = '1'; };
+                    if (imgRgb.complete) imgRgb.style.opacity = '1';
+                    
+                    // Reasoning Section: Hide all boxes by default
+                    const onModelLoad = () => {
+                        modelViewer.style.opacity = '1';
+                        if(loader) loader.style.opacity = '0';
+                        // 遍历所有 bbox 材质并隐藏
+                        if(modelViewer.model) {
+                            modelViewer.model.materials.forEach(m => {
+                                if(m.name.includes('bbox_')) {
+                                    const c = m.pbrMetallicRoughness.baseColorFactor;
+                                    m.pbrMetallicRoughness.setBaseColorFactor([c[0],c[1],c[2], 0.0]);
+                                }
+                            });
+                        }
+                        modelViewer.removeEventListener('load', onModelLoad);
+                    };
+                    modelViewer.addEventListener('load', onModelLoad);
+                }, 50); 
+            }, 300);
+
+        } else {
+            updateText();
+            document.getElementById('qa-img-rgb').src = data.rgb;
+            document.getElementById('qa-model-3d').src = data.model_url;
+            document.getElementById('qa-model-3d').setAttribute('camera-orbit', data.cameraOrbit || "45deg 55deg 30m");
+        }
+    }
+
+    // ==========================================
+    // LOGIC: GROUNDING SECTION (NEW)
+    // ==========================================
+    function initGrounding() {
+        // Loading Spinner
+        const visualContainer = document.getElementById('g-visual-3d-container');
+        if(visualContainer) {
+            const loader = document.createElement('div');
+            loader.id = 'g-model-loading';
+            loader.style.cssText = "position:absolute; inset:0; background:rgba(255,255,255,0.8); display:flex; justify-content:center; align-items:center; z-index:10; opacity:0; pointer-events:none; transition: opacity 0.3s;";
+            loader.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:2rem; color:#cbd5e1;"></i>';
+            visualContainer.appendChild(loader);
+        }
+
+        renderGroundingNav(groundingData);
+        updateGroundingContent(0, false);
+    }
+
+    function renderGroundingNav(data) {
+        const container = document.getElementById('g-nav');
+        container.innerHTML = '';
+        data.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = `nav-item ${index === 0 ? 'active' : ''}`;
+            div.onclick = () => {
+                if(div.classList.contains('active')) return;
+                container.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                div.classList.add('active');
+                updateGroundingContent(index, true);
+            };
+            div.innerHTML = `
+                <div class="nav-thumb"><img src="${item.thumb}"></div>
+                <div class="nav-label">${item.label}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function updateGroundingContent(index, animate = true) {
+        const data = groundingData[index];
+        const modelViewer = document.getElementById('g-model-3d');
+        const loader = document.getElementById('g-model-loading');
+
+        // Helper to create buttons
+        // 现在直接传入 itemsList (数组)
+        const createButtons = (containerId, itemsList, activeClass) => {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            // 如果该方法没有预测结果，显示一个占位符或者留空
+            if (!itemsList || itemsList.length === 0) {
+                const emptyMsg = document.createElement('span');
+                emptyMsg.style.fontSize = '0.7rem';
+                emptyMsg.style.color = '#9ca3af';
+                emptyMsg.style.fontStyle = 'italic';
+                emptyMsg.innerText = 'No detection';
+                container.appendChild(emptyMsg);
+                return;
+            }
+
+            itemsList.forEach(item => {
+                const matName = item.matName; // 直接使用数据中定义的完整材质名
+                
+                const btn = document.createElement('div');
+                btn.className = 'g-btn';
+                // [修改 2] 去掉眼睛图标
+                btn.innerHTML = `${item.label}`;
+                
+                btn.onclick = () => {
+                    const isActive = btn.classList.contains(activeClass);
+                    if (isActive) {
+                        btn.classList.remove(activeClass);
+                        // [修改 2] 去掉眼睛图标切换逻辑
+                        setMaterialAlpha(modelViewer, matName, 0.0);
+                    } else {
+                        btn.classList.add(activeClass);
+                        // [修改 2] 去掉眼睛图标切换逻辑
+                        setMaterialAlpha(modelViewer, matName, 0.5); 
+                    }
+                };
+                container.appendChild(btn);
+            });
+        };
+
+        const updateUI = () => {
+            document.getElementById('g-text').innerHTML = data.prompt;
+            
+            // 分别传入对应的 items 数组
+            createButtons('g-btns-gt',      data.gt_items,      'active-gt');
+            createButtons('g-btns-spatial', data.spatial_items, 'active-spatial');
+            createButtons('g-btns-qwen',    data.qwen_items,    'active-qwen');
+            createButtons('g-btns-ours',    data.ours_items,    'active-ours');
+        };
+
+        if(animate) {
+            animateTextChange('g-text', data.prompt);
+            
+            // Image & Model Transition
+            const imgRgb = document.getElementById('g-img-rgb');
+            imgRgb.style.opacity = '0';
+            modelViewer.style.opacity = '0';
+            if(loader) loader.style.opacity = '1';
+
+            // Reset buttons visually
+            updateUI();
+
+            setTimeout(() => {
+                imgRgb.src = data.rgb;
+                modelViewer.src = '';
+                
+                setTimeout(() => {
+                    // 1. 设置模型源
+                    modelViewer.src = data.model_url;
+
+                    // 2. 设置相机轨道 (Orbit)
+                    modelViewer.setAttribute('camera-orbit', data.cameraOrbit || "45deg 55deg 30m");
+
+                    // 3. 设置初始视野 (FOV)
+                    modelViewer.setAttribute('field-of-view', data.fieldOfView || "30deg");
+
+                    // [新增] 4. 设置最小视野 (允许放大的极限)
+                    // 默认给 10deg，对于大场景给 1deg 或 2deg
+                    // modelViewer.setAttribute('min-field-of-view', data.minFov || "10deg");
+                    // 允许任意角度和距离
+                    modelViewer.setAttribute('min-camera-orbit', 'auto auto auto');
+                    modelViewer.setAttribute('max-camera-orbit', 'auto auto auto');
+                    // 允许非常小的 FOV (你截图里是 14deg，默认限制可能比这个大)
+                    modelViewer.setAttribute('min-field-of-view', '1deg'); 
+
+                    // [新增] 5. 设置相机目标 (Target - 旋转和缩放的中心)
+                    // 默认 auto (模型几何中心)，大场景需要指定具体坐标
+                    modelViewer.setAttribute('camera-target', data.cameraTarget || "auto");
+
+                    imgRgb.onload = () => { imgRgb.style.opacity = '1'; };
+                    if (imgRgb.complete) imgRgb.style.opacity = '1';
+
+                    const onModelLoad = () => {
+                        modelViewer.style.opacity = '1';
+                        if(loader) loader.style.opacity = '0';
+                        
+                        // Hide all bbox materials initially
+                        if(modelViewer.model) {
+                            modelViewer.model.materials.forEach(m => {
+                                if(m.name.includes('bbox_')) {
+                                    const c = m.pbrMetallicRoughness.baseColorFactor;
+                                    m.pbrMetallicRoughness.setBaseColorFactor([c[0],c[1],c[2], 0.0]);
+                                }
+                            });
+                        }
+                        modelViewer.removeEventListener('load', onModelLoad);
+                    };
+                    modelViewer.addEventListener('load', onModelLoad);
+                }, 50);
+            }, 300);
+
+        } else {
+            updateUI();
+            document.getElementById('g-img-rgb').src = data.rgb;
+            document.getElementById('g-model-3d').src = data.model_url;
+            document.getElementById('g-model-3d').setAttribute('camera-orbit', data.cameraOrbit || "45deg 55deg 30m");
+        }
+    }
+
+    // Initialize both sections
+    initReasoning();
+    initGrounding();
+
+    // Navbar Logic
+    const navLinks = document.querySelectorAll('#module-navbar .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+</script>
+
+<!-- ========================================================= -->
+<!-- 临时调试工具：实时显示相机参数 (调试完后可删除) -->
+<!-- ========================================================= -->
+<div id="debug-panel" style="
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background: rgba(0, 0, 0, 0.85); 
+    color: #00ff00; 
+    padding: 15px; 
+    border-radius: 8px; 
+    font-family: monospace; 
+    font-size: 14px; 
+    z-index: 9999; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    max-width: 300px;
+">
+    <div style="border-bottom: 1px solid #444; margin-bottom: 8px; padding-bottom: 4px; font-weight: bold; color: #fff;">
+        📷 Camera Debugger
+    </div>
+    <div style="margin-bottom: 4px;">
+        <span style="color:#aaa">Orbit:</span> <span id="debug-orbit">Waiting...</span>
+    </div>
+    <div style="margin-bottom: 4px;">
+        <span style="color:#aaa">Target:</span> <span id="debug-target">Waiting...</span>
+    </div>
+    <div>
+        <span style="color:#aaa">FOV:</span> <span id="debug-fov">Waiting...</span>
+    </div>
+    <div style="margin-top:8px; font-size:11px; color:#888;">
+        操作模型，复制上方参数填入代码
+    </div>
+</div>
+
+<script>
+    // 自动监听当前页面上所有的 model-viewer 组件
+    document.addEventListener('DOMContentLoaded', () => {
+        const debugOrbit = document.getElementById('debug-orbit');
+        const debugTarget = document.getElementById('debug-target');
+        const debugFov = document.getElementById('debug-fov');
+
+        function attachDebugListeners() {
+            const viewers = document.querySelectorAll('model-viewer');
+            
+            viewers.forEach(viewer => {
+                // 监听相机变化事件
+                viewer.addEventListener('camera-change', (event) => {
+                    // 获取当前相机的参数
+                    const orbit = viewer.getCameraOrbit();
+                    const target = viewer.getCameraTarget();
+                    const fov = viewer.getFieldOfView();
+
+                    // 格式化输出
+                    // Orbit: theta(deg) phi(deg) radius(m)
+                    const orbitStr = `${(orbit.theta * 180 / Math.PI).toFixed(0)}deg ${(orbit.phi * 180 / Math.PI).toFixed(0)}deg ${orbit.radius.toFixed(2)}m`;
+                    
+                    // Target: x(m) y(m) z(m)
+                    const targetStr = `${target.x.toFixed(2)}m ${target.y.toFixed(2)}m ${target.z.toFixed(2)}m`;
+                    
+                    // FOV: deg
+                    const fovStr = `${fov.toFixed(0)}deg`;
+
+                    // 更新面板
+                    debugOrbit.innerText = orbitStr;
+                    debugTarget.innerText = targetStr;
+                    debugFov.innerText = fovStr;
+                    
+                    // 高亮当前操作的 viewer 边框，方便确认
+                    viewers.forEach(v => v.style.outline = 'none');
+                    viewer.style.outline = '2px solid #00ff00';
+                });
+            });
+        }
+
+        // 初始绑定
+        attachDebugListeners();
+
+        // 因为你的页面有动态切换模型逻辑，每隔2秒重新绑定一次，防止丢失监听
+        setInterval(attachDebugListeners, 2000);
+    });
+</script>
+
+</body>
+</html>
