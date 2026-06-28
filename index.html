@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel="stylesheet" type="text/css" href="stylesheet.css">
-	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>Ⓦ</text></svg>">
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%231f6feb'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-family='Arial, Helvetica, sans-serif' font-size='52' font-weight='700' fill='white'%3EW%3C/text%3E%3C/svg%3E">
   
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic' rel='stylesheet' type='text/css'>
@@ -57,6 +57,56 @@
       opacity: 0;
     }
   }
+
+  .research-toggle {
+    display: inline-flex;
+    align-items: baseline;
+    margin-left: 18px;
+    vertical-align: baseline;
+  }
+
+  .research-toggle::before {
+    content: "[";
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 22px;
+  }
+
+  .research-toggle::after {
+    content: "]";
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 22px;
+  }
+
+  .research-toggle button {
+    border: 0;
+    background: transparent;
+    color: #1772d0;
+    cursor: pointer;
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 22px;
+    line-height: 1.2;
+    padding: 0 4px;
+    text-transform: capitalize;
+  }
+
+  .research-toggle button.active {
+    color: #000000;
+  }
+
+  .research-toggle button + button::before {
+    color: #555555;
+    content: "|";
+    font-weight: 400;
+    margin-right: 8px;
+  }
+
+  .research-full-only {
+    display: none;
+  }
+
+  body.research-full .research-full-only {
+    display: table-row;
+  }
 </style>
 <script>
   function toggleTeaser(prefix, showAnim) {
@@ -70,6 +120,18 @@
     anim.style.display = showAnim ? 'inline' : 'none';
     still.style.display = showAnim ? 'none' : 'inline';
   }
+
+  function setResearchView(mode) {
+    const showFull = mode === 'full';
+    document.body.classList.toggle('research-full', showFull);
+    document.querySelectorAll('[data-research-view]').forEach((button) => {
+      button.classList.toggle('active', button.dataset.researchView === mode);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setResearchView('selected');
+  });
 </script>
 </head>
 
@@ -103,8 +165,7 @@
                       <li style="font-size:20px"><a class='name' href="">Home</a></li>
                       
                       <li style="font-size:20px"><a class='name' href="#news">News</a></li>
-                      <li style="font-size:20px"><a class='name' href="#pre-prints">Pre-prints</a></li>
-                      <li style="font-size:20px"><a class='name' href="#conference">Conference</a></li>
+                      <li style="font-size:20px"><a class='name' href="#research">Research</a></li>
                       <li style="font-size:20px"><a class='name' href="#services">Services</a></li>
                   </ul>
                 </div>
@@ -220,17 +281,26 @@
         </table>
 
         
-        <a id="pre-prints"></a>
+        <a id="research"></a>
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
             <tr>
             <td style="padding:20px;width:100%;vertical-align:middle">
-              <heading>Pre-Prints</heading>
+              <heading>Research</heading>
+              <span class="research-toggle" aria-label="Research view">
+                <button type="button" class="active" data-research-view="selected" onclick="setResearchView('selected')">selected</button>
+                <button type="button" data-research-view="full" onclick="setResearchView('full')">full</button>
+              </span>
             </td>
           </tr>
         </tbody></table>
 
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>					
           
+          <tr>
+            <td colspan="2" style="padding:20px 20px 5px 20px;width:100%;vertical-align:middle">
+              <span style="font-size:16px;">3D Spatial Reasoning &amp; Geometric Perception</span>
+            </td>
+          </tr>
           
           <tr onmouseout="n3dvlm_stop()" onmouseover="n3dvlm_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
@@ -269,6 +339,80 @@
             </td>
           </tr>
 
+          <tr onmouseout="depthvlm_stop()" onmouseover="depthvlm_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='depthvlm_still'><img src="images/depthvlm.png" width="200"></div>
+              <script type="text/javascript">
+                function depthvlm_start() {
+                  toggleTeaser('depthvlm', true);
+                }
+
+                function depthvlm_stop() {
+                  toggleTeaser('depthvlm', false);
+                }
+                depthvlm_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://depthvlm.github.io/">
+                <papertitle>Unlocking Dense Metric Depth Estimation in VLMs</papertitle>
+              </a>
+              <br>
+              <a href="https://hanxunyu.github.io/">Hanxun Yu<sup>*</sup></a>,
+              Xuan Qu<sup>*</sup>,
+              <strong>Yuxin Wang</strong>,
+              <a href="https://person.zju.edu.cn/jkzhu">Jianke Zhu</a>,
+              <a href="https://www.kelei.site/">Lei Ke</a>
+              <br>
+              <em>arXiv</em>, 2026
+              <br>
+              <a href="https://depthvlm.github.io/">project page</a> /
+              <a href="https://arxiv.org/abs/2605.15876">arxiv</a> /
+              <a href="https://github.com/hanxunyu/DepthVLM">code</a>
+            </td>
+          </tr>
+
+          <tr class="research-full-only" onmouseout="stream3dvlm_stop()" onmouseover="stream3dvlm_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='stream3dvlm_still'><img src="images/stream3d-vlm.png" width="200"></div>
+              <script type="text/javascript">
+                function stream3dvlm_start() {
+                  toggleTeaser('stream3dvlm', true);
+                }
+
+                function stream3dvlm_stop() {
+                  toggleTeaser('stream3dvlm', false);
+                }
+                stream3dvlm_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://stream3d-vlm.github.io/">
+                <papertitle>Stream3D-VLM: Online 3D Spatial Understanding with Incremental Geometry Priors</papertitle>
+              </a>
+              <br>
+              <a href="https://hanxunyu.github.io/">Hanxun Yu<sup>*</sup></a>,
+              Xuan Qu<sup>*</sup>,
+              <a href="https://www.kelei.site/">Lei Ke</a>,
+              <a href="https://cyrilsterling.github.io/">Boqiang Zhang</a>,
+              <strong>Yuxin Wang</strong>,
+              <a href="https://person.zju.edu.cn/jkzhu">Jianke Zhu</a>,
+              <a href="https://sites.google.com/view/dongyu888/">Dong Yu</a>
+              <br>
+              <strong><em>ECCV</em>, 2026</strong>
+              <br>
+              <a href="https://stream3d-vlm.github.io/">project page</a> /
+              <a href="https://arxiv.org/abs/2606.06891">arxiv</a> /
+              <a href="https://github.com/hanxunyu/Stream3D-VLM">code</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2" style="padding:20px 20px 5px 20px;width:100%;vertical-align:middle">
+              <span style="font-size:16px;">3D Modeling &amp; Manipulation</span>
+            </td>
+          </tr>
+
           <tr onmouseout="f3dgs_stop()" onmouseover="f3dgs_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <div id='f3dgs_still'><img src="publications/F3D-Gaus/videos/output_grid_clip_teaser.gif" width="200"></div>
@@ -300,46 +444,8 @@
             </td>
           </tr>
 
-          <!-- <tr onmouseout="one4d_stop()" onmouseover="one4d_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div id='one4d_still'><img src="images/one4d_teaser.png" width="200"></div>
-              <script type="text/javascript">
-                function one4d_start() {
-                  toggleTeaser('one4d', true);
-                }
-
-                function one4d_stop() {
-                  toggleTeaser('one4d', false);
-                }
-                one4d_stop()
-              </script>
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://mizhenxing.github.io/One4D/">
-                <papertitle>	
-                  One4D: Unified 4D Generation and Reconstruction via Decoupled LoRA Control</papertitle>
-              </a>
-              <br>
-              <a href="https://mizhenxing.github.io/">Zhenxing Mi</a>, <strong>Yuxin Wang</strong>, <a href="https://www.danxurgb.net/">Dan Xu</a>
-              <br>
-              <em>arXiv</em>, 2025
-              <br>
-              <a href="https://mizhenxing.github.io/One4D/">project page & demo</a> /
-              <a href="https://arxiv.org/abs/2511.18922">arxiv</a> /
-              <a href="https://github.com/MiZhenxing/One4D">code</a>
-            </td>
-          </tr> -->
         </tbody></table>
 
-
-        <a id="conference"></a>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr>
-            <td style="padding:20px;width:100%;vertical-align:middle">
-              <heading>Conference</heading>
-            </td>
-          </tr>
-        </tbody></table>
 
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>					
           
@@ -443,9 +549,47 @@
               <br>
               <strong><em>ECCV</em>, 2026</strong>
               <br>
-              <a href="https://mizhenxing.github.io/One4D/">project page & demo</a> /
+              <a href="https://mizhenxing.github.io/One4D/">project page</a> /
               <a href="https://arxiv.org/abs/2511.18922">arxiv</a> /
               <a href="https://github.com/MiZhenxing/One4D">code</a>
+            </td>
+          </tr>
+
+          <tr class="research-full-only" onmouseout="copart_stop()" onmouseover="copart_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <!-- <div id='copart_still'><img src="images/copart_teaser.png" width="200"></div> -->
+              <!-- <div id='f3dgs_still'><img src="images/copart_teaser.gif" width="200"></div> -->
+              <div id='copart_still'><img src="images/copart_teaser_compressed.gif" width="200"></div>
+              <script type="text/javascript">
+                function copart_start() {
+                  toggleTeaser('copart', true);
+                }
+
+                function copart_stop() {
+                  toggleTeaser('copart', false);
+                }
+                copart_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://hkdsc.github.io/project/copart/">
+                <papertitle>From One to More: Contextual Part Latents for 3D Generation</papertitle>
+              </a>
+              <br>
+              <a href="https://hkdsc.github.io/">Shaocong Dong</a>, <a href="https://dinglihe.github.io/">Lihe Ding</a>, <a href="https://xiao-chen.tech/">Xiao Chen</a>, <a href="https://scholar.google.com/citations?user=plCD9wwAAAAJ">Yaokun Li</a>, <strong>Yuxin Wang</strong>, <a href="https://wangandyyucheng.github.io/">Yucheng Wang</a>, <a href="https://qwang666.github.io/">Qi Wang</a>, <a href="https://stevejaehyeok.github.io/">Jaehyeok Kim</a>, <a href="https://scholar.google.com/citations?user=BXoHuGwAAAAJ">Chenjian Gao</a>, <a href="https://www.linkedin.com/in/zhanpeng-huang-85853384?originalSubdomain=hk">Zhanpeng Huang</a>, <a href="https://openreview.net/profile?id=~Zibin_Wang1">Zibin Wang</a>, <a href="https://tianfan.info/">Tianfan Xue</a>, <a href="https://www.danxurgb.net/">Dan Xu</a>
+              <br>
+              <strong><em>ICCV</em>, 2025</strong>
+              <br>
+              <a href="https://hkdsc.github.io/project/copart/">project page</a> /
+              <a href="https://arxiv.org/abs/2507.08772">arxiv</a> /
+              <a href="https://huggingface.co/datasets/dscdyc/partverse">data</a> /
+              <a href="https://github.com/hkdsc/copart/">code</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2" style="padding:20px 20px 5px 20px;width:100%;vertical-align:middle">
+              <span style="font-size:16px;">3D/4D Datasets &amp; Benchmarks</span>
             </td>
           </tr>
 
@@ -539,80 +683,6 @@
               <a href="https://arxiv.org/abs/2305.13353">arxiv</a> /
               <a href="https://openxdlab.org.cn/details/RenderMe-360">data</a> /
               <a href="https://github.com/RenderMe-360/RenderMe-360">code</a>
-              <!-- <a href="data/BarronMalikECCV2012.bib">bibtex</a> / -->
-              <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
-              <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
-              <!-- <p>This paper is subsumed by <a href="#SIRFS">SIRFS</a>.</p> -->
-            </td>
-          </tr>
-
-          <tr onmouseout="stream3dvlm_stop()" onmouseover="stream3dvlm_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div id='stream3dvlm_still'><img src="images/stream3d-vlm.png" width="200"></div>
-              <script type="text/javascript">
-                function stream3dvlm_start() {
-                  toggleTeaser('stream3dvlm', true);
-                }
-
-                function stream3dvlm_stop() {
-                  toggleTeaser('stream3dvlm', false);
-                }
-                stream3dvlm_stop()
-              </script>
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://stream3d-vlm.github.io/">
-                <papertitle>Stream3D-VLM: Online 3D Spatial Understanding with Incremental Geometry Priors</papertitle>
-              </a>
-              <br>
-              <a href="https://hanxunyu.github.io/">Hanxun Yu<sup>*</sup></a>,
-              <a href="">Xuan Qu<sup>*</sup></a>,
-              <a href="https://www.kelei.site/">Lei Ke</a>,
-              <a href="https://cyrilsterling.github.io/">Boqiang Zhang</a>,
-              <strong>Yuxin Wang</strong>,
-              <a href="https://person.zju.edu.cn/jkzhu">Jianke Zhu</a>,
-              <a href="https://sites.google.com/view/dongyu888/">Dong Yu</a>
-              <br>
-              <strong><em>ECCV</em>, 2026</strong>
-              <br>
-              <a href="https://stream3d-vlm.github.io/">project page</a> /
-              <a href="https://arxiv.org/abs/2606.06891">arxiv</a> /
-              <a href="https://github.com/hanxunyu/Stream3D-VLM">code</a>
-            </td>
-          </tr>
-
-          <tr onmouseout="copart_stop()" onmouseover="copart_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <!-- <div id='ssrnet_anim' class='hidden'>
-                <a href=""><img src="images/ECCV2012_small.gif"></a>
-              </div> -->
-              <!-- <div id='copart_still'><img src="images/copart_teaser.png" width="200"></div> -->
-              <!-- <div id='f3dgs_still'><img src="images/copart_teaser.gif" width="200"></div> -->
-              <div id='copart_still'><img src="images/copart_teaser_compressed.gif" width="200"></div>
-              <script type="text/javascript">
-                function copart_start() {
-                  toggleTeaser('copart', true);
-                }
-
-                function copart_stop() {
-                  toggleTeaser('copart', false);
-                }
-                copart_stop()
-              </script>
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://hkdsc.github.io/project/copart/">
-                <papertitle>From One to More: Contextual Part Latents for 3D Generation</papertitle>
-              </a>
-              <br>
-              <a href="https://hkdsc.github.io/">Shaocong Dong</a>, <a href="https://dinglihe.github.io/">Lihe Ding</a>, <a href="https://xiao-chen.tech/">Xiao Chen</a>, <a href="https://scholar.google.com/citations?user=plCD9wwAAAAJ">Yaokun Li</a>, <strong>Yuxin Wang</strong>, <a href="https://wangandyyucheng.github.io/">Yucheng Wang</a>, <a href="https://qwang666.github.io/">Qi Wang</a>, <a href="https://stevejaehyeok.github.io/">Jaehyeok Kim</a>, <a href="https://scholar.google.com/citations?user=BXoHuGwAAAAJ">Chenjian Gao</a>, <a href="https://www.linkedin.com/in/zhanpeng-huang-85853384?originalSubdomain=hk">Zhanpeng Huang</a>, <a href="https://openreview.net/profile?id=~Zibin_Wang1">Zibin Wang</a>, <a href="https://tianfan.info/">Tianfan Xue</a>, <a href="https://www.danxurgb.net/">Dan Xu</a>
-              <br>
-              <strong><em>ICCV</em>, 2025</strong>
-              <br>
-              <a href="https://hkdsc.github.io/project/copart/">project page</a> /
-              <a href="https://arxiv.org/abs/2507.08772">arxiv</a> /
-              <a href="https://huggingface.co/datasets/dscdyc/partverse">data</a> /
-              <a href="https://github.com/hkdsc/copart/">code</a>
               <!-- <a href="data/BarronMalikECCV2012.bib">bibtex</a> / -->
               <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
               <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
