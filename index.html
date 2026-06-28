@@ -57,7 +57,20 @@
       opacity: 0;
     }
   }
-  </style>
+</style>
+<script>
+  function toggleTeaser(prefix, showAnim) {
+    const anim = document.getElementById(`${prefix}_anim`);
+    const still = document.getElementById(`${prefix}_still`);
+
+    if (!anim || !still) {
+      return;
+    }
+
+    anim.style.display = showAnim ? 'inline' : 'none';
+    still.style.display = showAnim ? 'none' : 'inline';
+  }
+</script>
 </head>
 
 <body>
@@ -176,7 +189,7 @@
                     <li>
                         <!-- <strong> -->
                           <span style="color: red;">
-                            I am currently seeking internship opportunities for 2025. If you are interested, please feel free to reach out to me. 
+                            I am currently seeking internship opportunities for 2025/2026. If you are interested, please feel free to reach out to me. 
                           </span>
                       <!-- </strong> -->
                     </li>
@@ -224,13 +237,11 @@
               <div id='n3dvlm_still'><img src="publications/N3D-VLM/images/model_3.2_crop.png" width="200"></div>
               <script type="text/javascript">
                 function n3dvlm_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('n3dvlm', true);
                 }
 
                 function n3dvlm_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('n3dvlm', false);
                 }
                 n3dvlm_stop()
               </script>
@@ -263,13 +274,11 @@
               <div id='f3dgs_still'><img src="publications/F3D-Gaus/videos/output_grid_clip_teaser.gif" width="200"></div>
               <script type="text/javascript">
                 function f3dgs_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('f3dgs', true);
                 }
 
                 function f3dgs_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('f3dgs', false);
                 }
                 f3dgs_stop()
               </script>
@@ -291,18 +300,16 @@
             </td>
           </tr>
 
-          <tr onmouseout="one4d_stop()" onmouseover="one4d_start()">
+          <!-- <tr onmouseout="one4d_stop()" onmouseover="one4d_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <div id='one4d_still'><img src="images/one4d_teaser.png" width="200"></div>
               <script type="text/javascript">
                 function one4d_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('one4d', true);
                 }
 
                 function one4d_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('one4d', false);
                 }
                 one4d_stop()
               </script>
@@ -321,7 +328,7 @@
               <a href="https://arxiv.org/abs/2511.18922">arxiv</a> /
               <a href="https://github.com/MiZhenxing/One4D">code</a>
             </td>
-          </tr>
+          </tr> -->
         </tbody></table>
 
 
@@ -343,13 +350,11 @@
               <div id='gscream_still'><img src="images/gscream_teaser_compressed.gif" width="200"></div>
               <script type="text/javascript">
                 function gscream_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('gscream', true);
                 }
   
                 function gscream_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('gscream', false);
                 }
                 gscream_stop()
               </script>
@@ -385,13 +390,11 @@
               <div id='udcnerf_still'><img src="images/udcnerf_teaser_v2_cut.gif" width="200"></div>
               <script type="text/javascript">
                 function udcnerf_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('udcnerf', true);
                 }
 
                 function udcnerf_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('udcnerf', false);
                 }
                 udcnerf_stop()
               </script>
@@ -415,6 +418,37 @@
             </td>
           </tr>
 
+
+          <tr onmouseout="one4d_stop()" onmouseover="one4d_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='one4d_still'><img src="images/one4d_teaser.png" width="200"></div>
+              <script type="text/javascript">
+                function one4d_start() {
+                  toggleTeaser('one4d', true);
+                }
+
+                function one4d_stop() {
+                  toggleTeaser('one4d', false);
+                }
+                one4d_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://mizhenxing.github.io/One4D/">
+                <papertitle>	
+                  One4D: Unified 4D Generation and Reconstruction via Decoupled LoRA Control</papertitle>
+              </a>
+              <br>
+              <a href="https://mizhenxing.github.io/">Zhenxing Mi</a>, <strong>Yuxin Wang</strong>, <a href="https://www.danxurgb.net/">Dan Xu</a>
+              <br>
+              <strong><em>ECCV</em>, 2026</strong>
+              <br>
+              <a href="https://mizhenxing.github.io/One4D/">project page & demo</a> /
+              <a href="https://arxiv.org/abs/2511.18922">arxiv</a> /
+              <a href="https://github.com/MiZhenxing/One4D">code</a>
+            </td>
+          </tr>
+
           
           <tr onmouseout="omniobject3d_stop()" onmouseover="omniobject3d_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
@@ -424,13 +458,11 @@
               <div id='omniobject3d_still'><img src="images/omniobject3d_teaser.png" width="200"></div>
               <script type="text/javascript">
                 function omniobject3d_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('omniobject3d', true);
                 }
 
                 function omniobject3d_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('omniobject3d', false);
                 }
                 omniobject3d_stop()
               </script>
@@ -470,13 +502,11 @@
               </div> -->
               <script type="text/javascript">
                 function renderme_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('renderme', true);
                 }
 
                 function renderme_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('renderme', false);
                 }
                 renderme_stop()
               </script>
@@ -516,6 +546,41 @@
             </td>
           </tr>
 
+          <tr onmouseout="stream3dvlm_stop()" onmouseover="stream3dvlm_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='stream3dvlm_still'><img src="images/stream3d-vlm.png" width="200"></div>
+              <script type="text/javascript">
+                function stream3dvlm_start() {
+                  toggleTeaser('stream3dvlm', true);
+                }
+
+                function stream3dvlm_stop() {
+                  toggleTeaser('stream3dvlm', false);
+                }
+                stream3dvlm_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://stream3d-vlm.github.io/">
+                <papertitle>Stream3D-VLM: Online 3D Spatial Understanding with Incremental Geometry Priors</papertitle>
+              </a>
+              <br>
+              <a href="https://hanxunyu.github.io/">Hanxun Yu<sup>*</sup></a>,
+              <a href="">Xuan Qu<sup>*</sup></a>,
+              <a href="https://www.kelei.site/">Lei Ke</a>,
+              <a href="https://cyrilsterling.github.io/">Boqiang Zhang</a>,
+              <strong>Yuxin Wang</strong>,
+              <a href="https://person.zju.edu.cn/jkzhu">Jianke Zhu</a>,
+              <a href="https://sites.google.com/view/dongyu888/">Dong Yu</a>
+              <br>
+              <strong><em>ECCV</em>, 2026</strong>
+              <br>
+              <a href="https://stream3d-vlm.github.io/">project page</a> /
+              <a href="https://arxiv.org/abs/2606.06891">arxiv</a> /
+              <a href="https://github.com/hanxunyu/Stream3D-VLM">code</a>
+            </td>
+          </tr>
+
           <tr onmouseout="copart_stop()" onmouseover="copart_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <!-- <div id='ssrnet_anim' class='hidden'>
@@ -523,16 +588,14 @@
               </div> -->
               <!-- <div id='copart_still'><img src="images/copart_teaser.png" width="200"></div> -->
               <!-- <div id='f3dgs_still'><img src="images/copart_teaser.gif" width="200"></div> -->
-              <div id='f3dgs_still'><img src="images/copart_teaser_compressed.gif" width="200"></div>
+              <div id='copart_still'><img src="images/copart_teaser_compressed.gif" width="200"></div>
               <script type="text/javascript">
                 function copart_start() {
-                  document.getElementById('eccv12_anim').style.display = 'inline';
-                  document.getElementById('eccv12_still').style.display = 'none';
+                  toggleTeaser('copart', true);
                 }
 
                 function copart_stop() {
-                  document.getElementById('eccv12_anim').style.display = 'none';
-                  document.getElementById('eccv12_still').style.display = 'inline';
+                  toggleTeaser('copart', false);
                 }
                 copart_stop()
               </script>
@@ -554,6 +617,38 @@
               <!-- <a href="https://drive.google.com/file/d/12x8mhqpFsA6p0u6ZQW-ieRKF8hlQBKKe/view?usp=sharing">poster</a> / -->
               <!-- <a href="http://www.youtube.com/watch?v=NnePYprvFvA">video</a> -->
               <!-- <p>This paper is subsumed by <a href="#SIRFS">SIRFS</a>.</p> -->
+            </td>
+          </tr>
+
+          <tr onmouseout="talkingfaces_stop()" onmouseover="talkingfaces_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div id='talkingfaces_still'><img src="images/yuxin2022talking.png" width="200"></div>
+              <script type="text/javascript">
+                function talkingfaces_start() {
+                  toggleTeaser('talkingfaces', true);
+                }
+
+                function talkingfaces_stop() {
+                  toggleTeaser('talkingfaces', false);
+                }
+                talkingfaces_stop()
+              </script>
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://link.springer.com/book/10.1007/978-3-030-87664-7">
+                <papertitle>Talking Faces: Audio-to-Video Face Generation</papertitle>
+              </a>
+              <br>
+              <strong>Yuxin Wang</strong>,
+              <a href="https://scholar.google.com/citations?user=kII4yekAAAAJ&amp;hl=en">Linsen Song</a>,
+              <a href="https://wywu.github.io/">Wayne Wu</a>,
+              <a href="https://scholar.google.com/citations?user=AerkT0YAAAAJ&amp;hl=zh-CN">Chen Qian</a>,
+              <a href="https://people.ucas.ac.cn/~heran?language=en">Ran He</a>,
+              <a href="https://www.mmlab-ntu.com/person/ccloy/">Chen Change Loy</a>
+              <br>
+              <strong><em>Handbook of Digital Face Manipulation and Detection</em>, Springer, 2022</strong>
+              <br>
+              <a href="https://link.springer.com/book/10.1007/978-3-030-87664-7">project page</a>
             </td>
           </tr>
 
