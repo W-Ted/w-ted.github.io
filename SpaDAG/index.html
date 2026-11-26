@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpaDAG: Planning and Learning with Checkable Task Graphs for Spatial Reasoning</title>
+  <meta name="description" content="SpaDAG translates each spatial question into a checkable task graph, executes it node by node, checks and revises nodes at their boundaries, and improves its planner by learning from execution-verified plans.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SpaDAG: Planning and Learning with Checkable Task Graphs for Spatial Reasoning">
+  <meta property="og:description" content="A planner–executor agent for spatial reasoning built around checkable task graphs.">
+  <meta property="og:url" content="https://w-ted.github.io/SpaDAG/">
+  <meta property="og:image" content="https://w-ted.github.io/SpaDAG/static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="static/images/favicon.png">
+  <script type="importmap">
+    { "imports": { "three": "./static/js/three.module.min.js",
+                   "three/addons/": "./static/js/three-addons/" } }
+  </script>
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("static/fonts/InterVariable-latin.woff2") format("woff2");
+      font-weight: 400 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --text: #1f2937;
+      --heading: #111827;
+      --muted: #6b7280;
+      --soft: #4b5563;
+      --line: #e5e7eb;
+      --panel: #f9fafb;
+      --blue: #2166ac;
+      --green: #009e73;
+      --green-soft: #ddf2ea;
+      --orange: #d55e00;
+      --orange-soft: #fbe3d3;
+      --teal: #137f78;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 62px; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: #fff;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; }
+    figure { margin: 0; }
+
+    nav {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 8px 20px; min-height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: #111; font-weight: 700; font-size: 1.1rem; }
+    .brand:hover { text-decoration: none; }
+    .brand img { width: 28px; height: 28px; }
+    .nav-links { display: flex; gap: 2px; padding: 3px; border-radius: 99px; background: #f3f4f6; }
+    .nav-links a { color: var(--muted); padding: 6px 14px; border-radius: 99px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; transition: all 0.2s ease; }
+    .nav-links a:hover { color: #111; background: rgba(0, 0, 0, 0.03); text-decoration: none; }
+    .nav-links a.active { color: #000; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 15px 60px; }
+    section { margin-top: 50px; }
+    .section-title { margin: 0 0 12px; color: var(--heading); font-size: 1.8rem; font-weight: 800; line-height: 1.4; letter-spacing: -0.02em; text-align: center; }
+
+    main > header { text-align: center; padding: 24px 20px 16px; }
+    .proj-title { margin: 0; color: #111; font-size: 2.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
+    .proj-title .name { color: var(--blue); }
+    .title-logo { display: inline-block; width: 1.18em; height: 1.18em; margin-right: 0.22em; vertical-align: -0.2em; }
+    .authors { margin-top: 15px; color: #374151; font-size: 1.1rem; line-height: 1.4; }
+    .authors a { color: #2563eb; font-weight: 500; white-space: nowrap; }
+    .authors a:hover { color: #1d4ed8; text-decoration: none; }
+    .authors sup { font-weight: 500; }
+    .mail { width: 1.05em; height: 0.8em; margin-left: 0.2em; color: var(--muted); vertical-align: -0.02em; }
+    .affiliations { margin-top: 10px; color: var(--muted); font-size: 0.9rem; }
+    .affiliations span { margin: 0 8px; white-space: nowrap; }
+    .affiliations sup { margin-right: 1px; }
+    .buttons { margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 8px;
+      background: #1f2937; color: #fff; font-weight: 600; font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .button:hover { background: #000; text-decoration: none; transform: translateY(-1px); }
+    .button svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .hero { max-width: 75%; margin: 28px auto 0; }
+    .teaser { padding: 8px 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+    .teaser img { display: block; width: 100%; }
+    .hero figcaption { margin-top: 12px; }
+
+    .abstract { max-width: 75%; margin: 0 auto; padding: 36px 20px; background: var(--panel); border-radius: 12px; color: var(--soft); text-align: justify; }
+    .abstract b { font-weight: 700; }
+
+    .paper-figure { max-width: 75%; margin: 0 auto 50px; }
+    .paper-figure:last-child { margin-bottom: 0; }
+    .paper-figure img { display: block; width: 100%; max-width: 1000px; height: auto; margin: 0 auto; padding: 6px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    figcaption { margin: 8px 0 0; color: var(--soft); font-size: 0.95rem; text-align: justify; }
+    figcaption strong { font-weight: 700; }
+    .paper-table figcaption { margin: 0 0 12px; }
+
+    .group + .group { margin-top: 50px; }
+
+    .case { padding: 15px; background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    .case + .case { margin-top: 40px; }
+    .case-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; }
+    .case-no { font-weight: 800; }
+    .chip { padding: 0 8px; font-size: 0.72rem; font-weight: 600; line-height: 1.5; color: #374151; background: #fff; border: 1px solid #dbe4f0; border-radius: 99px; }
+    .case-title { color: var(--text); font-size: 1rem; font-weight: 600; }
+
+    .qbar { margin-bottom: 12px; padding: 10px 15px; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; }
+    .q-label, .cell-label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .q-label { margin-bottom: 2px; color: #60a5fa; }
+    .q-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-bottom: 2px; }
+    .q-head .q-label { margin: 0; }
+    .q-text { margin: 0 0 8px; color: #1e40af; font-size: 1.05rem; font-weight: 600; line-height: 1.3; }
+    .q-media { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+    .q-media .thumb img { width: auto; height: 160px; }
+    .q-media.wide .thumb img { height: 130px; }
+    .opts { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); justify-items: start; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .opts.row { grid-template-columns: repeat(4, max-content); }
+    .opts li { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; font-size: 0.85rem; color: #374151; background: #fff; border: 1px solid #dbe4f0; border-radius: 6px; }
+    .opts b { color: #1e40af; }
+    .opts .gt { color: #065f46; font-weight: 600; background: var(--green-soft); border-color: #8fd4bd; }
+    .opts .gt b { color: #065f46; }
+
+    .qbar.with-3d { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 18px; }
+    .q-3d { display: flex; flex-direction: column; min-width: 0; }
+    .case-grid { display: grid; grid-template-columns: 42% 56%; grid-template-areas: "base ours"; gap: 15px 2%; align-items: start; }
+    .case-grid.plans { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 15px; align-items: stretch; }
+    .case-grid.plans > div { display: flex; flex-direction: column; }
+    .case-grid.plans .method { flex: 1 1 auto; }
+    .cell-base { grid-area: base; }
+    .cell-ours { grid-area: ours; }
+    .cell-label { margin: 0 0 4px; color: var(--muted); }
+
+    .thumb { position: relative; margin: 0; }
+    .thumb img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 7px; }
+    .tag { position: absolute; left: 5px; top: 5px; padding: 0 5px; color: #fff; font-size: 0.66rem; font-weight: 700; line-height: 1.55; background: rgba(17, 24, 39, 0.76); border-radius: 4px; }
+    .pc-view { position: relative; flex: 1 1 auto; min-height: 260px; overflow: hidden; background: #f8fafc; border: 1px solid var(--line); border-radius: 10px; }
+    .pc-view canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+    .pc-view canvas:active { cursor: grabbing; }
+    .pc-view:not(.ready)::after { content: "Loading 3D reconstruction…"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 0.85rem; }
+    .pc-view.failed::after { content: "The 3D view could not be loaded"; }
+    .pc-view:not(.ready) .pc-reset { opacity: 0; }
+    .pc-reset { position: absolute; z-index: 2; top: 8px; right: 8px; padding: 2px 9px; color: var(--soft); font: inherit; font-size: 0.75rem; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+    .pc-tags { position: absolute; z-index: 1; inset: 0; pointer-events: none; }
+    .pc-tag { position: absolute; width: 0; height: 0; }
+    .pc-tag i { position: absolute; left: -4.5px; top: -4.5px; width: 9px; height: 9px; background: var(--c); border: 2px solid #fff; border-radius: 50%; box-sizing: border-box; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12); }
+    .pc-tag span { position: absolute; left: 0; bottom: 7px; padding: 0 7px; color: #fff; font-size: 0.72rem; font-weight: 600; line-height: 1.65; white-space: nowrap; background: var(--c); border-radius: 99px; transform: translateX(-50%); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+    .pc-tag.tip i { display: none; }
+    .pc-tag.tip span { bottom: 4px; color: var(--c); background: rgba(255, 255, 255, 0.92); border: 1px solid var(--c); }
+    .pc-tag.below span { top: 7px; bottom: auto; }
+    .pc-tag.left span, .pc-tag.right span { top: 0; bottom: auto; transform: translateY(-50%); }
+    .pc-tag.left span { left: auto; right: 8px; }
+    .pc-tag.right span { left: 8px; }
+    .method-note { margin: 6px 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+
+    .stack { display: grid; gap: 8px; }
+    .method { overflow: hidden; background: #fff; border: 1px solid; border-radius: 10px; }
+    .method.bad { background: #fffaf6; border-color: #f2c7aa; }
+    .method.good { border: 2px solid #8fd4bd; box-shadow: 0 4px 12px rgba(0, 158, 115, 0.06); }
+    .method-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 32px; padding: 6px 12px; font-size: 0.9rem; font-weight: 700; border-bottom: 1px solid; }
+    .method.bad .method-head { color: #b34700; background: #fff0e6; border-color: #f8dccb; }
+    .method.good .method-head { color: #047857; background: #ecf8f3; border-color: #c9ebdf; }
+    .method-head small { margin-left: 4px; color: var(--muted); font-weight: 600; }
+    .ans { display: inline-flex; align-items: center; gap: 5px; font-weight: 800; }
+    .mk { flex: none; width: 15px; height: 15px; }
+    .method-body { padding: 8px 12px 10px; color: #374151; font-size: 0.95rem; line-height: 1.5; }
+    .method.slim .method-body { padding: 6px 12px 8px; }
+
+    .quote { margin: 0; color: #4b5563; font-style: italic; line-height: 1.5; }
+    .hit { color: var(--orange); font-weight: 650; }
+    .hit-ok { color: #047857; font-weight: 650; }
+    code.log { display: inline-block; max-width: 100%; margin: 1px 0; padding: 1px 5px; color: #1f2937; font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; vertical-align: top; background: #f1f3f6; border-radius: 4px; }
+    .method.bad code.log { background: #f9ebe1; }
+
+    .chain { margin: 0; padding: 0; list-style: none; }
+    .chain li { position: relative; padding: 0 0 8px 19px; line-height: 1.5; }
+    .chain li:last-child { padding-bottom: 0; }
+    .chain li::before { content: ""; position: absolute; left: 0; top: 5px; width: 8px; height: 8px; background: #e6e6e6; border: 1.5px solid #8c8c8c; border-radius: 50%; }
+    .chain li:not(:last-child)::after { content: ""; position: absolute; left: 5px; top: 17px; bottom: 1px; width: 1.5px; background: #d1d5db; }
+    .chain .ok::before { background: var(--green-soft); border-color: var(--green); }
+    .chain .bad::before { background: var(--orange-soft); border-color: var(--orange); }
+    .chain .skip { color: var(--muted); }
+    .chain .skip::before { background: #fff; border-style: dashed; }
+
+    .fig-crop { margin: 0 0 10px; padding: 6px 8px; background: #f3f7fb; border: 1px solid #c6daec; border-radius: 8px; }
+    .fig-crop img { display: block; width: 100%; height: auto; }
+    .plan { margin: 0 0 8px; padding: 6px 10px 7px; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; }
+    .plan ul { margin: 2px 0 0; padding-left: 17px; }
+    .plan li { margin: 1px 0; line-height: 1.45; }
+    .plan .q-label { color: var(--muted); }
+
+    .trace { margin: 0; padding: 0; list-style: none; }
+    .trace > li { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 10px; padding: 4px 0; line-height: 1.5; border-top: 1px dashed #e5e7eb; }
+    .trace > li:first-child { padding-top: 2px; border-top: 0; }
+    .who { color: var(--blue); font-size: 0.8rem; font-weight: 700; overflow-wrap: anywhere; }
+    .who small { display: block; color: var(--muted); font-size: 0.75rem; font-weight: 600; }
+    .trace .judge .who { color: var(--teal); }
+    .trace .judge .what { padding: 5px 9px; background: #effaf8; border: 1px solid #a7dbd4; border-radius: 7px; }
+    .bibtex { max-width: 800px; margin: 0 auto; position: relative; }
+    .bibtex pre {
+      margin: 0; padding: 20px; overflow-x: auto;
+      background: #f6f8fa; border: 1px solid #d1d5db; border-radius: 10px;
+      font-family: "Courier New", Courier, monospace; font-size: 14px; line-height: 1.6; color: #374151;
+    }
+    .bibtex button {
+      position: absolute; top: 10px; right: 10px;
+      border: 1px solid #d1d5db; background: #fff; border-radius: 6px;
+      padding: 3px 10px; font: inherit; font-size: 0.8rem; cursor: pointer; color: var(--soft);
+    }
+    .cite-note { margin: 10px 0 0; color: #9ca3af; font-size: 0.85rem; text-align: center; }
+
+    @media (max-width: 860px) {
+      .nav-inner { padding: 8px 12px; }
+      .nav-links a { padding: 6px 9px; font-size: 0.78rem; }
+      .nav-links .nav-optional { display: none; }
+      main { padding-left: 14px; padding-right: 14px; }
+      main > header { padding: 24px 6px 16px; }
+      .proj-title { font-size: 1.85rem; }
+      .proj-title br { display: none; }
+      .authors { line-height: 1.7; }
+      .hero, .abstract, .paper-figure { max-width: 100%; }
+      .section-title { font-size: 1.6rem; }
+      .abstract { padding: 22px 18px; text-align: left; }
+      .paper-figure { margin-bottom: 40px; }
+      figcaption { font-size: 0.9rem; text-align: left; }
+      .case { padding: 12px; }
+      .qbar.with-3d { grid-template-columns: minmax(0, 1fr); }
+      .q-3d { margin-top: 10px; }
+      .case-grid, .case-grid.plans { grid-template-columns: minmax(0, 1fr); grid-template-areas: "base" "ours"; column-gap: 0; }
+      .q-media .thumb { width: calc(50% - 4px); }
+      .q-media.tall .thumb { width: calc(25% - 6px); }
+      .q-media .thumb img, .q-media.wide .thumb img { width: 100%; height: auto; }
+      .pc-view { flex: none; height: 280px; }
+      .trace > li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+      .who small { display: inline; margin-left: 4px; }
+    }
+    @media (max-width: 520px) {
+      .opts.row { grid-template-columns: repeat(2, minmax(0, max-content)); }
+      .brand span { display: none; }
+      .nav-links a { padding-left: 8px; padding-right: 8px; }
+    }
+  </style>
+</head>
+<body id="top">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-ok" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#009E73"/><path d="M4.5 8.3l2.3 2.3 4.7-4.9" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bad" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#D55E00"/><path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></symbol>
+</svg>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top"><img src="static/images/logo.svg" alt=""><span>SpaDAG</span></a>
+    <div class="nav-links">
+      <a class="active nav-optional" href="#top">Home</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#examples">Examples</a>
+      <a class="nav-optional" href="#citation">Citation</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <header>
+    <h1 class="proj-title"><img class="title-logo" src="static/images/logo.svg" alt=""><span class="name">SpaDAG</span>: Planning and Learning with <br>Checkable Task Graphs for Spatial Reasoning</h1>
+    <div class="authors">
+      <a href="https://w-ted.github.io/">Yuxin Wang<sup>1</sup></a>,
+      <a href="https://mizhenxing.github.io/">Zhenxing Mi<sup>1</sup></a>,
+      <a href="https://openreview.net/profile?id=~Tianyuan_Qu2">Tianyuan Qu<sup>2</sup></a>,
+      <a href="https://www.danxurgb.net/">Dan Xu<sup>1<svg class="mail" viewBox="0 0 16 12" role="img" aria-label="Corresponding author"><title>Corresponding author</title><rect x="0.75" y="0.75" width="14.5" height="10.5" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M1.5 1.6 8 6.6l6.5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></sup></a>
+    </div>
+    <div class="affiliations"><span><sup>1</sup>HKUST</span><span><sup>2</sup>CUHK</span></div>
+    <div class="buttons">
+      <a class="button" href="https://arxiv.org/abs/ARXIV_ID">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 12h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>
+        Paper
+      </a>
+      <a class="button" href="https://github.com/W-Ted/SpaDAG">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        Code
+      </a>
+    </div>
+  </header>
+
+  <figure class="hero">
+    <div class="teaser">
+      <img src="static/images/teaser.png" alt="Prevailing spatial agents run one long tool chain; SpaDAG runs a DAG of checked nodes and outperforms prior agents with the same backbone.">
+    </div>
+    <figcaption><strong>Comparison of prevailing spatial agents with our SpaDAG.</strong>
+      <strong>(a)</strong> Prevailing spatial agents execute a question in one long chain of tool calls with at most a global plan or constraint, leaving intermediate results undeclared and unchecked.
+      <strong>(b)</strong> SpaDAG writes a DAG whose nodes declare output contracts, and a free-form code agent executes each node.
+      Tool use and outputs are checked at node boundaries without ground truth, and a node that fails a check is revised and re-run.
+      The compact plan also lets the planner be separately improved by learning from execution-verified plans.
+      <strong>(c)</strong> With the same backbone, SpaDAG outperforms all the prior agents on all five benchmarks.</figcaption>
+  </figure>
+
+  <section id="abstract">
+    <h2 class="section-title">Abstract</h2>
+    <div class="abstract">
+      As vision-language models (VLMs) become increasingly capable of using tools, VLM-based agents can solve spatial reasoning problems by invoking 3D reconstruction systems, perception models, and other tools.
+      Most existing agents, however, interleave planning and execution within <b>one long chain of tool calls</b>, leaving intermediate results undeclared and unchecked and allowing early errors to propagate to the answer.
+      We introduce <b>SpaDAG</b>, a structured planner–executor agent for spatial reasoning that first translates each question into a <b>checkable task graph</b> and then executes it node by node.
+      In the task graph, nodes declare their inputs and output contracts, while edges encode the data flow between nodes. A free-form code agent then adapts its tool use to execute each node.
+      At node boundaries, <b>tool usage and outputs are checked</b>, triggering revisions when needed. The structured plan makes each node’s output traceable and checkable, allowing problems that might remain hidden within a long trajectory to be exposed at the node level.
+      Moreover, as a translator from questions to executable DAGs, the planner can be improved independently by <b>learning from execution-verified plans</b>, without requiring complex reward optimization over execution trajectories.
+      Across five spatial reasoning benchmarks, SpaDAG achieves an average score of <b>72.3</b>, compared with 65.2 for the strongest baseline, SpatialClaw, using the same backbone and tools.
+    </div>
+  </section>
+
+  <section id="method">
+    <h2 class="section-title">How SpaDAG Works</h2>
+    <figure class="paper-figure">
+      <img src="static/images/pipeline.png" alt="SpaDAG plans and executes a task graph, checks and revises nodes, and learns the planner.">
+      <figcaption><strong>Overview of our proposed agent system SpaDAG.</strong>
+        <strong>(a)</strong> The planner first reads the question and writes a task graph whose nodes declare output contracts (e.g., camera yaw, world frame, degrees). Each node is then run by a free-form code agent with tools.
+        <strong>(b)</strong> A judge that never sees the ground truth checks the nodes at two moments.
+        When a node returns, its output is checked against its contract. After the graph has run, the judge traces the answer back to the nodes it depends on and reviews the tool use of traced nodes whether it used the right tools, delivered the right output, and is usable by the next node.
+        A faulty node is redone with the judge’s feedback and, once the redo passes review, its downstream nodes are re-run.
+        <strong>(c)</strong> With the executor and its judge frozen, good planning patterns are kept if plans score higher on held-out questions. Only the planner is then fine-tuned with LoRA, and at test time it writes plans for the same frozen executor.</figcaption>
+    </figure>
+  </section>
+
+  <section id="results">
+    <h2 class="section-title">Comparison with VLMs and Tool-Augmented Agents</h2>
+    <figure class="paper-figure paper-table">
+      <figcaption><strong>Results on five spatial reasoning benchmarks.</strong>
+        Among VLMs and tool-augmented agents that use Qwen3.6-27B, SpaDAG achieves the best average score on five benchmarks. Even with the base planner, it outperforms SpatialClaw, the strongest baseline with the same backbone and tools, on every benchmark.
+        <sup>†</sup>VADAR [27] is evaluated only on the single-image questions it supports.</figcaption>
+      <img src="static/images/main_results.png" alt="Results on five spatial reasoning benchmarks.">
+    </figure>
+
+    <h2 class="section-title">Effect of Checking and Planner Learning</h2>
+    <figure class="paper-figure paper-table">
+      <figcaption><strong>Contribution of each component across the five benchmarks.</strong>
+        Under the same backbone, tools, and step budget on the 5,000 questions of the main results table, <i>Task graph + learned planner</i> completes the 2&nbsp;×&nbsp;2 ablation by running the learned plans without checking.
+        Node-level checking and planner learning each improve accuracy with or without the other, and combining them performs best on every benchmark. Gains are computed from unrounded scores.</figcaption>
+      <img src="static/images/ablation_components.png" alt="Contribution of node-level checking and planner learning on each of the five benchmarks.">
+    </figure>
+  </section>
+
+  <section id="examples">
+    <div class="group">
+      <h2 class="section-title">Node-Level Checking: Catching and Fixing Errors</h2>
+      <article class="case">
+        <header class="case-head">
+          <span class="case-no">Example 1</span>
+          <span class="case-title">Node-level revision corrects the agent when it overrides a valid intermediate 3D result</span>
+        </header>
+        <div class="qbar with-3d">
+          <div class="q-main">
+            <div class="q-head"><span class="q-label">Question</span><span class="chip">DSI-Bench · reversed video</span></div>
+            <p class="q-text">In this video clip, relative to its starting orientation and location, how is the observer’s location moving?</p>
+            <div class="q-media wide">
+              <figure class="thumb"><img src="static/images/examples/ex1_frame00.jpg" alt="Frame 0: a skier ahead of the camera on a snowy trail" loading="lazy"><span class="tag">frame 0</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex1_frame25.jpg" alt="Frame 25" loading="lazy"><span class="tag">frame 25</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex1_frame50.jpg" alt="Frame 50" loading="lazy"><span class="tag">frame 50</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex1_frame74.jpg" alt="Frame 74" loading="lazy"><span class="tag">frame 74</span></figure>
+            </div>
+            <ul class="opts">
+              <li><b>A</b>Moving forward</li>
+              <li><b>B</b>Moving left</li>
+              <li class="gt"><b>C</b>Moving backward<svg class="mk"><use href="#i-ok"/></svg></li>
+              <li><b>D</b>Moving right</li>
+            </ul>
+          </div>
+          <div class="q-3d">
+            <span class="cell-label">3D reconstruction from the video frames</span>
+            <div class="pc-view" data-src="static/pointclouds/ex1.bin">
+              <button type="button" class="pc-reset">Reset view</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-grid">
+          <div class="cell-base stack">
+            <div class="method bad slim">
+              <div class="method-head"><span>CoT</span><span class="ans">A<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <p class="quote">“… the camera advances along the track, following the skier. … <span class="hit">indicating forward motion</span>.”</p>
+              </div>
+            </div>
+            <div class="method bad">
+              <div class="method-head"><span>SpatialClaw</span><span class="ans">A<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <ol class="chain">
+                  <li class="ok"><code class="log">Forward component: -9.5802 m</code> <code class="log">Dominant motion direction: BACKWARD</code></li>
+                  <li class="bad">“… but this seems counterintuitive for a camera following a skier forward.”</li>
+                  <li class="bad">VLM: “The camera is moving <b>forward</b>.”</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="cell-ours">
+            <div class="method good">
+              <div class="method-head"><span>SpaDAG<small>base planner</small></span><span class="ans">C<svg class="mk"><use href="#i-ok"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex1_dag.png" alt="Task graph: camera trajectory, direction vs. start, pick the option; the judge sends direction vs. start back and its redo returns 177.5 degrees" loading="lazy"></figure>
+                <ol class="trace">
+                  <li><span class="who">n2<small>first pass</small></span><span class="what"><code class="log">Angle between displacement and initial forward: 177.50 degrees</code><br><code class="log">Trusting VLM and visual evidence: motion is FORWARD.</code> Returns 0.0.</span></li>
+                  <li class="judge"><span class="who">Judge<small>reviews n2</small></span><span class="what">“Overrides geometric result (177.5°) with VLM result (0.0°) without new evidence or coordinate validation.”</span></li>
+                  <li><span class="who">n2<small>redo</small></span><span class="what"><code class="log">Geometric angle: 177.5°</code></span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="case">
+        <header class="case-head">
+          <span class="case-no">Example 2</span>
+          <span class="case-title">Node-level revision corrects the agent when it chooses a wrong answer despite upstream evidence</span>
+        </header>
+        <div class="qbar with-3d">
+          <div class="q-main">
+            <div class="q-head"><span class="q-label">Question</span><span class="chip">MindCube · four views</span></div>
+            <p class="q-text">… From the viewpoint presented in image 1, what is to the right of the white bottle?</p>
+            <div class="q-media tall">
+              <figure class="thumb"><img src="static/images/examples/ex2_img1.jpg" alt="Image 1, front view: a blue curtain and window behind the bottle" loading="lazy"><span class="tag">1 front</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex2_img2.jpg" alt="Image 2, left view: a pink plush toy and a headboard behind the bottle" loading="lazy"><span class="tag">2 left</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex2_img3.jpg" alt="Image 3, back view" loading="lazy"><span class="tag">3 back</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex2_img4.jpg" alt="Image 4, right view" loading="lazy"><span class="tag">4 right</span></figure>
+            </div>
+            <ul class="opts">
+              <li class="gt"><b>A</b>Pink plush toy and headboard<svg class="mk"><use href="#i-ok"/></svg></li>
+              <li><b>B</b>White wall</li>
+              <li><b>C</b>Window and blue curtain</li>
+              <li><b>D</b>Closet and door</li>
+            </ul>
+          </div>
+          <div class="q-3d">
+            <span class="cell-label">3D reconstruction from the input images</span>
+            <div class="pc-view" data-src="static/pointclouds/ex2.bin">
+              <button type="button" class="pc-reset">Reset view</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-grid">
+          <div class="cell-base stack">
+            <div class="method bad slim">
+              <div class="method-head"><span>CoT</span><span class="ans">C<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <p class="quote">“… The blue curtain is behind the bottle, and <span class="hit">the window is to the right</span>.”</p>
+              </div>
+            </div>
+            <div class="method bad">
+              <div class="method-head"><span>SpatialClaw</span><span class="ans">C<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <ol class="chain">
+                  <li class="bad">Plan: “This is a pixel-space / camera-relative question, not a world-space 3D question.”</li>
+                  <li class="skip">No 3D reconstruction</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="cell-ours">
+            <div class="method good">
+              <div class="method-head"><span>SpaDAG<small>base planner</small></span><span class="ans">A<svg class="mk"><use href="#i-ok"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex2_dag.png" alt="Task graph: reconstruct, 3D positions, right of the bottle, pick the option; the judge sends the answer node back and its redo returns A" loading="lazy"></figure>
+                <ol class="trace">
+                  <li><span class="who">answer_node<small>first pass</small></span><span class="what">Asks the VLM about image 1: <code class="log">VLM answer: C</code>, then “The geometry candidate A does not hold because Image 1 shows a window and blue curtain …” Returns C.</span></li>
+                  <li class="judge"><span class="who">Judge<small>consistency check</small></span><span class="what">“all upstream values point to option A, but this node delivered C”</span></li>
+                  <li><span class="who">answer_node<small>redo</small></span><span class="what">“VLM answer C does not hold because the blue curtain is to the LEFT of the bottle (dot_right = -0.011), not the right.” Returns A.</span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="group">
+      <h2 class="section-title">Planner Learning: Writing Clearer Plans</h2>
+      <article class="case">
+        <header class="case-head">
+          <span class="case-no">Example 1</span>
+          <span class="case-title">The learned planner spells out how to estimate camera 2 and compare options</span>
+        </header>
+        <div class="qbar with-3d">
+          <div class="q-main">
+            <div class="q-head"><span class="q-label">Question</span><span class="chip">SPAR-Bench · two images</span></div>
+            <p class="q-text">In the first image’s coordinate space, where is the observer of the second image located? Provide image-plane coordinates and depth in meters.</p>
+            <div class="q-media">
+              <figure class="thumb"><img src="static/images/examples/ex3_img1.jpg" alt="Image 1: a desk by a window with blinds" loading="lazy"><span class="tag">image 1</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex3_img2.jpg" alt="Image 2: two monitors on the desk" loading="lazy"><span class="tag">image 2</span></figure>
+            </div>
+            <ul class="opts">
+              <li><b>A</b>(421, 419), 0.4 meters</li>
+              <li><b>B</b>(60, 744), 0.4 meters</li>
+              <li><b>C</b>(431, 753), 0.4 meters</li>
+              <li class="gt"><b>D</b>(921, 636), 0.4 meters<svg class="mk"><use href="#i-ok"/></svg></li>
+            </ul>
+          </div>
+          <div class="q-3d">
+            <span class="cell-label">3D reconstruction from the input images</span>
+            <div class="pc-view" data-src="static/pointclouds/ex3.bin">
+              <button type="button" class="pc-reset">Reset view</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-grid plans">
+          <div class="cell-base">
+            <div class="method bad">
+              <div class="method-head"><span>Base planner</span><span class="ans">B<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex3_base.png" alt="Base plan: estimate camera 2, project to image 1, compare options; how to estimate and compare is unclear" loading="lazy"></figure>
+                <div class="plan">
+                  <span class="q-label">Plan</span>
+                  <ul>
+                    <li>“<span class="hit">Estimate the 3D position of the second camera</span> relative to the first camera.”</li>
+                    <li>“Project … into the first image’s pixel coordinates.”</li>
+                    <li>“<span class="hit">Compare the projected coordinates and depth with the options</span>.”</li>
+                  </ul>
+                </div>
+                <ol class="trace">
+                  <li><span class="who">n1<small>projects camera 2</small></span><span class="what"><code class="log">Normalized coordinates (0-1000): (1204, 753)</code> <code class="log">Option D: (921, 636), depth=0.4m -> distance=306.4</code></span></li>
+                  <li><span class="who">n1<small>then</small></span><span class="what">“The reconstruction with only 2 frames may be unreliable.” Asks the VLM, takes its answer: <code class="log">Final result: B</code></span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="cell-ours">
+            <div class="method good">
+              <div class="method-head"><span>Learned planner</span><span class="ans">D<svg class="mk"><use href="#i-ok"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex3_learned.png" alt="Learned plan: reconstruct images, camera 2 in camera 1's frame, project and take the nearest option" loading="lazy"></figure>
+                <div class="plan">
+                  <span class="q-label">Plan</span>
+                  <ul>
+                    <li>“<span class="hit-ok">Reconstruct the scene from both images</span>.”</li>
+                    <li>“Compute the second camera center in the first camera’s frame.”</li>
+                    <li>“Project it to the first image plane, and <span class="hit-ok">select the closest matching option</span>.”</li>
+                  </ul>
+                </div>
+                <ol class="trace">
+                  <li><span class="who">project, take nearest option</span><span class="what"><code class="log">Normalized coordinates (0-1000): (1204.3, 752.6)</code> <code class="log">D: (921, 636), depth=0.4 -> dist=311.73</code> <code class="log">Best match: D</code></span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="case">
+        <header class="case-head">
+          <span class="case-no">Example 2</span>
+          <span class="case-title">The learned planner spells out which way the observer faces</span>
+        </header>
+        <div class="qbar with-3d">
+          <div class="q-main">
+            <div class="q-head"><span class="q-label">Question</span><span class="chip">MMSI-Bench · four images</span></div>
+            <p class="q-text">If you are sitting on the pink chair by the window with plants behind you, in which direction is the sofa?</p>
+            <div class="q-media wide">
+              <figure class="thumb"><img src="static/images/examples/ex4_img1.jpg" alt="Image 1: the sofa" loading="lazy"><span class="tag">1</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex4_img2.jpg" alt="Image 2" loading="lazy"><span class="tag">2</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex4_img3.jpg" alt="Image 3" loading="lazy"><span class="tag">3</span></figure>
+              <figure class="thumb"><img src="static/images/examples/ex4_img4.jpg" alt="Image 4: the pink chair by the window, with plants" loading="lazy"><span class="tag">4</span></figure>
+            </div>
+            <ul class="opts row">
+              <li><b>A</b>Behind</li>
+              <li class="gt"><b>B</b>In front<svg class="mk"><use href="#i-ok"/></svg></li>
+              <li><b>C</b>Left</li>
+              <li><b>D</b>Right</li>
+            </ul>
+          </div>
+          <div class="q-3d">
+            <span class="cell-label">3D reconstruction from the input images</span>
+            <div class="pc-view" data-src="static/pointclouds/ex4.bin">
+              <button type="button" class="pc-reset">Reset view</button>
+            </div>
+          </div>
+        </div>
+        <div class="case-grid plans">
+          <div class="cell-base">
+            <div class="method bad">
+              <div class="method-head"><span>Base planner</span><span class="ans">D<svg class="mk"><use href="#i-bad"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex4_base.png" alt="Base plan: reconstruct and take the direction from the pink chair, then pick the option; the facing is unclear" loading="lazy"></figure>
+                <div class="plan">
+                  <span class="q-label">Plan</span>
+                  <ul>
+                    <li>“Compute the direction from the pink chair <span class="hit">(observer position and facing direction)</span> to the sofa centroid.”</li>
+                    <li>“Map the relative direction … to the closest answer option.”</li>
+                  </ul>
+                </div>
+                <ol class="trace">
+                  <li><span class="who">n1<small>facing</small></span><span class="what"><code class="log">Camera right (frame 3): [-0.50943748 …]</code> <code class="log">Observer forward: [-0.50943748 …]</code> <code class="log">Direction: level-right</code></span></li>
+                </ol>
+                <p class="method-note">The base plan never locates the plants, so its run takes image 4’s camera axis as the facing.</p>
+              </div>
+            </div>
+          </div>
+          <div class="cell-ours">
+            <div class="method good">
+              <div class="method-head"><span>Learned planner</span><span class="ans">B<svg class="mk"><use href="#i-ok"/></svg></span></div>
+              <div class="method-body">
+                <figure class="fig-crop"><img src="static/images/examples/ex4_learned.png" alt="Learned plan: locate chair, sofa, plants; direction from the pink chair facing away from the plants; pick the option" loading="lazy"></figure>
+                <div class="plan">
+                  <span class="q-label">Plan</span>
+                  <ul>
+                    <li>“Produce the 3D centroid positions of the pink chair, sofa, window, and <span class="hit-ok">plants</span> in a common world frame.”</li>
+                    <li>“Determine the 3D direction from the pink chair to the sofa, <span class="hit-ok">using the plants’ position to establish the observer’s facing direction (observer faces away from plants since plants are behind)</span>.”</li>
+                    <li>“Map the computed direction to the closest cardinal direction option.”</li>
+                  </ul>
+                </div>
+                <ol class="trace">
+                  <li><span class="who">compute_direction<small>facing</small></span><span class="what"><code class="log">Observer forward (horizontal, away from plants): [-0.59308931 …]</code> <code class="log">Direction category: Front-left</code></span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="citation">
+    <h2 class="section-title">Citation</h2>
+    <div class="bibtex">
+      <button type="button" id="copy">Copy</button>
+      <pre><code id="bibtex-code">@article{wang2026spadag,
+  title   = {SpaDAG: Planning and Learning with Checkable Task Graphs for Spatial Reasoning},
+  author  = {Wang, Yuxin and Mi, Zhenxing and Qu, Tianyuan and Xu, Dan},
+  journal = {arXiv preprint arXiv:ARXIV_ID},
+  year    = {2026}
+}</code></pre>
+    </div>
+    <p class="cite-note">If you find our work useful in your research, please consider citing us.</p>
+  </section>
+</main>
+
+<script>
+  var navLinks = Array.from(document.querySelectorAll(".nav-links a"));
+  var sections = navLinks.map(function (link) {
+    return document.querySelector(link.getAttribute("href"));
+  }).filter(Boolean);
+  if ("IntersectionObserver" in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
+        });
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    sections.forEach(function (section) { observer.observe(section); });
+  }
+  document.querySelectorAll(".nav-links a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      navLinks.forEach(function (item) { item.classList.toggle("active", item === link); });
+    });
+  });
+  document.getElementById("copy").addEventListener("click", function (event) {
+    var button = event.currentTarget;
+    navigator.clipboard.writeText(document.getElementById("bibtex-code").innerText).then(function () {
+      button.textContent = "Copied";
+      setTimeout(function () { button.textContent = "Copy"; }, 1500);
+    });
+  });
+</script>
+<script type="module">
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { CSS2DRenderer, CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
+
+  // point colours, photos and CSS hex colours are all sRGB already: pass them through untouched
+  THREE.ColorManagement.enabled = false;
+
+  async function loadCloud(url) {
+    const buf = await (await fetch(url)).arrayBuffer();
+    const view = new DataView(buf);
+    const metaLen = view.getUint32(4, true);
+    const meta = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 8, metaLen)));
+    const n = meta.count, q = new Uint16Array(buf, 8 + metaLen, n * 3);
+    const colors = new Uint8Array(buf, 8 + metaLen + n * 6, n * 3);
+    const pos = new Float32Array(n * 3);
+    for (let i = 0; i < n * 3; i++) {
+      const a = i % 3;
+      pos[i] = meta.min[a] + (q[i] / 65535) * (meta.max[a] - meta.min[a]);
+    }
+    return { meta, pos, colors };
+  }
+
+  function labelSprite(text, color) {
+    const c = document.createElement("canvas"), s = 128;
+    c.width = c.height = s;
+    const g = c.getContext("2d");
+    g.fillStyle = color;
+    g.beginPath(); g.arc(s / 2, s / 2, s / 2 - 6, 0, Math.PI * 2); g.fill();
+    g.fillStyle = "#fff";
+    g.font = `700 ${text.length > 2 ? 44 : 64}px Inter, sans-serif`;
+    g.textAlign = "center"; g.textBaseline = "middle";
+    g.fillText(text, s / 2, s / 2 + 3);
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, sizeAttenuation: false }));
+    sprite.renderOrder = 10;
+    return sprite;
+  }
+
+  function cameraLines(cams, trajectory) {
+    const group = new THREE.Group();
+    cams.forEach((cam) => {
+      const [a, b, c, d] = cam.corners.map((p) => new THREE.Vector3(...p));
+      const o = new THREE.Vector3(...cam.center);
+      const geo = new THREE.BufferGeometry().setFromPoints([o, a, o, b, o, c, o, d, a, b, b, c, c, d, d, a]);
+      group.add(new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: cam.color })));
+    });
+    if (trajectory && cams.length > 1) {
+      const geo = new THREE.BufferGeometry().setFromPoints(cams.map((c) => new THREE.Vector3(...c.center)));
+      group.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: "#111827" })));
+    }
+    return group;
+  }
+
+  function tag(text, color, pos, tip, side) {
+    const el = document.createElement("div");
+    el.className = ["pc-tag", tip && "tip", side].filter(Boolean).join(" ");
+    el.style.setProperty("--c", color);
+    el.append(document.createElement("i"), Object.assign(document.createElement("span"), { textContent: text }));
+    const obj = new CSS2DObject(el);
+    obj.position.set(...pos);
+    return obj;
+  }
+
+  function dashedLine(from, to, color, unit) {
+    const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...from), new THREE.Vector3(...to)]);
+    const line = new THREE.Line(geo, new THREE.LineDashedMaterial({ color, dashSize: unit * 7, gapSize: unit * 5, depthTest: false }));
+    line.computeLineDistances();
+    line.renderOrder = 4;
+    return line;
+  }
+
+  // corners follow the image: (0, 0), (w, 0), (w, h), (0, h)
+  function imagePlane(corners, src) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(corners.flat(), 3));
+    geo.setAttribute("uv", new THREE.Float32BufferAttribute([0, 1, 1, 1, 1, 0, 0, 0], 2));
+    geo.setIndex([0, 3, 1, 1, 3, 2]);
+    const map = new THREE.TextureLoader().load(src);
+    return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map, side: THREE.DoubleSide, transparent: true, opacity: 0.92, depthWrite: false }));
+  }
+
+  // unit = world size of one screen pixel at the initial view, so arrows look the same in every example
+  function arrow(from, to, color, unit) {
+    const a = new THREE.Vector3(...from), dir = new THREE.Vector3(...to).sub(a);
+    const len = dir.length(), head = Math.min(len * 0.4, unit * 15), width = unit * 5.5;
+    const mat = new THREE.MeshBasicMaterial({ color, depthTest: false });
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(unit * 1.4, unit * 1.4, len - head, 10), mat);
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(width, head, 20), mat);
+    shaft.position.y = (len - head) / 2;
+    cone.position.y = len - head / 2;
+    shaft.renderOrder = cone.renderOrder = 5;
+    const group = new THREE.Group();
+    group.add(shaft, cone);
+    group.position.copy(a);
+    group.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+    return group;
+  }
+
+  async function initViewer(el) {
+    const { meta, pos, colors } = await loadCloud(el.dataset.src);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0xf8fafc);
+    el.prepend(renderer.domElement);
+    const scene = new THREE.Scene();
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3, true));
+    const r = meta.view.radius;
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: meta.point_size || r * 0.01, vertexColors: true })));
+    scene.add(cameraLines(meta.cameras, meta.trajectory));
+    meta.cameras.forEach((cam, i) => {
+      if (meta.trajectory && i % Math.ceil(meta.cameras.length / 6) && i !== meta.cameras.length - 1) return;
+      const s = labelSprite(cam.label, cam.color);
+      const at = meta.badges === "center" ? cam.center : [0, 1, 2].map((k) => cam.corners.reduce((sum, c) => sum + c[k], 0) / 4);
+      s.position.set(...at);
+      s.scale.setScalar(0.06);
+      scene.add(s);
+    });
+    const target = new THREE.Vector3(...meta.view.target);
+    const start = new THREE.Vector3(...meta.view.position);
+    const toEye = start.clone().sub(target).normalize();
+    const d0 = start.distanceTo(target);
+    const fit = (meta.view.fit || []).map((p) => new THREE.Vector3(...p));
+    const camera = new THREE.PerspectiveCamera(50, el.clientWidth / el.clientHeight, Math.min(r, d0) * 0.01, Math.max(r, d0) * 50);
+    const fitDistance = () => {
+      if (!fit.length) return d0;
+      const mx = el.clientWidth < 420 ? 0.68 : 0.75;
+      let lo = d0 * 0.05, hi = d0 * 4;
+      for (let i = 0; i < 40; i++) {
+        const d = (lo + hi) / 2;
+        camera.position.copy(target).addScaledVector(toEye, d);
+        camera.lookAt(target);
+        camera.updateMatrixWorld();
+        const inside = fit.every((p) => {
+          const v = p.clone().project(camera);
+          return v.z < 1 && Math.abs(v.x) <= mx && Math.abs(v.y) <= 0.66;
+        });
+        if (inside) hi = d; else lo = d;
+      }
+      return hi;
+    };
+    const unit = (2 * fitDistance() * Math.tan(THREE.MathUtils.degToRad(25))) / el.clientHeight;
+    if (meta.image_plane) scene.add(imagePlane(meta.cameras[meta.image_plane.camera].corners, meta.image_plane.src));
+    (meta.lines || []).forEach((l) => scene.add(dashedLine(l.from, l.to, l.color, unit)));
+    (meta.objects || []).forEach((o) => scene.add(tag(o.text, o.color, o.pos, o.tip, o.side)));
+    (meta.arrows || []).forEach((a) => {
+      scene.add(arrow(a.from, a.to, a.color, unit));
+      if (a.text) scene.add(tag(a.text, a.color, a.to, true, a.side));
+    });
+    const labels = new CSS2DRenderer();
+    labels.domElement.className = "pc-tags";
+    el.append(labels.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.minDistance = Math.min(r, d0) * 0.2;
+    controls.maxDistance = Math.max(r * 6, d0 * 3);
+    let pristine = true;
+    controls.addEventListener("start", () => { pristine = false; });
+    const reset = () => {
+      const d = fitDistance();
+      camera.position.copy(target).addScaledVector(toEye, d);
+      controls.target.copy(target);
+      controls.update();
+      pristine = true;
+    };
+    const resize = () => {
+      const w = el.clientWidth, h = el.clientHeight;
+      renderer.setSize(w, h, false);
+      labels.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      if (pristine) reset();
+    };
+    new ResizeObserver(resize).observe(el);
+    resize();
+    el.querySelector(".pc-reset").addEventListener("click", reset);
+    let visible = true, running = false;
+    const loop = () => {
+      if (!visible) { running = false; return; }
+      controls.update();
+      renderer.render(scene, camera);
+      labels.render(scene, camera);
+      requestAnimationFrame(loop);
+    };
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible && !running) { running = true; loop(); }
+    }).observe(el);
+    el.classList.add("ready");
+  }
+
+  const pending = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      pending.unobserve(e.target);
+      initViewer(e.target).catch((err) => {
+        e.target.classList.add("failed");
+        console.error(err);
+      });
+    });
+  }, { rootMargin: "300px 0px" });
+  document.querySelectorAll(".pc-view").forEach((el) => pending.observe(el));
+</script>
+</body>
+</html>
