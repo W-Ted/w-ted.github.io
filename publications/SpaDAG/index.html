@@ -8,8 +8,8 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="SpaDAG: Planning and Learning with Checkable Task Graphs for Spatial Reasoning">
   <meta property="og:description" content="A planner–executor agent for spatial reasoning built around checkable task graphs.">
-  <meta property="og:url" content="https://w-ted.github.io/SpaDAG/">
-  <meta property="og:image" content="https://w-ted.github.io/SpaDAG/static/images/teaser.png">
+  <meta property="og:url" content="https://w-ted.github.io/publications/SpaDAG/">
+  <meta property="og:image" content="https://w-ted.github.io/publications/SpaDAG/static/images/teaser.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="static/images/favicon.png">
@@ -159,6 +159,8 @@
     .pc-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
     .pc-view.ready .pc-poster { display: none; }
     .pc-view:not(.ready)::after { content: "Loading interactive 3D view…"; position: absolute; z-index: 2; left: 50%; bottom: 10px; transform: translateX(-50%); padding: 2px 10px; color: var(--muted); font-size: 0.75rem; white-space: nowrap; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--line); border-radius: 999px; }
+    .pc-view.loading:not(.ready):not(.failed)::before { content: ""; position: absolute; z-index: 3; top: 0; left: 0; width: calc(var(--pct) * 1%); height: 3px; background: var(--blue); transition: width 0.2s; }
+    .pc-view.loading:not(.ready)::after { counter-reset: pct var(--pct); content: "Loading interactive 3D view… " counter(pct) "%"; }
     .pc-view.failed:not(.ready)::after { content: "Interactive 3D view unavailable · still image"; }
     .pc-view:not(.ready) .pc-reset { opacity: 0; }
     .pc-reset { position: absolute; z-index: 2; top: 8px; right: 8px; padding: 2px 9px; color: var(--soft); font: inherit; font-size: 0.75rem; background: #fff; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
@@ -699,8 +701,39 @@
   // point colours, photos and CSS hex colours are all sRGB already: pass them through untouched
   THREE.ColorManagement.enabled = false;
 
-  async function loadCloud(url) {
-    const buf = await (await fetch(url)).arrayBuffer();
+  function join(chunks, size) {
+    const out = new Uint8Array(size);
+    let at = 0;
+    for (const c of chunks) { out.set(c, at); at += c.length; }
+    return out;
+  }
+
+  // the file is "SPC1", metadata length (uint32), metadata JSON, then 9 bytes per point; reading the size from the file
+  // keeps the progress right when the server gzips the download and Content-Length no longer matches
+  function cloudSize(head) {
+    const metaLen = new DataView(head.buffer).getUint32(4, true);
+    if (head.length < 8 + metaLen) return 0;
+    return 8 + metaLen + 9 * JSON.parse(new TextDecoder().decode(head.subarray(8, 8 + metaLen))).count;
+  }
+
+  async function download(url, onProgress) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+    if (!res.body) return res.arrayBuffer();
+    const reader = res.body.getReader(), chunks = [];
+    let got = 0, total = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) return join(chunks, got).buffer;
+      chunks.push(value);
+      got += value.length;
+      if (!total && got >= 8) total = cloudSize(join(chunks, got));
+      if (total) onProgress(Math.min(got / total, 1));
+    }
+  }
+
+  async function loadCloud(url, onProgress) {
+    const buf = await download(url, onProgress);
     const view = new DataView(buf);
     const metaLen = view.getUint32(4, true);
     const meta = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 8, metaLen)));
@@ -790,7 +823,10 @@
   }
 
   async function initViewer(el) {
-    const { meta, pos, colors } = await loadCloud(el.dataset.src);
+    const { meta, pos, colors } = await loadCloud(el.dataset.src, (p) => {
+      el.classList.add("loading");
+      el.style.setProperty("--pct", Math.round(p * 100));
+    });
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
