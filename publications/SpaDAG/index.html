@@ -53,6 +53,7 @@
     }
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
+    picture { display: contents; }
     img { max-width: 100%; }
     figure { margin: 0; }
 
@@ -308,7 +309,10 @@
 
   <figure class="hero">
     <div class="teaser">
-      <img src="static/images/teaser.png" alt="Prevailing spatial agents run one long tool chain; SpaDAG runs a DAG of checked nodes and outperforms prior agents with the same backbone.">
+      <picture>
+        <source type="image/webp" srcset="static/images/teaser.webp">
+        <img src="static/images/teaser.png" alt="Prevailing spatial agents run one long tool chain; SpaDAG runs a DAG of checked nodes and outperforms prior agents with the same backbone.">
+      </picture>
     </div>
     <figcaption><strong>Comparison of prevailing spatial agents with our SpaDAG.</strong>
       <strong>(a)</strong> Prevailing spatial agents execute a question in one long chain of tool calls with at most a global plan or constraint, leaving intermediate results undeclared and unchecked.
@@ -334,7 +338,10 @@
   <section id="method">
     <h2 class="section-title">How SpaDAG Works</h2>
     <figure class="paper-figure">
-      <img src="static/images/pipeline.png" alt="SpaDAG plans and executes a task graph, checks and revises nodes, and learns the planner.">
+      <picture>
+        <source type="image/webp" srcset="static/images/pipeline.webp">
+        <img src="static/images/pipeline.png" alt="SpaDAG plans and executes a task graph, checks and revises nodes, and learns the planner.">
+      </picture>
       <figcaption><strong>Overview of our proposed agent system SpaDAG.</strong>
         <strong>(a)</strong> The planner first reads the question and writes a task graph whose nodes declare output contracts (e.g., camera yaw, world frame, degrees). Each node is then run by a free-form code agent with tools.
         <strong>(b)</strong> A judge that never sees the ground truth checks the nodes at two moments.
@@ -350,7 +357,10 @@
       <figcaption><strong>Results on five spatial reasoning benchmarks.</strong>
         Among VLMs and tool-augmented agents that use Qwen3.6-27B, SpaDAG achieves the best average score on five benchmarks. Even with the base planner, it outperforms SpatialClaw, the strongest baseline with the same backbone and tools, on every benchmark.
         <sup>†</sup>VADAR [27] is evaluated only on the single-image questions it supports.</figcaption>
-      <img src="static/images/main_results.png" alt="Results on five spatial reasoning benchmarks.">
+      <picture>
+        <source type="image/webp" srcset="static/images/main_results.webp">
+        <img src="static/images/main_results.png" alt="Results on five spatial reasoning benchmarks.">
+      </picture>
     </figure>
 
     <h2 class="section-title">Effect of Checking and Planner Learning</h2>
@@ -358,7 +368,10 @@
       <figcaption><strong>Contribution of each component across the five benchmarks.</strong>
         Under the same backbone, tools, and step budget on the 5,000 questions of the main results table, <i>Task graph + learned planner</i> completes the 2&nbsp;×&nbsp;2 ablation by running the learned plans without checking.
         Node-level checking and planner learning each improve accuracy with or without the other, and combining them performs best on every benchmark. Gains are computed from unrounded scores.</figcaption>
-      <img src="static/images/ablation_components.png" alt="Contribution of node-level checking and planner learning on each of the five benchmarks.">
+      <picture>
+        <source type="image/webp" srcset="static/images/ablation_components.webp">
+        <img src="static/images/ablation_components.png" alt="Contribution of node-level checking and planner learning on each of the five benchmarks.">
+      </picture>
     </figure>
   </section>
 
