@@ -685,7 +685,6 @@
       setTimeout(function () { button.textContent = "Copy"; }, 1500);
     });
   });
-  // if three.js fails to download, the module script below never runs and cannot report it; the still images stay
   setTimeout(function () {
     if (window.pcViewerLoaded) return;
     document.querySelectorAll(".pc-view").forEach(function (el) { el.classList.add("failed"); });
@@ -698,7 +697,6 @@
 
   window.pcViewerLoaded = true;
 
-  // point colours, photos and CSS hex colours are all sRGB already: pass them through untouched
   THREE.ColorManagement.enabled = false;
 
   function join(chunks, size) {
@@ -708,8 +706,6 @@
     return out;
   }
 
-  // the file is "SPC1", metadata length (uint32), metadata JSON, then 9 bytes per point; reading the size from the file
-  // keeps the progress right when the server gzips the download and Content-Length no longer matches
   function cloudSize(head) {
     const metaLen = new DataView(head.buffer).getUint32(4, true);
     if (head.length < 8 + metaLen) return 0;
@@ -795,7 +791,6 @@
     return line;
   }
 
-  // corners follow the image: (0, 0), (w, 0), (w, h), (0, h)
   function imagePlane(corners, src) {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.Float32BufferAttribute(corners.flat(), 3));
@@ -805,7 +800,6 @@
     return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map, side: THREE.DoubleSide, transparent: true, opacity: 0.92, depthWrite: false }));
   }
 
-  // unit = world size of one screen pixel at the initial view, so arrows look the same in every example
   function arrow(from, to, color, unit) {
     const a = new THREE.Vector3(...from), dir = new THREE.Vector3(...to).sub(a);
     const len = dir.length(), head = Math.min(len * 0.4, unit * 15), width = unit * 5.5;
